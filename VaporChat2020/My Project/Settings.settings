@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
+  <Profiles />
+  <Settings>
+    <Setting Name="LastUser" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="VaporChat2020Ver" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0.4.1</Value>
+    </Setting>
+    <Setting Name="VaporChatVer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0.2.0</Value>
+    </Setting>
+    <Setting Name="VaporFuncVer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1.0.3.2</Value>
+    </Setting>
+    <Setting Name="Muted" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Publisher" Type="System.String" Scope="User">
+      <Value Profile="(Default)">kronelab19</Value>
+    </Setting>
+    <Setting Name="Lobby" Type="System.String" Scope="User">
+      <Value Profile="(Default)">elfa</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
