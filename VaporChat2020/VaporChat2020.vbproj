@@ -23,12 +23,13 @@
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
+    <MapFileExtensions>false</MapFileExtensions>
     <TargetCulture>en-GB</TargetCulture>
     <ProductName>V A P O R C H A T 2 0 2 0</ProductName>
     <PublisherName>kronelab</PublisherName>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.1.0</ApplicationVersion>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.4.1</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -66,7 +67,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -81,7 +82,13 @@
     <ManifestKeyFile>VaporChat2020_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MQTTnet, Version=3.0.8.0, Culture=neutral, PublicKeyToken=b69712f52770c0a7, processorArchitecture=MSIL">
@@ -113,17 +120,23 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdminPanel.Designer.vb">
+    <Compile Include="Forms\AdminPanel.Designer.vb">
       <DependentUpon>AdminPanel.vb</DependentUpon>
     </Compile>
-    <Compile Include="AdminPanel.vb">
+    <Compile Include="Forms\AdminPanel.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ApplicationEvents.vb" />
-    <Compile Include="HideMainScreen.Designer.vb">
+    <Compile Include="Code\ApplicationEvents.vb" />
+    <Compile Include="Forms\HideMainScreen.Designer.vb">
       <DependentUpon>HideMainScreen.vb</DependentUpon>
     </Compile>
-    <Compile Include="HideMainScreen.vb">
+    <Compile Include="Forms\HideMainScreen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\VaporUserList.Designer.vb">
+      <DependentUpon>VaporUserList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\VaporUserList.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
@@ -131,13 +144,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Settings.vb" />
-    <Compile Include="Simple3Des.vb" />
-    <Compile Include="VaporChat.vb" />
-    <Compile Include="StartScreen.vb">
+    <Compile Include="Code\Settings.vb" />
+    <Compile Include="Code\Simple3Des.vb" />
+    <Compile Include="Code\VaporChat.vb" />
+    <Compile Include="Forms\StartScreen.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StartScreen.Designer.vb">
+    <Compile Include="Forms\StartScreen.Designer.vb">
       <DependentUpon>StartScreen.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
@@ -151,23 +164,26 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="VaporMainScreen.Designer.vb">
+    <Compile Include="Forms\VaporMainScreen.Designer.vb">
       <DependentUpon>VaporMainScreen.vb</DependentUpon>
     </Compile>
-    <Compile Include="VaporMainScreen.vb">
+    <Compile Include="Forms\VaporMainScreen.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VaporFunc.vb" />
+    <Compile Include="Code\VaporFunc.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AdminPanel.resx">
+    <EmbeddedResource Include="Forms\AdminPanel.resx">
       <DependentUpon>AdminPanel.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HideMainScreen.resx">
+    <EmbeddedResource Include="Forms\HideMainScreen.resx">
       <DependentUpon>HideMainScreen.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StartScreen.resx">
+    <EmbeddedResource Include="Forms\StartScreen.resx">
       <DependentUpon>StartScreen.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\VaporUserList.resx">
+      <DependentUpon>VaporUserList.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
@@ -175,11 +191,12 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="VaporMainScreen.resx">
+    <EmbeddedResource Include="Forms\VaporMainScreen.resx">
       <DependentUpon>VaporMainScreen.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -204,11 +221,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="logo.ico" />
+    <Content Include="Resources\logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
