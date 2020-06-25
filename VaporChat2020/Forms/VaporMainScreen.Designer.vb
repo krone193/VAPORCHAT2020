@@ -69,6 +69,7 @@ Partial Class VaporMainScreen
         Me.Label2 = New System.Windows.Forms.Label()
         Me.LblNofUsers = New System.Windows.Forms.Label()
         Me.TimerGUI = New System.Windows.Forms.Timer(Me.components)
+        Me.TimerPubBlock = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout()
         '
         'cmdLogIn
@@ -125,6 +126,7 @@ Partial Class VaporMainScreen
         'cmdSendMsg
         '
         Me.cmdSendMsg.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.cmdSendMsg.Enabled = False
         Me.cmdSendMsg.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray
         Me.cmdSendMsg.FlatStyle = System.Windows.Forms.FlatStyle.System
         Me.cmdSendMsg.Location = New System.Drawing.Point(424, 493)
@@ -203,6 +205,10 @@ Partial Class VaporMainScreen
         Me.TimerGUI.Enabled = True
         Me.TimerGUI.Interval = 500
         '
+        'TimerPubBlock
+        '
+        Me.TimerPubBlock.Interval = 500
+        '
         'VaporMainScreen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -245,4 +251,5 @@ Partial Class VaporMainScreen
 	Friend WithEvents Label2 As Label
     Friend WithEvents LblNofUsers As Label
     Friend WithEvents TimerGUI As Timer
+    Friend WithEvents TimerPubBlock As Timer
 End Class

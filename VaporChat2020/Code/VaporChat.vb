@@ -11,6 +11,11 @@ Public Class VaporChat
   Private WithEvents MqttClient As MqttClient
 
 
+  '--- V A P O R C H A T | Declarations ----------------------------------------------------------------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
+#Const USE_PUBLIC_SERVER = True
+
+
   '--- V A P O R C H A T | Private Constants -----------------------------------------------------------------------------'
   ' Chat -----------------------------------------------------------------------------------------------------------------'
   Private Const MAXMSGCH As UShort = 64
@@ -19,17 +24,26 @@ Public Class VaporChat
   Private Const MQTTROOT As String = "kronelab/vaporchat/"
   Private Const MQTTCONF As String = "kronelab/vaporchat/conf"
   Private Const MQTTPING As String = "kronelab/vaporchat/ping"
+#If USE_PUBLIC_SERVER = True Then
   Private Const MQTTHOST As String = "broker.hivemq.com"
   Private Const MQTTUSER As String = ""
   Private Const MQTTPASS As String = ""
   Private Const MQTTPORT As UShort = 1883
   Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.AtMostOnce
+#Else
+  Private Const MQTTHOST As String = "m24.cloudmqtt.com"
+  Private Const MQTTUSER As String = "lyomijtv"
+  Private Const MQTTPASS As String = "HsCyFqrM3ghT"
+  Private Const MQTTPORT As UShort = 12734
+  Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.ExactlyOnce
+#End If
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Const CRYPTERR As String = "void" & SEPTCHAR & "drink some T A S S O N I and try again"
 
 
   '--- V A P O R C H A T | Public Constants ------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
+  Public Const PASSCHAT As String = "01010110"
   Public Const SEPTCHAR As String = "ヿーニ"
   Public Const ITSMEMSG As String = "し゛ゐ"
   Public Const JOINVAPO As String = "(っ◔◡◔)っ ♥ Joins the chat ♥"
@@ -127,6 +141,7 @@ Public Class VaporChat
     messageBuilder.WithClientId(id)
     messageBuilder.WithCredentials(user, pwd)
     messageBuilder.WithTcpServer(uri, CInt(port))
+    messageBuilder.WithCleanSession(False)
     messageBuilder.Build()
     messageBuilder.WithKeepAlivePeriod(TimeSpan.FromSeconds(30))
     messageBuilder.WithKeepAliveSendInterval(TimeSpan.FromSeconds(30))
@@ -193,7 +208,6 @@ Public Class VaporChat
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Function Decrypt(ByVal decodedata As String, ByVal optopic As Boolean) As String
     Dim wrapper As New Simple3Des(My.Settings.Publisher)
-    ' DecryptData throws if the wrong password is used.
     Try
       If optopic Then
         Return wrapper.DecryptData(decodedata.Replace("!", "+").Replace("?", "/"))
@@ -233,20 +247,12 @@ Public Class VaporChat
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Function SendMessage(ByVal user As String, ByVal text As String) As Boolean
-    If My.Settings.LastUser <> ADMINSUPER Then
-      MQTTPublish(Encrypt(MQTTROOT & My.Settings.Lobby, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
-      If MQTTQOFS <> Protocol.MqttQualityOfServiceLevel.AtMostOnce Then
-        Return Connect(user)
-      End If
-    End If
+    MQTTPublish(Encrypt(MQTTROOT & My.Settings.Lobby, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
     Return True
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Function SendConfig(ByVal user As String, ByVal text As String) As Boolean
     MQTTPublish(Encrypt(MQTTCONF & My.Settings.Lobby, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
-    If MQTTQOFS <> Protocol.MqttQualityOfServiceLevel.AtMostOnce Then
-      Return Connect(user)
-    End If
     Return True
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'

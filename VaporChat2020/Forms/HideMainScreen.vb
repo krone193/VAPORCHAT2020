@@ -6,7 +6,7 @@ Public Class HideMainScreen
 
 
   Private Sub HideMainScreen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-    Vapor.FormLoadFunc(Me, txtChat, cmdSendMsg, cmdLogIn, txtMsg, txtUser, lblLog, LblNofUsers, TimerCheckMsg, Theme)
+    Vapor.FormLoadFunc(Me, txtChat, cmdSendMsg, cmdLogIn, txtMsg, txtUser, lblLog, LblNofUsers, TimerCheckMsg, TimerPubBlock, Theme)
   End Sub
 
   Private Sub CmdLogIn_Click(sender As Object, e As EventArgs) Handles cmdLogIn.Click
@@ -57,5 +57,17 @@ Public Class HideMainScreen
 
   Private Sub LblNofUsers_Click(sender As Object, e As EventArgs) Handles LblNofUsers.Click
     Vapor.ShowUserListFunc()
+  End Sub
+
+  Private Sub TimerPubBlock_Tick(sender As Object, e As EventArgs) Handles TimerPubBlock.Tick
+    Vapor.PubBlockTickFunc()
+  End Sub
+
+  Private Sub TxtChat_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles txtChat.MouseClick
+    Vapor.CopyItemFunc(e)
+  End Sub
+
+  Private Sub VaporMainScreen_LostFocus(sender As Object, e As EventArgs) Handles Me.LostFocus
+    Vapor.ForceSwitchOffFunc()
   End Sub
 End Class

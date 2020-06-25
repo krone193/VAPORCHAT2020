@@ -68,7 +68,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1.0.4.1")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1.0.5.0")>  _
         Public Property VaporChat2020Ver() As String
             Get
                 Return CType(Me("VaporChat2020Ver"),String)
@@ -80,7 +80,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1.0.2.0")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1.0.3.0")>  _
         Public Property VaporChatVer() As String
             Get
                 Return CType(Me("VaporChatVer"),String)
@@ -92,7 +92,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1.0.3.2")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1.0.4.0")>  _
         Public Property VaporFuncVer() As String
             Get
                 Return CType(Me("VaporFuncVer"),String)
@@ -114,16 +114,13 @@ Namespace My
             End Set
         End Property
         
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("kronelab19")>  _
-        Public Property Publisher() As String
+        Public ReadOnly Property Publisher() As String
             Get
                 Return CType(Me("Publisher"),String)
             End Get
-            Set
-                Me("Publisher") = value
-            End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
@@ -135,6 +132,18 @@ Namespace My
             End Get
             Set
                 Me("Lobby") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property LastTheme() As String
+            Get
+                Return CType(Me("LastTheme"),String)
+            End Get
+            Set
+                Me("LastTheme") = value
             End Set
         End Property
     End Class

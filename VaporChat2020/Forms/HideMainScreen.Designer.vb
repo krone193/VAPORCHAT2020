@@ -69,6 +69,7 @@ Partial Class HideMainScreen
         Me.Label2 = New System.Windows.Forms.Label()
         Me.LblNofUsers = New System.Windows.Forms.Label()
         Me.TimerGUI = New System.Windows.Forms.Timer(Me.components)
+        Me.TimerPubBlock = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout()
         '
         'cmdLogIn
@@ -125,6 +126,7 @@ Partial Class HideMainScreen
         'cmdSendMsg
         '
         Me.cmdSendMsg.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.cmdSendMsg.Enabled = False
         Me.cmdSendMsg.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray
         Me.cmdSendMsg.FlatStyle = System.Windows.Forms.FlatStyle.System
         Me.cmdSendMsg.Location = New System.Drawing.Point(425, 492)
@@ -204,6 +206,10 @@ Partial Class HideMainScreen
         Me.TimerGUI.Enabled = True
         Me.TimerGUI.Interval = 500
         '
+        'TimerPubBlock
+        '
+        Me.TimerPubBlock.Interval = 500
+        '
         'HideMainScreen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -243,4 +249,5 @@ Partial Class HideMainScreen
 	Friend WithEvents Label2 As Label
     Friend WithEvents LblNofUsers As Label
     Friend WithEvents TimerGUI As Timer
+    Friend WithEvents TimerPubBlock As Timer
 End Class

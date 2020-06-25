@@ -1,6 +1,12 @@
 ﻿Public Class VaporFunc
   Dim WithEvents Notify As New NotifyIcon
 
+
+  '--- V A P O R F U N C | Declarations ----------------------------------------------------------------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
+#Const SHOW_ITSME_MESSAGE = False
+
+
   '--- V A P O R F U N C | ReadOnly --------------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
   ReadOnly Vapor As New VaporChat
@@ -41,6 +47,7 @@
   Private CallerLabelLog As Label
   Private CallerLabelUsers As Label
   Private CallerTimCheck As Timer
+  Private CallerTimBlock As Timer
   '-----------------------------------------------------------------------------------------------------------------------'
   Private NofUsers As UShort = 0
   Private ThisTheme As Themes = Themes.NofElm
@@ -176,9 +183,7 @@
     End Select
 
     ' Protect a message if date is displayed
-    If SwitchIndex <> -1 Then
-      ForceSwitchOffFunc()
-    End If
+    ForceSwitchOffFunc()
 
     ' Copy items in list view
     For i As Byte = 0 To MAXROWS - 1
@@ -193,16 +198,7 @@
     End If
 
     ' Restore date
-    'If SwitchIndex <> -1 Then
-    '  ForceSwitchOnFunc(True)
-    'End If
-
-    ' Connect
-    If Vapor.GetMqttQoS() > 0 Then
-      If Vapor.Connect(My.Settings.LastUser) = False Then
-        log.Text = VaporChat.LOGERROR
-      End If
-    End If
+    ' TBI
 
     ' Notify if minimized
     If HideStatus = True Then
@@ -223,9 +219,6 @@
 
     If confuserdes = My.Settings.LastUser Then
       Select Case confcommand
-        Case VaporChat.ADMINCRKEY
-          My.Settings.Publisher = strdata(2)
-          My.Settings.Save()
         Case VaporChat.ADMINMUTEU
           My.Settings.Muted = True
           My.Settings.Save()
@@ -254,7 +247,7 @@
 
   '--- V A P O R F U N C | Public Functions ------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
-  Public Sub FormLoadFunc(ByRef frame As Form, ByRef chat As ListView, ByRef send As Button, ByRef login As Button, ByRef message As TextBox, ByRef user As TextBox, ByRef log As Label, ByRef nuser As Label, ByRef timmsg As Timer, ByVal theme As Themes)
+  Public Sub FormLoadFunc(ByRef frame As Form, ByRef chat As ListView, ByRef send As Button, ByRef login As Button, ByRef message As TextBox, ByRef user As TextBox, ByRef log As Label, ByRef nuser As Label, ByRef timmsg As Timer, ByRef timblock As Timer, ByVal theme As Themes)
     Dim NotifyIcon As New Icon(VaporChat.ICONPATH)
     Control.CheckForIllegalCrossThreadCalls = False
     ' Associations
@@ -267,6 +260,7 @@
     CallerLabelLog = log
     CallerLabelUsers = nuser
     CallerTimCheck = timmsg
+    CallerTimBlock = timblock
     ThisTheme = theme
     ' Init
     NofUsers = 0
@@ -283,48 +277,6 @@
     user.MaxLength = Vapor.MaxUserLen()
     user.Text = My.Settings.LastUser
     user.Focus()
-  End Sub
-  '-----------------------------------------------------------------------------------------------------------------------'
-  Dim dotidx As UShort = 0
-  Public Sub UpdateGUIFunc()
-    CallerLabelUsers.Text = NofUsers.ToString()
-    If AsyncOp Then
-      If Vapor.GetSubOngoing() Or Vapor.GetPubOngoing() Or Vapor.GetConOngoing() Then
-        Select Case dotidx
-          Case 0
-            CallerLabelLog.Text = "."
-            dotidx += 1
-          Case 1
-            CallerLabelLog.Text = ".."
-            dotidx += 1
-          Case 2
-            CallerLabelLog.Text = "..."
-            dotidx += 1
-          Case 3
-            CallerLabelLog.Text = "...."
-            dotidx = 0
-        End Select
-      Else
-        AsyncOp = False
-        dotidx = 0
-        If CallerLabelLog.Text <> VaporChat.FUNNYBOI Then
-          CallerLabelLog.Text = VaporChat.LOGNOERR
-        End If
-      End If
-    Else
-      If Vapor.GetSubState() = False Then
-        If Vapor.GetSubOngoing() = False Then
-          CallerLabelLog.Text = VaporChat.LOGERROR
-        End If
-      End If
-      If Vapor.GetPubState() = False Then
-        If Vapor.GetSubOngoing() = False And Vapor.GetPubOngoing() = False Then
-          If CallerLabelLog.Text <> VaporChat.LOGERROR Then
-            CallerLabelLog.Text = VaporChat.SENDISKO
-          End If
-        End If
-      End If
-    End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub LogInFunc()
@@ -349,36 +301,39 @@
         AddUserToList(My.Settings.LastUser)
       End If
       CallerLabelLog.Text = VaporChat.LOGNOERR
-        CallerTimCheck.Enabled = True
-        Select Case ThisTheme
-          Case Themes.Vapor
-            CallerTextMessage.ForeColor = UserList(0).Color
-          Case Themes.Hide
-        End Select
-        ClearTextBox(CallerTextMessage)
-      Else
-        CallerLabelLog.Text = VaporChat.LOGERROR
+      CallerTimCheck.Enabled = True
+      CallerBtnSend.Enabled = True
+      Select Case ThisTheme
+        Case Themes.Vapor
+          CallerTextMessage.ForeColor = UserList(0).Color
+        Case Themes.Hide
+      End Select
+      ClearTextBox(CallerTextMessage)
+    Else
+      CallerLabelLog.Text = VaporChat.LOGERROR
     End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub SendMsgFunc()
-    If Connected = True Then
-      AsyncOp = True
-      If BannedText.Contains(CallerTextMessage.Text.ToLower().Replace(" ", "")) Then
-        CallerLabelLog.Text = VaporChat.FUNNYBOI
-        ClearTextBox(CallerTextMessage)
-      ElseIf My.Settings.LastUser = VaporChat.ADMINSUPER Then
-        Vapor.SendConfig(My.Settings.LastUser, CallerTextMessage.Text)
-      Else
-        If Vapor.SendMessage(My.Settings.LastUser, CallerTextMessage.Text) Then
-          CallerLabelLog.Text = VaporChat.SENDISOK
+    If CallerBtnSend.Enabled = True Then
+      CallerBtnSend.Enabled = False
+      CallerTimBlock.Enabled = True
+      If Connected = True Then
+        AsyncOp = True
+        If BannedText.Contains(CallerTextMessage.Text.ToLower().Replace(" ", "")) Then
+          CallerLabelLog.Text = VaporChat.FUNNYBOI
           ClearTextBox(CallerTextMessage)
         Else
-          CallerLabelLog.Text = VaporChat.LOGERROR
+          If Vapor.SendMessage(My.Settings.LastUser, CallerTextMessage.Text) Then
+            CallerLabelLog.Text = VaporChat.SENDISOK
+            ClearTextBox(CallerTextMessage)
+          Else
+            CallerLabelLog.Text = VaporChat.LOGERROR
+          End If
         End If
+      Else
+        CallerLabelLog.Text = VaporChat.COMERROR
       End If
-    Else
-      CallerLabelLog.Text = VaporChat.COMERROR
     End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
@@ -405,9 +360,12 @@
           If ThisTheme = Themes.Hide Then
             message = VaporChat.JOINHIDE
           End If
-          Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
         Case VaporChat.ITSMEMSG
+#If SHOW_ITSME_MESSAGE = True Then
+          show = True
+#Else
           show = False
+#End If
       End Select
 
       ' Message receive function
@@ -416,9 +374,14 @@
       End If
 
       ' Check message type for Users management
-      If message = VaporChat.LEAVEVAP Then
-        RemoveUserFromList(user)
-      End If
+      Select Case message
+        Case VaporChat.LEAVEVAP
+          RemoveUserFromList(user)
+        Case VaporChat.JOINHIDE
+          Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
+        Case VaporChat.JOINVAPO
+          Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
+      End Select
     ElseIf Vapor.CheckConfigRecv() Then
       ConfigRecvFunc()
     ElseIf Vapor.CheckPingRecv() Then
@@ -475,13 +438,16 @@
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub SwitchDataFunc(ByVal events As ListViewItemSelectionChangedEventArgs)
     If MessageRxOn = False Then
-      SwitchIndex = events.Item.Index
-      If SwitchIndex > MAXROWS - NofMessages Then
+      If events.Item.Index > MAXROWS - NofMessages Then
         If SwitchOn = False Then
-          SwitchText = CallerListView.Items(SwitchIndex).SubItems(1).Text
-          CallerListView.Items(SwitchIndex).SubItems(1).Text = CallerListView.Items(SwitchIndex).SubItems(2).Text
-          SwitchOn = True
+          If My.Computer.Keyboard.AltKeyDown Then
+            SwitchIndex = events.Item.Index
+            SwitchText = CallerListView.Items(SwitchIndex).SubItems(1).Text
+            CallerListView.Items(SwitchIndex).SubItems(1).Text = CallerListView.Items(SwitchIndex).SubItems(2).Text
+            SwitchOn = True
+          End If
         Else
+          SwitchIndex = events.Item.Index
           CallerListView.Items(SwitchIndex).SubItems(1).Text = SwitchText
           SwitchOn = False
           SwitchIndex = -1
@@ -491,26 +457,79 @@
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub ForceSwitchOffFunc()
-    SwitchOn = False
-    CallerListView.Items(SwitchIndex).SubItems(1).Text = SwitchText
+    If SwitchIndex >= 0 Then
+      SwitchOn = False
+      CallerListView.Items(SwitchIndex).SubItems(1).Text = SwitchText
+    End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
-  Public Sub ForceSwitchOnFunc(ByVal decrement As Boolean)
-    SwitchOn = True
-    If decrement Then
-      SwitchIndex -= 1
+  Dim dotidx As UShort = 0
+  Public Sub UpdateGUIFunc()
+    CallerLabelUsers.Text = NofUsers.ToString()
+    If AsyncOp Then
+      If Vapor.GetSubOngoing() Or Vapor.GetPubOngoing() Or Vapor.GetConOngoing() Then
+        Select Case dotidx
+          Case 0
+            CallerLabelLog.Text = "."
+            dotidx += 1
+          Case 1
+            CallerLabelLog.Text = ".."
+            dotidx += 1
+          Case 2
+            CallerLabelLog.Text = "..."
+            dotidx += 1
+          Case 3
+            CallerLabelLog.Text = "...."
+            dotidx = 0
+        End Select
+      Else
+        AsyncOp = False
+        dotidx = 0
+        If CallerLabelLog.Text <> VaporChat.FUNNYBOI Then
+          CallerLabelLog.Text = VaporChat.LOGNOERR
+        End If
+      End If
+    Else
+      If Vapor.GetSubState() = False Then
+        If Vapor.GetSubOngoing() = False Then
+          CallerLabelLog.Text = VaporChat.LOGERROR
+        End If
+      End If
+      If Vapor.GetPubState() = False Then
+        CallerBtnLogin.Enabled = True
+        CallerBtnSend.Enabled = False
+        If Vapor.GetSubOngoing() = False And Vapor.GetPubOngoing() = False Then
+          If CallerLabelLog.Text <> VaporChat.LOGERROR Then
+            CallerLabelLog.Text = VaporChat.SENDISKO
+          End If
+        End If
+      End If
     End If
-    SwitchText = CallerListView.Items(SwitchIndex).SubItems(1).Text
-    CallerListView.Items(SwitchIndex).SubItems(1).Text = CallerListView.Items(SwitchIndex).SubItems(2).Text
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub ShowUserListFunc()
     Dim namelist As String = ""
     For Each user As User In UserList
-      namelist = namelist & user.Name.Trim() & ", "
+      namelist = namelist & user.Name.Trim() & vbCrLf
     Next
-    namelist = namelist.Remove(namelist.Length - 2, 2)
-    'MsgBox(namelist)
     MsgBox(namelist, vbOK, "Connected users")
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public Sub PubBlockTickFunc()
+    CallerBtnSend.Enabled = True
+    CallerTimBlock.Enabled = False
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public Sub CopyItemFunc(ByVal e As MouseEventArgs)
+    If e.Button = MouseButtons.Left And My.Computer.Keyboard.CtrlKeyDown Then
+      If CallerListView.SelectedIndices(0) > MAXROWS - NofMessages Then
+        If CallerListView.Items(CallerListView.SelectedIndices(0)).SubItems.Count > 0 Then
+          If CallerListView.Items(CallerListView.SelectedIndices(0)).SubItems(1).Text <> "" Then
+            Clipboard.SetText(CallerListView.Items(CallerListView.SelectedIndices(0)).SubItems(1).Text)
+            CallerListView.Focus()
+          End If
+        End If
+      End If
+    End If
   End Sub
 End Class
