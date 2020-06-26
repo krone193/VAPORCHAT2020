@@ -108,11 +108,11 @@ Partial Class VaporMainScreen
         Me.Label1.AutoSize = True
         Me.Label1.BackColor = System.Drawing.Color.Transparent
         Me.Label1.ForeColor = System.Drawing.Color.HotPink
-        Me.Label1.Location = New System.Drawing.Point(207, 10)
+        Me.Label1.Location = New System.Drawing.Point(184, 9)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(37, 13)
+        Me.Label1.Size = New System.Drawing.Size(60, 13)
         Me.Label1.TabIndex = 49
-        Me.Label1.Text = "Logs:"
+        Me.Label1.Text = "Logs をノだ"
         '
         'txtMsg
         '
@@ -161,7 +161,7 @@ Partial Class VaporMainScreen
         Me.lblLog.AutoSize = True
         Me.lblLog.BackColor = System.Drawing.Color.Transparent
         Me.lblLog.ForeColor = System.Drawing.Color.Pink
-        Me.lblLog.Location = New System.Drawing.Point(250, 10)
+        Me.lblLog.Location = New System.Drawing.Point(250, 9)
         Me.lblLog.Name = "lblLog"
         Me.lblLog.Size = New System.Drawing.Size(13, 13)
         Me.lblLog.TabIndex = 50
@@ -172,29 +172,29 @@ Partial Class VaporMainScreen
         Me.cmdLogOut.AutoSize = True
         Me.cmdLogOut.BackColor = System.Drawing.Color.Transparent
         Me.cmdLogOut.ForeColor = System.Drawing.Color.Yellow
-        Me.cmdLogOut.Location = New System.Drawing.Point(12, 516)
+        Me.cmdLogOut.Location = New System.Drawing.Point(10, 514)
         Me.cmdLogOut.Name = "cmdLogOut"
-        Me.cmdLogOut.Size = New System.Drawing.Size(49, 13)
+        Me.cmdLogOut.Size = New System.Drawing.Size(76, 13)
         Me.cmdLogOut.TabIndex = 51
-        Me.cmdLogOut.Text = "Log out"
+        Me.cmdLogOut.Text = "Log out ヾバ "
         '
         'Label2
         '
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
         Me.Label2.ForeColor = System.Drawing.Color.Chartreuse
-        Me.Label2.Location = New System.Drawing.Point(302, 516)
+        Me.Label2.Location = New System.Drawing.Point(282, 514)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(85, 13)
+        Me.Label2.Size = New System.Drawing.Size(113, 13)
         Me.Label2.TabIndex = 61
-        Me.Label2.Text = "Logged users:"
+        Me.Label2.Text = "Logged users 俺鉛プ"
         '
         'LblNofUsers
         '
         Me.LblNofUsers.AutoSize = True
         Me.LblNofUsers.BackColor = System.Drawing.Color.Transparent
         Me.LblNofUsers.ForeColor = System.Drawing.Color.Lime
-        Me.LblNofUsers.Location = New System.Drawing.Point(393, 516)
+        Me.LblNofUsers.Location = New System.Drawing.Point(395, 514)
         Me.LblNofUsers.Name = "LblNofUsers"
         Me.LblNofUsers.Size = New System.Drawing.Size(19, 13)
         Me.LblNofUsers.TabIndex = 62
@@ -214,7 +214,6 @@ Partial Class VaporMainScreen
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
-        Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(484, 531)
         Me.Controls.Add(Me.LblNofUsers)
         Me.Controls.Add(Me.Label2)

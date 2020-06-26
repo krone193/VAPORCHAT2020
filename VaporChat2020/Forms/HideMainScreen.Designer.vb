@@ -145,7 +145,7 @@ Partial Class HideMainScreen
         Me.txtChat.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.txtChat.HideSelection = False
         Me.txtChat.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1, ListViewItem2, ListViewItem3, ListViewItem4, ListViewItem5, ListViewItem6, ListViewItem7, ListViewItem8, ListViewItem9, ListViewItem10, ListViewItem11, ListViewItem12, ListViewItem13, ListViewItem14, ListViewItem15, ListViewItem16, ListViewItem17, ListViewItem18, ListViewItem19, ListViewItem20, ListViewItem21, ListViewItem22, ListViewItem23, ListViewItem24, ListViewItem25, ListViewItem26, ListViewItem27, ListViewItem28, ListViewItem29, ListViewItem30, ListViewItem31})
-        Me.txtChat.Location = New System.Drawing.Point(5, 28)
+        Me.txtChat.Location = New System.Drawing.Point(6, 28)
         Me.txtChat.MultiSelect = False
         Me.txtChat.Name = "txtChat"
         Me.txtChat.Scrollable = False

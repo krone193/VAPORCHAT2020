@@ -48,12 +48,14 @@
   Private Sub StartScreen_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
     If e.KeyValue = Keys.Enter Then
       Select Case My.Settings.LastTheme
-        Case ""
         Case "Vapor"
           cmdVapor.PerformClick()
         Case "Hide"
           cmdHideInPlainSight.PerformClick()
+        Case Else
       End Select
+    Else
+      TxtPassword.Focus()
     End If
   End Sub
 End Class

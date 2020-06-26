@@ -167,7 +167,7 @@
     Notify.Visible = True
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
-  Private Sub MessageRecvFunc(ByRef chat As ListView, ByRef user As User, ByVal message As String, ByRef log As Label)
+  Private Sub MessageRecvFunc(ByRef chat As ListView, ByRef user As User, ByVal message As String)
     Dim strdata As String = Date.Now().ToString()
     Dim item As New ListViewItem(New String() {user.Name, message, strdata})
     Dim copieditems As ListViewItem
@@ -370,7 +370,7 @@
 
       ' Message receive function
       If show Then
-        MessageRecvFunc(CallerListView, UserList(index), message, CallerLabelLog)
+        MessageRecvFunc(CallerListView, UserList(index), message)
       End If
 
       ' Check message type for Users management
@@ -512,7 +512,13 @@
     For Each user As User In UserList
       namelist = namelist & user.Name.Trim() & vbCrLf
     Next
-    MsgBox(namelist, vbOK, "Connected users")
+    Select Case ThisTheme
+      Case Themes.Vapor
+        MsgBox(namelist, vbOK, VaporChat.USRBOXVP)
+      Case Themes.Hide
+        MsgBox(namelist, vbOK, VaporChat.USRBOXHI)
+    End Select
+
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub PubBlockTickFunc()

@@ -6,25 +6,25 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="VaporChat2020Ver" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0.5.0</Value>
+      <Value Profile="(Default)">1.0.5.1</Value>
     </Setting>
     <Setting Name="VaporChatVer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0.3.0</Value>
+      <Value Profile="(Default)">1.0.3.1</Value>
     </Setting>
     <Setting Name="VaporFuncVer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0.4.0</Value>
+      <Value Profile="(Default)">1.0.4.1</Value>
     </Setting>
     <Setting Name="Muted" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Publisher" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">kronelab19</Value>
+      <Value Profile="(Default)">kronelab</Value>
     </Setting>
     <Setting Name="Lobby" Type="System.String" Scope="User">
       <Value Profile="(Default)">elfa</Value>
     </Setting>
     <Setting Name="LastTheme" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">null</Value>
     </Setting>
   </Settings>
 </SettingsFile>

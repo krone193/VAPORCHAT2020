@@ -43,9 +43,11 @@ Public Class VaporChat
 
   '--- V A P O R C H A T | Public Constants ------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
-  Public Const PASSCHAT As String = "01010110"
+  Public Const PASSCHAT As String = "PAINT"
   Public Const SEPTCHAR As String = "ヿーニ"
   Public Const ITSMEMSG As String = "し゛ゐ"
+  Public Const USRBOXVP As String = "【﻿Ｃｏｎｎｅｃｔｅｄ　ｕｓｅｒｓ】"
+  Public Const USRBOXHI As String = "Connected users"
   Public Const JOINVAPO As String = "(っ◔◡◔)っ ♥ Joins the chat ♥"
   Public Const LEAVEVAP As String = "see you space T A S S O N I ..."
   Public Const JOINHIDE As String = "Joins the chat"
