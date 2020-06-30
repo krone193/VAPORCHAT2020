@@ -1,0 +1,45 @@
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\bin\Debug\MqttServerSim.exe.config
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\bin\Debug\MqttServerSim.exe
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\bin\Debug\MqttServerSim.pdb
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\bin\Debug\MqttServerSim.xml
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\bin\Debug\MQTTnet.dll
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.vbprojAssemblyReference.cache
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\obj\Debug\WindowsApplication1.Form1.resources
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\obj\Debug\WindowsApplication1.Resources.resources
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.vbproj.GenerateResource.cache
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.vbproj.CoreCompileInputs.cache
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.vbproj.CopyComplete
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.exe
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.xml
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.pdb
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.vbprojAssemblyReference.cache
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\obj\Debug\WindowsApplication1.Resources.resources
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.vbproj.GenerateResource.cache
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.vbproj.CoreCompileInputs.cache
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.exe
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.xml
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.pdb
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\bin\Debug\MqttServerSim.exe.config
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\bin\Debug\MqttServerSim.exe
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\bin\Debug\MqttServerSim.pdb
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\bin\Debug\MqttServerSim.xml
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\bin\Debug\MQTTnet.dll
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.vbproj.CopyComplete
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\obj\Debug\WindowsApplication1.StartScreen.resources
+C:\Users\fcasadeilelli\source\repos\MqttServerSim\MqttServerSim\obj\Debug\WindowsApplication1.HideMainScreen.resources
+F:\MqttServerSim\MqttServerSim\bin\Debug\MqttServerSim.exe.config
+F:\MqttServerSim\MqttServerSim\bin\Debug\MqttServerSim.exe
+F:\MqttServerSim\MqttServerSim\bin\Debug\MqttServerSim.pdb
+F:\MqttServerSim\MqttServerSim\bin\Debug\MqttServerSim.xml
+F:\MqttServerSim\MqttServerSim\bin\Debug\MQTTnet.dll
+F:\MqttServerSim\MqttServerSim\obj\Debug\WindowsApplication1.StartScreen.resources
+F:\MqttServerSim\MqttServerSim\obj\Debug\WindowsApplication1.Resources.resources
+F:\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.vbproj.GenerateResource.cache
+F:\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.vbproj.CoreCompileInputs.cache
+F:\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.vbproj.CopyComplete
+F:\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.exe
+F:\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.xml
+F:\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.pdb
+F:\MqttServerSim\MqttServerSim\obj\Debug\WindowsApplication1.VapoMainScreenvb.resources
+F:\MqttServerSim\MqttServerSim\obj\Debug\MqttServerSim.vbprojAssemblyReference.cache
+F:\MqttServerSim\MqttServerSim\obj\Debug\WindowsApplication1.HideMainScreen.resources

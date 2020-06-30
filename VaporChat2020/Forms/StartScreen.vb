@@ -30,6 +30,7 @@
     lblVaporChatVer.Text = My.Settings.VaporChatVer
     lblVaporFuncVer.Text = My.Settings.VaporFuncVer
     TxtPassword.Focus()
+    CmbCloserTime.Text = My.Settings.Timeout / 1000
   End Sub
 
   Private Sub Lblkronelab_Click(sender As Object, e As EventArgs) Handles Lblkronelab.Click
@@ -57,6 +58,11 @@
     Else
       TxtPassword.Focus()
     End If
+  End Sub
+
+  Private Sub CmbCloserTime_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CmbCloserTime.SelectedIndexChanged
+    My.Settings.Timeout = CmbCloserTime.Text * 1000
+    My.Settings.Save()
   End Sub
 End Class
 
