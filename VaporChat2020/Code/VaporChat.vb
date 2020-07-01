@@ -22,7 +22,7 @@ Public Class VaporChat
   Private Const MAXUSRCH As UShort = 10
   ' MQTT -----------------------------------------------------------------------------------------------------------------'
   Private Const MQTTROOT As String = "kronelab/vaporchat/"
-  Private Const MQTTCONF As String = "kronelab/vaporchat/conf"
+  Private Const MQTTCONF As String = "/conf"
 #If USE_PUBLIC_SERVER = True Then
   Private Const MQTTHOST As String = "broker.hivemq.com"
   Private Const MQTTUSER As String = ""
@@ -116,7 +116,7 @@ Public Class VaporChat
         message.user = payload(0)
         message.text = payload(1).Remove(0, SEPTCHAR.Length - 1)
         message.recv = True
-      Case MQTTCONF & My.Settings.Lobby
+      Case MQTTROOT & My.Settings.Lobby & MQTTCONF
         trusted_payload = Decrypt(Text.Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload), False)
         payload = trusted_payload.Split(SEPTCHAR)
         config.user = payload(0)
@@ -225,8 +225,7 @@ Public Class VaporChat
         Return False
       End If
     End While
-    MQTTSubscribe(Encrypt(MQTTROOT & My.Settings.Lobby, True), Protocol.MqttQualityOfServiceLevel.AtMostOnce)
-    MQTTSubscribe(Encrypt(MQTTCONF & My.Settings.Lobby, True), Protocol.MqttQualityOfServiceLevel.AtMostOnce)
+    MQTTSubscribe(Encrypt(MQTTROOT & My.Settings.Lobby & "/#", True), Protocol.MqttQualityOfServiceLevel.ExactlyOnce)
     Return True
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
@@ -240,17 +239,11 @@ Public Class VaporChat
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Function SendMessage(ByVal user As String, ByVal text As String) As Boolean
     MQTTPublish(Encrypt(MQTTROOT & My.Settings.Lobby, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
-    'If MQTTQOFS <> Protocol.MqttQualityOfServiceLevel.AtMostOnce Then
-    '  Connect(user)
-    'End If
     Return True
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Function SendConfig(ByVal user As String, ByVal text As String) As Boolean
     MQTTPublish(Encrypt(MQTTCONF & My.Settings.Lobby, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
-    'If MQTTQOFS <> Protocol.MqttQualityOfServiceLevel.AtMostOnce Then
-    '  Connect(user)
-    'End If
     Return True
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'

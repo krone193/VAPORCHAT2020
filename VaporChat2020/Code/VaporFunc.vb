@@ -409,16 +409,18 @@
       End If
 
       ' Check message type for Users management
-      Select Case message
-        Case VaporChat.LEAVEVAP
-          RemoveUserFromList(user)
-        Case VaporChat.JOINHIDE
-          Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
-        Case VaporChat.JOINVAPO
-          Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
-      End Select
+      If user <> My.Settings.LastUser Then
+        Select Case message
+          Case VaporChat.LEAVEVAP
+            RemoveUserFromList(user)
+          Case VaporChat.JOINHIDE
+            Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
+          Case VaporChat.JOINVAPO
+            Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
+        End Select
+      End If
     ElseIf Vapor.CheckConfigRecv() Then
-      ConfigRecvFunc()
+        ConfigRecvFunc()
     End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
