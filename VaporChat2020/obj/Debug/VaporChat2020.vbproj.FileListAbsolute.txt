@@ -54,7 +54,6 @@ G:\.TRASH\.local\.data\11052020\VaporChat2020\VaporChat2020\obj\Debug\VaporChat2
 G:\.TRASH\.local\.data\11052020\VaporChat2020\VaporChat2020\obj\Debug\VaporChat2020.exe
 G:\.TRASH\.local\.data\11052020\VaporChat2020\VaporChat2020\obj\Debug\VaporChat2020.xml
 G:\.TRASH\.local\.data\11052020\VaporChat2020\VaporChat2020\obj\Debug\VaporChat2020.pdb
-G:\.TRASH\.local\.data\11052020\VaporChat2020\VaporChat2020\obj\Debug\VaporChat2020.vbprojAssemblyReference.cache
 F:\.TRASH\.local\.data\11052020\VaporChat2020\VaporChat2020\bin\Debug\VaporChat2020.exe.config
 F:\.TRASH\.local\.data\11052020\VaporChat2020\VaporChat2020\bin\Debug\VaporChat2020.exe
 F:\.TRASH\.local\.data\11052020\VaporChat2020\VaporChat2020\bin\Debug\VaporChat2020.pdb

@@ -477,6 +477,7 @@
     If Connected = True Then
       Vapor.SendMessage(My.Settings.LastUser, VaporChat.LEAVEVAP)
       Connected = False
+      Vapor.Disconnect()
     End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'

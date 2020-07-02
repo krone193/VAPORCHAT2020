@@ -77,7 +77,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1.0.4.0")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1.0.4.1")>  _
         Public ReadOnly Property VaporChatVer() As String
             Get
                 Return CType(Me("VaporChatVer"),String)

@@ -29,7 +29,6 @@ Public Class VaporChat
   Private Const MQTTPASS As String = ""
   Private Const MQTTPORT As UShort = 1883
   Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.ExactlyOnce
-  'Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.AtMostOnce
 #Else
   Private Const MQTTHOST As String = "m24.cloudmqtt.com"
   Private Const MQTTUSER As String = "lyomijtv"
@@ -57,6 +56,7 @@ Public Class VaporChat
   Public Const LOGNOERR As String = "connected"
   Public Const SENDISOK As String = "message forwarded"
   Public Const SENDISKO As String = "message not forwarded"
+  Public Const LASTWILL As String = "A E S T H E T I C   C R A S H"
   Public Const ICONPATH As String = "logo.ico"
   Public Const ICONNMSG As String = "logonewmsg.ico"
   Public Const SENDUKEY As Keys = Keys.Enter
@@ -138,6 +138,13 @@ Public Class VaporChat
     messageBuilder.Build()
     messageBuilder.WithKeepAlivePeriod(TimeSpan.FromSeconds(30))
     messageBuilder.WithKeepAliveSendInterval(TimeSpan.FromSeconds(30))
+    Dim LastWillMsg As New MqttApplicationMessage With {
+      .Topic = MQTTROOT,
+      .Payload = Text.Encoding.ASCII.GetBytes(LASTWILL),
+      .QualityOfServiceLevel = MQTTQOFS,
+      .Retain = False
+    }
+    messageBuilder.WithWillMessage(LastWillMsg)
     conongoing = True
     Try
       Await MqttClient.ConnectAsync(messageBuilder.Build(), cancellationToken)
@@ -225,7 +232,7 @@ Public Class VaporChat
         Return False
       End If
     End While
-    MQTTSubscribe(Encrypt(MQTTROOT & My.Settings.Lobby & "/#", True), Protocol.MqttQualityOfServiceLevel.ExactlyOnce)
+    MQTTSubscribe(Encrypt(MQTTROOT & My.Settings.Lobby & "/#", True), MQTTQOFS)
     Return True
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
