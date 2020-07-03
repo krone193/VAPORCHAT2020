@@ -6,13 +6,13 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="VaporChat2020Ver" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0.5.1</Value>
+      <Value Profile="(Default)">1.0.5.1 夢 1</Value>
     </Setting>
     <Setting Name="VaporChatVer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0.3.1</Value>
+      <Value Profile="(Default)">1.0.3.1 夢 1</Value>
     </Setting>
     <Setting Name="VaporFuncVer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">1.0.4.1</Value>
+      <Value Profile="(Default)">1.0.4.1 夢1</Value>
     </Setting>
     <Setting Name="Muted" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

@@ -22,8 +22,7 @@ Public Class VaporChat
   Private Const MAXUSRCH As UShort = 10
   ' MQTT -----------------------------------------------------------------------------------------------------------------'
   Private Const MQTTROOT As String = "kronelab/vaporchat/"
-  Private Const MQTTCONF As String = "kronelab/vaporchat/conf"
-  Private Const MQTTPING As String = "kronelab/vaporchat/ping"
+  Private Const MQTTCONF As String = "conf/"
 #If USE_PUBLIC_SERVER = True Then
   Private Const MQTTHOST As String = "broker.hivemq.com"
   Private Const MQTTUSER As String = ""
@@ -43,7 +42,7 @@ Public Class VaporChat
 
   '--- V A P O R C H A T | Public Constants ------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
-  Public Const PASSCHAT As String = "PAINT"
+  Public Const PASSCHAT As String = "paint"
   Public Const SEPTCHAR As String = "ヿーニ"
   Public Const ITSMEMSG As String = "し゛ゐ"
   Public Const USRBOXVP As String = "【﻿Ｃｏｎｎｅｃｔｅｄ　ｕｓｅｒｓ】"
@@ -85,25 +84,20 @@ Public Class VaporChat
     Dim text As String
     Dim recv As Boolean
   End Structure
-  '-----------------------------------------------------------------------------------------------------------------------'
-  Structure PingStruct
-    Dim user As String
-    Dim text As String
-    Dim recv As Boolean
-  End Structure
 
 
   '--- V A P O R C H A T | Variables -------------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
   Private message As MessageStruct
   Private config As ConfigStruct
-  Private ping As PingStruct
   Private conongoing As Boolean = False
   Private conok As Boolean = True
   Private pubongoing As Boolean = False
   Private pubok As Boolean = True
   Private subongoing As Boolean = False
   Private subok As Boolean = True
+  Private messagetopic As String = ""
+  Private configstopic As String = ""
 
 
   '--- V A P O R C H A T | MQTT Service Functions ------------------------------------------------------------------------'
@@ -113,24 +107,18 @@ Public Class VaporChat
     Dim trusted_payload As String
     Dim trusted_topic As String = Decrypt(eventArgs.ApplicationMessage.Topic, True)
     Select Case trusted_topic
-      Case MQTTROOT & My.Settings.Lobby
+      Case messagetopic
         trusted_payload = Decrypt(Text.Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload), False)
         payload = trusted_payload.Split(SEPTCHAR)
         message.user = payload(0)
         message.text = payload(1).Remove(0, SEPTCHAR.Length - 1)
         message.recv = True
-      Case MQTTCONF & My.Settings.Lobby
+      Case configstopic
         trusted_payload = Decrypt(Text.Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload), False)
         payload = trusted_payload.Split(SEPTCHAR)
         config.user = payload(0)
         config.text = payload(1).Remove(0, SEPTCHAR.Length - 1)
         config.recv = True
-      Case MQTTPING & My.Settings.Lobby
-        trusted_payload = Decrypt(Text.Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload), False)
-        payload = trusted_payload.Split(SEPTCHAR)
-        ping.user = payload(0)
-        ping.text = payload(1).Remove(0, SEPTCHAR.Length - 1)
-        ping.recv = True
     End Select
     Return Nothing
   End Function
@@ -227,6 +215,8 @@ Public Class VaporChat
   Public Function Connect(ByVal user As String) As Boolean
     Dim timeout As Date = Date.Now
     timeout = timeout.AddSeconds(10)
+    messagetopic = MQTTROOT & My.Settings.Lobby
+    configstopic = MQTTROOT & MQTTCONF & My.Settings.Lobby
     MQTTConnectToServer(user, MQTTHOST, MQTTUSER, MQTTPASS, MQTTPORT)
     MqttClient.ApplicationMessageReceivedHandler = Me
     While Not MqttClient.IsConnected
@@ -234,9 +224,8 @@ Public Class VaporChat
         Return False
       End If
     End While
-    MQTTSubscribe(Encrypt(MQTTROOT & My.Settings.Lobby, True), MQTTQOFS)
-    MQTTSubscribe(Encrypt(MQTTCONF & My.Settings.Lobby, True), MQTTQOFS)
-    MQTTSubscribe(Encrypt(MQTTPING & My.Settings.Lobby, True), MQTTQOFS)
+    MQTTSubscribe(Encrypt(messagetopic, True), MQTTQOFS)
+    MQTTSubscribe(Encrypt(configstopic, True), MQTTQOFS)
     Return True
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
@@ -249,12 +238,12 @@ Public Class VaporChat
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Function SendMessage(ByVal user As String, ByVal text As String) As Boolean
-    MQTTPublish(Encrypt(MQTTROOT & My.Settings.Lobby, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
+    MQTTPublish(Encrypt(messagetopic, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
     Return True
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Function SendConfig(ByVal user As String, ByVal text As String) As Boolean
-    MQTTPublish(Encrypt(MQTTCONF & My.Settings.Lobby, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
+    MQTTPublish(Encrypt(configstopic, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
     Return True
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
@@ -266,20 +255,12 @@ Public Class VaporChat
     Return config.recv
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
-  Public Function CheckPingRecv() As Boolean
-    Return ping.recv
-  End Function
-  '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub CleanMessageRecv()
     message.recv = False
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub CleanConfigRecv()
     config.recv = False
-  End Sub
-  '-----------------------------------------------------------------------------------------------------------------------'
-  Public Sub CleanPingRecv()
-    ping.recv = False
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Function GetMessageUser() As String
@@ -290,20 +271,12 @@ Public Class VaporChat
     Return config.user
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
-  Public Function GetPingUser() As String
-    Return ping.user
-  End Function
-  '-----------------------------------------------------------------------------------------------------------------------'
   Public Function GetMessageText() As String
     Return message.text
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Function GetConfigText() As String
     Return config.text
-  End Function
-  '-----------------------------------------------------------------------------------------------------------------------'
-  Public Function GetPingText() As String
-    Return ping.text
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Function MaxUserLen() As UShort

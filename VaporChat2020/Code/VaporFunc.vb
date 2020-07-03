@@ -233,16 +233,6 @@
       End Select
     End If
   End Sub
-  '-----------------------------------------------------------------------------------------------------------------------'
-  Private Sub PingRecvFunc()
-    Dim struser As String = Vapor.GetPingUser()
-    Dim idxuser As Short = SearchNameInList(struser)
-
-    Vapor.CleanPingRecv()
-
-    If idxuser >= 0 Then
-    End If
-  End Sub
 
 
   '--- V A P O R F U N C | Public Functions ------------------------------------------------------------------------------'
@@ -286,7 +276,6 @@
     CallerTextUser.Enabled = False
     Vapor.CleanMessageRecv()
     Vapor.CleanConfigRecv()
-    Vapor.CleanPingRecv()
     CallerTextMessage.MaxLength = Vapor.MaxMessageLen()
     If Vapor.Connect(My.Settings.LastUser) Then
       AsyncOp = True
@@ -384,8 +373,6 @@
       End Select
     ElseIf Vapor.CheckConfigRecv() Then
       ConfigRecvFunc()
-    ElseIf Vapor.CheckPingRecv() Then
-      PingRecvFunc()
     End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
