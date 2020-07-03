@@ -1,0 +1,28 @@
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\bin\Debug\TestMQTTDotNet.exe.config
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\bin\Debug\TestMQTTDotNet.exe
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\bin\Debug\TestMQTTDotNet.pdb
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\bin\Debug\TestMQTTDotNet.xml
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\bin\Debug\MQTTnet.dll
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\WindowsApplication1.Form1.resources
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\WindowsApplication1.Resources.resources
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.vbproj.GenerateResource.Cache
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.exe
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.xml
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.pdb
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\bin\Debug\TestMQTTDotNet.exe.config
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\bin\Debug\TestMQTTDotNet.exe
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\bin\Debug\TestMQTTDotNet.pdb
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\bin\Debug\TestMQTTDotNet.xml
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\bin\Debug\MQTTnet.dll
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.vbprojAssemblyReference.cache
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\WindowsApplication1.Form1.resources
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\WindowsApplication1.Resources.resources
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.vbproj.GenerateResource.cache
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.vbproj.CoreCompileInputs.cache
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.vbproj.CopyComplete
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.exe
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.xml
+C:\Users\fcasadeilelli\Documents\ElFa\96_Mall Consulting\9600_PC_Upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.pdb
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.vbprojAssemblyReference.cache
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.vbproj.CoreCompileInputs.cache
+D:\Documenti\Dropbox\Lavoro\ELFA\96_MallConsulting\9600_pc_upgrade\TestMQTTDotNet\TestMQTTDotNet\obj\Debug\TestMQTTDotNet.vbproj.CopyComplete

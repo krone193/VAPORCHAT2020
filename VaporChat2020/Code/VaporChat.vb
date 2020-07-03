@@ -28,7 +28,7 @@ Public Class VaporChat
   Private Const MQTTUSER As String = ""
   Private Const MQTTPASS As String = ""
   Private Const MQTTPORT As UShort = 1883
-  Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.AtMostOnce
+  Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.ExactlyOnce
 #Else
   Private Const MQTTHOST As String = "m24.cloudmqtt.com"
   Private Const MQTTUSER As String = "lyomijtv"
@@ -56,6 +56,7 @@ Public Class VaporChat
   Public Const LOGNOERR As String = "connected"
   Public Const SENDISOK As String = "message forwarded"
   Public Const SENDISKO As String = "message not forwarded"
+  Public Const LASTWILL As String = "A E S T H E T I C   C R A S H"
   Public Const ICONPATH As String = "logo.ico"
   Public Const ICONNMSG As String = "logonewmsg.ico"
   Public Const SENDUKEY As Keys = Keys.Enter

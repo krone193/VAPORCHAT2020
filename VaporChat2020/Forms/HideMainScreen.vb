@@ -52,8 +52,8 @@ Public Class HideMainScreen
   End Sub
 
   Private Sub LblNofUsers_Click(sender As Object, e As EventArgs) Handles LblNofUsers.Click
-    Vapor.ShowUserListFunc()
-  End Sub
+        Vapor.ShowUserListFunc()
+    End Sub
 
   Private Sub TimerPubBlock_Tick(sender As Object, e As EventArgs) Handles TimerPubBlock.Tick
     Vapor.PubBlockTickFunc()

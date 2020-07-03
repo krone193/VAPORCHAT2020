@@ -452,7 +452,7 @@
           ForcePass = False
         End If
         HideKeyGest()
-      Case VaporChat.SHOWUKEY
+          Case VaporChat.SHOWUKEY
         ShowFormGest()
     End Select
     RefreshTimCloserFunc()

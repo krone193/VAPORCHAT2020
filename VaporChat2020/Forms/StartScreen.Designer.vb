@@ -166,8 +166,8 @@ Partial Class StartScreen
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
-    End Sub
-    Friend WithEvents cmdHideInPlainSight As Button
+	End Sub
+	Friend WithEvents cmdHideInPlainSight As Button
   Friend WithEvents cmdVapor As Button
   Friend WithEvents Lblkronelab As Label
   Friend WithEvents lblVaporChat2020Ver As Label
