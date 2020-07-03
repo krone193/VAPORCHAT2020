@@ -48,6 +48,8 @@
   Private CallerLabelUsers As Label
   Private CallerTimCheck As Timer
   Private CallerTimBlock As Timer
+  Private CallerTimGui As Timer
+  Private CallerTimCloser As Timer
   '-----------------------------------------------------------------------------------------------------------------------'
   Private NofUsers As UShort = 0
   Private ThisTheme As Themes = Themes.NofElm
@@ -60,15 +62,19 @@
   Private NofMessages As UShort = 0
   Private AsyncOp As Boolean = False
   Private MessageRxOn As Boolean = False
+  Private DotIndex As UShort = 0
+  Private ForcePass As Boolean = False
 
 
   '--- V A P O R F U N C | Private Functions -----------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Sub Notify_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles Notify.DoubleClick
-    NotifyIconRead()
-    ShowFormGest()
-    Vapor.Connect(My.Settings.LastUser)
-    HideStatus = False
+    If HideStatus = True Then
+      HideStatus = False
+      NotifyIconRead()
+      ShowFormGest()
+      'Vapor.Connect(My.Settings.LastUser)
+    End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Sub ClearTextBox(ByRef box As TextBox)
@@ -146,13 +152,31 @@
     CallerForm.Hide()
     CallerForm.ShowInTaskbar = False
     Notify.Visible = True
+    CallerTimCloser.Enabled = False
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Sub ShowFormGest()
-    CallerForm.Show()
-    CallerForm.WindowState = FormWindowState.Normal
-    CallerForm.ShowInTaskbar = False
-    Notify.Visible = False
+    If ForcePass = True Then
+      Dim password As String = InputBox(" ン ウ ハ 何 ベ ", "(っ◔◡◔)っ")
+      If password <> VaporChat.PASSCHAT Then
+        ClosingFunc()
+        CallerForm.Close()
+      Else
+        CallerForm.Show()
+        CallerForm.WindowState = FormWindowState.Normal
+        CallerForm.ShowInTaskbar = False
+        Notify.Visible = False
+        RefreshTimCloserFunc()
+        CallerTimCloser.Enabled = True
+      End If
+    Else
+      CallerForm.Show()
+      CallerForm.WindowState = FormWindowState.Normal
+      CallerForm.ShowInTaskbar = False
+      Notify.Visible = False
+      RefreshTimCloserFunc()
+      CallerTimCloser.Enabled = True
+    End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Sub NotifyIconUnread()
@@ -167,55 +191,88 @@
     Notify.Visible = True
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
-  Private Sub MessageRecvFunc(ByRef chat As ListView, ByRef user As User, ByVal message As String)
+  Private Sub MessageRecvFunc()
     Dim strdata As String = Date.Now().ToString()
-    Dim item As New ListViewItem(New String() {user.Name, message, strdata})
     Dim copieditems As ListViewItem
+    Dim show As Boolean = True
+    Dim name As String = ""
+    Dim message As String = ""
+    Dim color As Color
+    Dim index As Short
+    Vapor.GetMessageUserAndText(name, message)
+    Dim item As New ListViewItem(New String() {name, message, strdata})
 
-    MessageRxOn = True
-
-    ' Date assign
-    Select Case ThisTheme
-      Case Themes.Vapor
-        item.ForeColor = user.Color
-      Case Themes.Hide
-        item.ForeColor = SystemColors.WindowText
-    End Select
-
-    ' Protect a message if date is displayed
-    ForceSwitchOffFunc()
-
-    ' Copy items in list view
-    For i As Byte = 0 To MAXROWS - 1
-      copieditems = chat.Items(i + 1).Clone
-      chat.Items(i) = copieditems
-    Next
-
-    ' Add item to ListView
-    chat.Items(MAXROWS) = item
-    If NofMessages < MAXROWS Then
-      NofMessages += 1
+    index = SearchNameInList(name) ' Search for new user
+    If index < 0 Then
+      AddUserToList(name)
+      index = SearchNameInList(name)
     End If
 
-    ' Restore date
-    ' TBI
+    color = GetColorAtIndex(index) ' Color assign
 
-    ' Notify if minimized
-    If HideStatus = True Then
-      NotifyIconUnread()
+    Select Case message
+      Case VaporChat.JOINVAPO
+        If ThisTheme = Themes.Hide Then
+          message = VaporChat.JOINHIDE
+        End If
+      Case VaporChat.ITSMEMSG
+        show = False
+    End Select
+
+    MessageRxOn = True
+    If show = True Then
+      ' Date assign
+      Select Case ThisTheme
+        Case Themes.Vapor
+          item.ForeColor = color
+        Case Themes.Hide
+          item.ForeColor = SystemColors.WindowText
+      End Select
+
+      ' Protect a message if date is displayed
+      ForceSwitchOffFunc()
+
+      ' Copy items in list view
+      For i As Byte = 0 To MAXROWS - 1
+        copieditems = CallerListView.Items(i + 1).Clone
+        CallerListView.Items(i) = copieditems
+      Next
+
+      ' Add item to ListView
+      CallerListView.Items(MAXROWS) = item
+      If NofMessages < MAXROWS Then
+        NofMessages += 1
+      End If
+
+      ' Notify if minimized
+      If HideStatus = True Then
+        NotifyIconUnread()
+      End If
+    End If
+
+    ' Check message type for Users management
+    If name <> My.Settings.LastUser Then
+      Select Case message
+        Case VaporChat.LEAVEVAP
+          RemoveUserFromList(name)
+        Case VaporChat.JOINHIDE
+          Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
+        Case VaporChat.JOINVAPO
+          Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
+      End Select
     End If
 
     MessageRxOn = False
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Sub ConfigRecvFunc()
-    Dim struser As String = Vapor.GetConfigUser()
-    Dim strtext As String = Vapor.GetConfigText()
+    Dim struser As String = ""
+    Dim strtext As String = ""
     Dim strdata() As String = strtext.Split(":")
     Dim confcommand As String = strdata(0)
     Dim confuserdes As String = strdata(1)
 
-    Vapor.CleanConfigRecv()
+    Vapor.GetConfigUserAndText(struser, strtext)
 
     If confuserdes = My.Settings.LastUser Then
       Select Case confcommand
@@ -233,11 +290,22 @@
       End Select
     End If
   End Sub
+  '-----------------------------------------------------------------------------------------------------------------------' 
+  Private Sub RefreshTimCloserFunc()
+    Static modder As Boolean = True
+    If modder = True Then
+      modder = False
+      CallerTimCloser.Interval = My.Settings.Timeout - 1
+    Else
+      modder = True
+      CallerTimCloser.Interval = My.Settings.Timeout
+    End If
+  End Sub
 
 
   '--- V A P O R F U N C | Public Functions ------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
-  Public Sub FormLoadFunc(ByRef frame As Form, ByRef chat As ListView, ByRef send As Button, ByRef login As Button, ByRef message As TextBox, ByRef user As TextBox, ByRef log As Label, ByRef nuser As Label, ByRef timmsg As Timer, ByRef timblock As Timer, ByVal theme As Themes)
+  Public Sub FormLoadFunc(ByRef frame As Form, ByRef chat As ListView, ByRef send As Button, ByRef login As Button, ByRef message As TextBox, ByRef user As TextBox, ByRef log As Label, ByRef nuser As Label, ByRef timmsg As Timer, ByRef timblock As Timer, ByRef timgui As Timer, ByRef timcloser As Timer, ByVal theme As Themes)
     Dim NotifyIcon As New Icon(VaporChat.ICONPATH)
     Control.CheckForIllegalCrossThreadCalls = False
     ' Associations
@@ -251,7 +319,14 @@
     CallerLabelUsers = nuser
     CallerTimCheck = timmsg
     CallerTimBlock = timblock
+    CallerTimGui = timgui
+    CallerTimCloser = timcloser
     ThisTheme = theme
+    ' Init timers 
+    CallerTimCheck.Interval = VaporChat.TCHKMSGR
+    CallerTimBlock.Interval = VaporChat.TSTOPPUB
+    CallerTimGui.Interval = VaporChat.TUPDTGUI
+    CallerTimCloser.Interval = My.Settings.Timeout
     ' Init
     NofUsers = 0
     Notify.Icon = NotifyIcon
@@ -264,42 +339,45 @@
     BannedText.Add(VaporChat.LEAVEVAP.ToLower().Replace(" ", ""))
     BannedText.Add(VaporChat.JOINHIDE.ToLower().Replace(" ", ""))
     BannedText.Add(VaporChat.ITSMEMSG.ToLower().Replace(" ", ""))
-    user.MaxLength = Vapor.MaxUserLen()
-    user.Text = My.Settings.LastUser
-    user.Focus()
+    CallerTextUser.MaxLength = Vapor.MaxUserLen()
+    CallerTextUser.Text = My.Settings.LastUser
+    CallerTextUser.Focus()
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub LogInFunc()
-    My.Settings.LastUser = CallerTextUser.Text
-    My.Settings.Save()
-    CallerBtnLogin.Enabled = False
-    CallerTextUser.Enabled = False
-    Vapor.CleanMessageRecv()
-    Vapor.CleanConfigRecv()
-    CallerTextMessage.MaxLength = Vapor.MaxMessageLen()
-    If Vapor.Connect(My.Settings.LastUser) Then
-      AsyncOp = True
-      Connected = True
-      Select Case ThisTheme
-        Case VaporFunc.Themes.Vapor
-          Vapor.SendMessage(My.Settings.LastUser, VaporChat.JOINVAPO)
-        Case VaporFunc.Themes.Hide
-          Vapor.SendMessage(My.Settings.LastUser, VaporChat.JOINHIDE)
-      End Select
-      If SearchNameInList(My.Settings.LastUser) < 0 Then
-        AddUserToList(My.Settings.LastUser)
+    If CallerBtnLogin.Text = "Log in" Then
+      My.Settings.LastUser = CallerTextUser.Text
+      My.Settings.Save()
+      CallerBtnLogin.Text = "Log out"
+      CallerTextUser.Enabled = False
+      CallerTextMessage.MaxLength = Vapor.MaxMessageLen()
+      If Vapor.Connect(My.Settings.LastUser) Then
+        AsyncOp = True
+        Connected = True
+        Select Case ThisTheme
+          Case VaporFunc.Themes.Vapor
+            Vapor.SendMessage(My.Settings.LastUser, VaporChat.JOINVAPO)
+          Case VaporFunc.Themes.Hide
+            Vapor.SendMessage(My.Settings.LastUser, VaporChat.JOINHIDE)
+        End Select
+        If SearchNameInList(My.Settings.LastUser) < 0 Then
+          AddUserToList(My.Settings.LastUser)
+        End If
+        CallerLabelLog.Text = VaporChat.LOGNOERR
+        CallerTimCheck.Enabled = True
+        CallerBtnSend.Enabled = True
+        Select Case ThisTheme
+          Case Themes.Vapor
+            CallerTextMessage.ForeColor = UserList(0).Color
+          Case Themes.Hide
+        End Select
+        ClearTextBox(CallerTextMessage)
+      Else
+        CallerLabelLog.Text = VaporChat.LOGERROR
       End If
-      CallerLabelLog.Text = VaporChat.LOGNOERR
-      CallerTimCheck.Enabled = True
-      CallerBtnSend.Enabled = True
-      Select Case ThisTheme
-        Case Themes.Vapor
-          CallerTextMessage.ForeColor = UserList(0).Color
-        Case Themes.Hide
-      End Select
-      ClearTextBox(CallerTextMessage)
+      RefreshTimCloserFunc()
     Else
-      CallerLabelLog.Text = VaporChat.LOGERROR
+      LogOutFunc()
     End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
@@ -324,56 +402,16 @@
         CallerLabelLog.Text = VaporChat.COMERROR
       End If
     End If
+    RefreshTimCloserFunc()
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub TimerChkMsgFunc()
-    If Vapor.CheckMessageRecv() Then
-      Dim show As Boolean = True
-      Dim user As String = Vapor.GetMessageUser
-      Dim message As String = Vapor.GetMessageText()
-      Dim color As Color
-      Dim index As Short
-      Vapor.CleanMessageRecv()
-
-      ' Search for new user
-      index = SearchNameInList(user)
-      If index < 0 Then
-        AddUserToList(user)
-        index = SearchNameInList(user)
-      End If
-      ' Color assign
-      color = GetColorAtIndex(index)
-
-      Select Case message
-        Case VaporChat.JOINVAPO
-          If ThisTheme = Themes.Hide Then
-            message = VaporChat.JOINHIDE
-          End If
-        Case VaporChat.ITSMEMSG
-#If SHOW_ITSME_MESSAGE = True Then
-          show = True
-#Else
-          show = False
-#End If
-      End Select
-
-      ' Message receive function
-      If show Then
-        MessageRecvFunc(CallerListView, UserList(index), message)
-      End If
-
-      ' Check message type for Users management
-      Select Case message
-        Case VaporChat.LEAVEVAP
-          RemoveUserFromList(user)
-        Case VaporChat.JOINHIDE
-          Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
-        Case VaporChat.JOINVAPO
-          Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
-      End Select
-    ElseIf Vapor.CheckConfigRecv() Then
+    While Vapor.CheckMessageRecv()
+      MessageRecvFunc()
+    End While
+    While Vapor.CheckConfigRecv()
       ConfigRecvFunc()
-    End If
+    End While
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub MsgBoxKeyDownFunc(ByRef e As KeyEventArgs)
@@ -385,6 +423,7 @@
           e.SuppressKeyPress = True
         End If
     End Select
+    RefreshTimCloserFunc()
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub UserBoxKeyDownFunc(ByRef e As KeyEventArgs)
@@ -394,6 +433,7 @@
           CallerBtnLogin.PerformClick()
         End If
     End Select
+    RefreshTimCloserFunc()
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub LogOutFunc()
@@ -406,72 +446,59 @@
   Public Sub FormKeyDownFunc(ByRef e As KeyEventArgs)
     Select Case e.KeyCode
       Case VaporChat.HIDEUKEY
+        If My.Computer.Keyboard.AltKeyDown Then
+          ForcePass = True
+        Else
+          ForcePass = False
+        End If
         HideKeyGest()
       Case VaporChat.SHOWUKEY
         ShowFormGest()
     End Select
+    RefreshTimCloserFunc()
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
-  Public Sub MinimizeFormFunc()
+  Public Sub MinimizeFormFunc(ByVal forcepassword As Boolean)
+    ForcePass = forcepassword
     HideKeyGest()
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub ClosingFunc()
     If Connected = True Then
       Vapor.SendMessage(My.Settings.LastUser, VaporChat.LEAVEVAP)
+      Vapor.Disconnect()
       Connected = False
     End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
-  Public Sub SwitchDataFunc(ByVal events As ListViewItemSelectionChangedEventArgs)
-    If MessageRxOn = False Then
-      If events.Item.Index > MAXROWS - NofMessages Then
-        If SwitchOn = False Then
-          If My.Computer.Keyboard.AltKeyDown Then
-            SwitchIndex = events.Item.Index
-            SwitchText = CallerListView.Items(SwitchIndex).SubItems(1).Text
-            CallerListView.Items(SwitchIndex).SubItems(1).Text = CallerListView.Items(SwitchIndex).SubItems(2).Text
-            SwitchOn = True
-          End If
-        Else
-          SwitchIndex = events.Item.Index
-          CallerListView.Items(SwitchIndex).SubItems(1).Text = SwitchText
-          SwitchOn = False
-          SwitchIndex = -1
-        End If
-      End If
-    End If
-  End Sub
-  '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub ForceSwitchOffFunc()
-    If SwitchIndex >= 0 Then
+    If SwitchOn = True And SwitchIndex >= 0 Then
       SwitchOn = False
       CallerListView.Items(SwitchIndex).SubItems(1).Text = SwitchText
     End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
-  Dim dotidx As UShort = 0
   Public Sub UpdateGUIFunc()
     CallerLabelUsers.Text = NofUsers.ToString()
     If AsyncOp Then
       If Vapor.GetSubOngoing() Or Vapor.GetPubOngoing() Or Vapor.GetConOngoing() Then
-        Select Case dotidx
+        Select Case DotIndex
           Case 0
             CallerLabelLog.Text = "."
-            dotidx += 1
+            DotIndex += 1
           Case 1
             CallerLabelLog.Text = ".."
-            dotidx += 1
+            DotIndex += 1
           Case 2
             CallerLabelLog.Text = "..."
-            dotidx += 1
+            DotIndex += 1
           Case 3
             CallerLabelLog.Text = "...."
-            dotidx = 0
+            DotIndex = 0
         End Select
       Else
         AsyncOp = False
-        dotidx = 0
+        DotIndex = 0
         If CallerLabelLog.Text <> VaporChat.FUNNYBOI Then
           CallerLabelLog.Text = VaporChat.LOGNOERR
         End If
@@ -501,11 +528,11 @@
     Next
     Select Case ThisTheme
       Case Themes.Vapor
-        MsgBox(namelist, vbOK, VaporChat.USRBOXVP)
+        MsgBox(namelist, vbOKOnly, VaporChat.USRBOXVP)
       Case Themes.Hide
-        MsgBox(namelist, vbOK, VaporChat.USRBOXHI)
+        MsgBox(namelist, vbOKOnly, VaporChat.USRBOXHI)
     End Select
-
+    RefreshTimCloserFunc()
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub PubBlockTickFunc()
@@ -523,6 +550,22 @@
           End If
         End If
       End If
+    ElseIf e.Button = MouseButtons.Right Then
+      If MessageRxOn = False Then
+        If CallerListView.SelectedIndices(0) > MAXROWS - NofMessages Then
+          If SwitchOn = False Then
+            SwitchIndex = CallerListView.SelectedIndices(0)
+            SwitchText = CallerListView.Items(SwitchIndex).SubItems(1).Text
+            CallerListView.Items(SwitchIndex).SubItems(1).Text = CallerListView.Items(SwitchIndex).SubItems(2).Text
+            SwitchOn = True
+          Else
+            CallerListView.Items(SwitchIndex).SubItems(1).Text = SwitchText
+            SwitchOn = False
+            SwitchIndex = -1
+          End If
+        End If
+      End If
     End If
+    RefreshTimCloserFunc()
   End Sub
 End Class

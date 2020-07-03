@@ -6,7 +6,7 @@ Public Class HideMainScreen
 
 
   Private Sub HideMainScreen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-    Vapor.FormLoadFunc(Me, txtChat, cmdSendMsg, cmdLogIn, txtMsg, txtUser, lblLog, LblNofUsers, TimerCheckMsg, TimerPubBlock, Theme)
+    Vapor.FormLoadFunc(Me, txtChat, cmdSendMsg, cmdLogIn, txtMsg, txtUser, lblLog, LblNofUsers, TimerCheckMsg, TimerPubBlock, TimerGUI, TimerAutoCloser, Theme)
   End Sub
 
   Private Sub CmdLogIn_Click(sender As Object, e As EventArgs) Handles cmdLogIn.Click
@@ -29,17 +29,13 @@ Public Class HideMainScreen
     Vapor.UserBoxKeyDownFunc(e)
   End Sub
 
-  Private Sub CmdLogOut_Click(sender As Object, e As EventArgs) Handles cmdLogOut.Click
-    Vapor.LogOutFunc()
-  End Sub
-
   Private Sub HideMainScreen_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
     Vapor.FormKeyDownFunc(e)
   End Sub
 
   Private Sub HideMainScreenvb_Resize(sender As Object, e As EventArgs) Handles Me.Resize
     If WindowState = FormWindowState.Minimized Then
-      Vapor.MinimizeFormFunc()
+      Vapor.MinimizeFormFunc(False)
     End If
   End Sub
 
@@ -48,7 +44,7 @@ Public Class HideMainScreen
   End Sub
 
   Private Sub TxtChat_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) Handles txtChat.ItemSelectionChanged
-    Vapor.SwitchDataFunc(e)
+    Vapor.ForceSwitchOffFunc()
   End Sub
 
   Private Sub TimerGUI_Tick(sender As Object, e As EventArgs) Handles TimerGUI.Tick
@@ -69,5 +65,9 @@ Public Class HideMainScreen
 
   Private Sub VaporMainScreen_LostFocus(sender As Object, e As EventArgs) Handles Me.LostFocus
     Vapor.ForceSwitchOffFunc()
+  End Sub
+
+  Private Sub TimerAutoCloser_Tick(sender As Object, e As EventArgs) Handles TimerAutoCloser.Tick
+    Vapor.MinimizeFormFunc(True)
   End Sub
 End Class

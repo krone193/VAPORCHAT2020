@@ -64,12 +64,12 @@ Partial Class HideMainScreen
         Me.cmdSendMsg = New System.Windows.Forms.Button()
         Me.txtChat = New System.Windows.Forms.ListView()
         Me.TimerCheckMsg = New System.Windows.Forms.Timer(Me.components)
-        Me.cmdLogOut = New System.Windows.Forms.Label()
         Me.lblLog = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.LblNofUsers = New System.Windows.Forms.Label()
         Me.TimerGUI = New System.Windows.Forms.Timer(Me.components)
         Me.TimerPubBlock = New System.Windows.Forms.Timer(Me.components)
+        Me.TimerAutoCloser = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout()
         '
         'cmdLogIn
@@ -91,7 +91,7 @@ Partial Class HideMainScreen
         Me.txtUser.Location = New System.Drawing.Point(5, 5)
         Me.txtUser.Name = "txtUser"
         Me.txtUser.Size = New System.Drawing.Size(105, 20)
-        Me.txtUser.TabIndex = 54
+        Me.txtUser.TabIndex = 1
         '
         'clmUser
         '
@@ -157,17 +157,6 @@ Partial Class HideMainScreen
         'TimerCheckMsg
         '
         '
-        'cmdLogOut
-        '
-        Me.cmdLogOut.AutoSize = True
-        Me.cmdLogOut.BackColor = System.Drawing.Color.Transparent
-        Me.cmdLogOut.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.cmdLogOut.Location = New System.Drawing.Point(12, 515)
-        Me.cmdLogOut.Name = "cmdLogOut"
-        Me.cmdLogOut.Size = New System.Drawing.Size(49, 13)
-        Me.cmdLogOut.TabIndex = 59
-        Me.cmdLogOut.Text = "Log out"
-        '
         'lblLog
         '
         Me.lblLog.AutoSize = True
@@ -184,7 +173,7 @@ Partial Class HideMainScreen
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
         Me.Label2.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.Label2.Location = New System.Drawing.Point(303, 515)
+        Me.Label2.Location = New System.Drawing.Point(12, 515)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(85, 13)
         Me.Label2.TabIndex = 60
@@ -195,7 +184,7 @@ Partial Class HideMainScreen
         Me.LblNofUsers.AutoSize = True
         Me.LblNofUsers.BackColor = System.Drawing.Color.Transparent
         Me.LblNofUsers.ForeColor = System.Drawing.SystemColors.WindowText
-        Me.LblNofUsers.Location = New System.Drawing.Point(394, 515)
+        Me.LblNofUsers.Location = New System.Drawing.Point(103, 515)
         Me.LblNofUsers.Name = "LblNofUsers"
         Me.LblNofUsers.Size = New System.Drawing.Size(19, 13)
         Me.LblNofUsers.TabIndex = 61
@@ -210,6 +199,11 @@ Partial Class HideMainScreen
         '
         Me.TimerPubBlock.Interval = 500
         '
+        'TimerAutoCloser
+        '
+        Me.TimerAutoCloser.Enabled = True
+        Me.TimerAutoCloser.Interval = 30000
+        '
         'HideMainScreen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -223,7 +217,6 @@ Partial Class HideMainScreen
         Me.Controls.Add(Me.txtMsg)
         Me.Controls.Add(Me.cmdSendMsg)
         Me.Controls.Add(Me.txtChat)
-        Me.Controls.Add(Me.cmdLogOut)
         Me.Controls.Add(Me.lblLog)
         Me.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -244,10 +237,10 @@ Partial Class HideMainScreen
   Friend WithEvents cmdSendMsg As Button
   Friend WithEvents txtChat As ListView
   Friend WithEvents TimerCheckMsg As Timer
-  Friend WithEvents cmdLogOut As Label
-  Friend WithEvents lblLog As Label
-	Friend WithEvents Label2 As Label
+    Friend WithEvents lblLog As Label
+    Friend WithEvents Label2 As Label
     Friend WithEvents LblNofUsers As Label
     Friend WithEvents TimerGUI As Timer
     Friend WithEvents TimerPubBlock As Timer
+    Friend WithEvents TimerAutoCloser As Timer
 End Class

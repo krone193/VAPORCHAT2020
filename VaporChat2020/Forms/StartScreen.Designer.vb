@@ -31,6 +31,7 @@ Partial Class StartScreen
         Me.lblVaporFuncVer = New System.Windows.Forms.Label()
         Me.TxtPassword = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.CmbCloserTime = New System.Windows.Forms.ComboBox()
         Me.SuspendLayout()
         '
         'cmdHideInPlainSight
@@ -111,7 +112,7 @@ Partial Class StartScreen
         Me.TxtPassword.Name = "TxtPassword"
         Me.TxtPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(12543)
         Me.TxtPassword.Size = New System.Drawing.Size(141, 13)
-        Me.TxtPassword.TabIndex = 8
+        Me.TxtPassword.TabIndex = 1
         '
         'Label1
         '
@@ -125,6 +126,21 @@ Partial Class StartScreen
         Me.Label1.TabIndex = 9
         Me.Label1.Text = "パスワードを挿入"
         '
+        'CmbCloserTime
+        '
+        Me.CmbCloserTime.BackColor = System.Drawing.Color.PaleTurquoise
+        Me.CmbCloserTime.DropDownHeight = 100
+        Me.CmbCloserTime.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CmbCloserTime.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.CmbCloserTime.ForeColor = System.Drawing.Color.Indigo
+        Me.CmbCloserTime.FormattingEnabled = True
+        Me.CmbCloserTime.IntegralHeight = False
+        Me.CmbCloserTime.Items.AddRange(New Object() {"30", "35", "40", "45", "50", "55", "60"})
+        Me.CmbCloserTime.Location = New System.Drawing.Point(300, 66)
+        Me.CmbCloserTime.Name = "CmbCloserTime"
+        Me.CmbCloserTime.Size = New System.Drawing.Size(37, 21)
+        Me.CmbCloserTime.TabIndex = 10
+        '
         'StartScreen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -132,6 +148,7 @@ Partial Class StartScreen
         Me.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
         Me.ClientSize = New System.Drawing.Size(451, 354)
+        Me.Controls.Add(Me.CmbCloserTime)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.TxtPassword)
         Me.Controls.Add(Me.lblVaporFuncVer)
@@ -158,4 +175,5 @@ Partial Class StartScreen
   Friend WithEvents lblVaporFuncVer As Label
 	Friend WithEvents TxtPassword As TextBox
     Friend WithEvents Label1 As Label
+    Friend WithEvents CmbCloserTime As ComboBox
 End Class

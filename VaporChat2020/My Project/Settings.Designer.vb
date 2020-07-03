@@ -66,40 +66,31 @@ Namespace My
             End Set
         End Property
         
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1.0.5.1 夢 1")>  _
-        Public Property VaporChat2020Ver() As String
+         Global.System.Configuration.DefaultSettingValueAttribute("1.0.5.1 夢 02")>  _
+        Public ReadOnly Property VaporChat2020Ver() As String
             Get
                 Return CType(Me("VaporChat2020Ver"),String)
             End Get
-            Set
-                Me("VaporChat2020Ver") = value
-            End Set
         End Property
         
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1.0.3.1 夢 1")>  _
-        Public Property VaporChatVer() As String
+         Global.System.Configuration.DefaultSettingValueAttribute("1.0.3.1 夢 02")>  _
+        Public ReadOnly Property VaporChatVer() As String
             Get
                 Return CType(Me("VaporChatVer"),String)
             End Get
-            Set
-                Me("VaporChatVer") = value
-            End Set
         End Property
         
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1.0.4.1 夢1")>  _
-        Public Property VaporFuncVer() As String
+         Global.System.Configuration.DefaultSettingValueAttribute("1.0.4.1 夢 02")>  _
+        Public ReadOnly Property VaporFuncVer() As String
             Get
                 Return CType(Me("VaporFuncVer"),String)
             End Get
-            Set
-                Me("VaporFuncVer") = value
-            End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
@@ -144,6 +135,18 @@ Namespace My
             End Get
             Set
                 Me("LastTheme") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("30000")>  _
+        Public Property Timeout() As ULong
+            Get
+                Return CType(Me("Timeout"),ULong)
+            End Get
+            Set
+                Me("Timeout") = value
             End Set
         End Property
     End Class

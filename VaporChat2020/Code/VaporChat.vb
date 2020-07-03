@@ -62,6 +62,10 @@ Public Class VaporChat
   Public Const HIDEUKEY As Keys = Keys.F1
   Public Const SHOWUKEY As Keys = Keys.F2
   '-----------------------------------------------------------------------------------------------------------------------'
+  Public Const TSTOPPUB As UShort = 500
+  Public Const TCHKMSGR As UShort = 200
+  Public Const TUPDTGUI As UShort = 500
+  '-----------------------------------------------------------------------------------------------------------------------' 
   ' Command format >  /<command>:<target user>:<optional>
   Public Const ADMINPASSW As String = "Tassorosso"
   Public Const ADMINSUPER As String = "/kronelab"
@@ -76,20 +80,18 @@ Public Class VaporChat
   Structure MessageStruct
     Dim user As String
     Dim text As String
-    Dim recv As Boolean
   End Structure
   '-----------------------------------------------------------------------------------------------------------------------'
   Structure ConfigStruct
     Dim user As String
     Dim text As String
-    Dim recv As Boolean
   End Structure
 
 
   '--- V A P O R C H A T | Variables -------------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
-  Private message As MessageStruct
-  Private config As ConfigStruct
+  ReadOnly message As New Queue(Of MessageStruct)
+  ReadOnly config As New Queue(Of ConfigStruct)
   Private conongoing As Boolean = False
   Private conok As Boolean = True
   Private pubongoing As Boolean = False
@@ -108,17 +110,19 @@ Public Class VaporChat
     Dim trusted_topic As String = Decrypt(eventArgs.ApplicationMessage.Topic, True)
     Select Case trusted_topic
       Case messagetopic
+        Dim recv As MessageStruct
         trusted_payload = Decrypt(Text.Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload), False)
         payload = trusted_payload.Split(SEPTCHAR)
-        message.user = payload(0)
-        message.text = payload(1).Remove(0, SEPTCHAR.Length - 1)
-        message.recv = True
+        recv.user = payload(0)
+        recv.text = payload(1).Remove(0, SEPTCHAR.Length - 1)
+        message.Enqueue(recv)
       Case configstopic
+        Dim recv As ConfigStruct
         trusted_payload = Decrypt(Text.Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload), False)
         payload = trusted_payload.Split(SEPTCHAR)
-        config.user = payload(0)
-        config.text = payload(1).Remove(0, SEPTCHAR.Length - 1)
-        config.recv = True
+        recv.user = payload(0)
+        recv.text = payload(1).Remove(0, SEPTCHAR.Length - 1)
+        config.Enqueue(recv)
     End Select
     Return Nothing
   End Function
@@ -127,6 +131,7 @@ Public Class VaporChat
     Dim messageBuilder As New MqttClientOptionsBuilder
     Dim options As New MqttClientOptions
     Dim cancellationToken As Threading.CancellationToken
+    Dim lastwill As New MqttApplicationMessage
     MqttClient = Factory.CreateMqttClient()
     messageBuilder.WithClientId(id)
     messageBuilder.WithCredentials(user, pwd)
@@ -135,6 +140,11 @@ Public Class VaporChat
     messageBuilder.Build()
     messageBuilder.WithKeepAlivePeriod(TimeSpan.FromSeconds(30))
     messageBuilder.WithKeepAliveSendInterval(TimeSpan.FromSeconds(30))
+    lastwill.Topic = messagetopic
+    lastwill.Payload = Text.Encoding.ASCII.GetBytes(LEAVEVAP)
+    lastwill.QualityOfServiceLevel = MQTTQOFS
+    lastwill.Retain = False
+    messageBuilder.WithWillMessage(lastwill)
     conongoing = True
     Try
       Await MqttClient.ConnectAsync(messageBuilder.Build(), cancellationToken)
@@ -217,6 +227,8 @@ Public Class VaporChat
     timeout = timeout.AddSeconds(10)
     messagetopic = MQTTROOT & My.Settings.Lobby
     configstopic = MQTTROOT & MQTTCONF & My.Settings.Lobby
+    message.Clear()
+    config.Clear()
     MQTTConnectToServer(user, MQTTHOST, MQTTUSER, MQTTPASS, MQTTPORT)
     MqttClient.ApplicationMessageReceivedHandler = Me
     While Not MqttClient.IsConnected
@@ -232,9 +244,6 @@ Public Class VaporChat
   Public Sub Disconnect()
     MQTTDisconnectFromServer()
     MqttClient.ApplicationMessageReceivedHandler = Me
-    While MqttClient.IsConnected
-
-    End While
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Function SendMessage(ByVal user As String, ByVal text As String) As Boolean
@@ -248,36 +257,26 @@ Public Class VaporChat
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Function CheckMessageRecv() As Boolean
-    Return message.recv
+    Return message.Count > 0
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Function CheckConfigRecv() As Boolean
-    Return config.recv
+    Return config.Count > 0
   End Function
   '-----------------------------------------------------------------------------------------------------------------------'
-  Public Sub CleanMessageRecv()
-    message.recv = False
+  Public Sub GetMessageUserAndText(ByRef user As String, ByRef text As String)
+    Dim recv As MessageStruct
+    recv = message.Dequeue()
+    user = recv.user
+    text = recv.text
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
-  Public Sub CleanConfigRecv()
-    config.recv = False
+  Public Sub GetConfigUserAndText(ByRef user As String, ByRef text As String)
+    Dim recv As ConfigStruct
+    recv = config.Dequeue()
+    user = recv.user
+    text = recv.text
   End Sub
-  '-----------------------------------------------------------------------------------------------------------------------'
-  Public Function GetMessageUser() As String
-    Return message.user
-  End Function
-  '-----------------------------------------------------------------------------------------------------------------------'
-  Public Function GetConfigUser() As String
-    Return config.user
-  End Function
-  '-----------------------------------------------------------------------------------------------------------------------'
-  Public Function GetMessageText() As String
-    Return message.text
-  End Function
-  '-----------------------------------------------------------------------------------------------------------------------'
-  Public Function GetConfigText() As String
-    Return config.text
-  End Function
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Function MaxUserLen() As UShort
     Return MAXUSRCH

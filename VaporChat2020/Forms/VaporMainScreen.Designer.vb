@@ -65,11 +65,11 @@ Partial Class VaporMainScreen
         Me.txtChat = New System.Windows.Forms.ListView()
         Me.TimerCheckMsg = New System.Windows.Forms.Timer(Me.components)
         Me.lblLog = New System.Windows.Forms.Label()
-        Me.cmdLogOut = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.LblNofUsers = New System.Windows.Forms.Label()
         Me.TimerGUI = New System.Windows.Forms.Timer(Me.components)
         Me.TimerPubBlock = New System.Windows.Forms.Timer(Me.components)
+        Me.TimerAutoCloser = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout()
         '
         'cmdLogIn
@@ -91,7 +91,7 @@ Partial Class VaporMainScreen
         Me.txtUser.Location = New System.Drawing.Point(4, 6)
         Me.txtUser.Name = "txtUser"
         Me.txtUser.Size = New System.Drawing.Size(105, 20)
-        Me.txtUser.TabIndex = 45
+        Me.txtUser.TabIndex = 1
         '
         'clmUser
         '
@@ -167,23 +167,12 @@ Partial Class VaporMainScreen
         Me.lblLog.TabIndex = 50
         Me.lblLog.Text = "/"
         '
-        'cmdLogOut
-        '
-        Me.cmdLogOut.AutoSize = True
-        Me.cmdLogOut.BackColor = System.Drawing.Color.Transparent
-        Me.cmdLogOut.ForeColor = System.Drawing.Color.Yellow
-        Me.cmdLogOut.Location = New System.Drawing.Point(10, 514)
-        Me.cmdLogOut.Name = "cmdLogOut"
-        Me.cmdLogOut.Size = New System.Drawing.Size(76, 13)
-        Me.cmdLogOut.TabIndex = 51
-        Me.cmdLogOut.Text = "Log out ヾバ "
-        '
         'Label2
         '
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
         Me.Label2.ForeColor = System.Drawing.Color.Chartreuse
-        Me.Label2.Location = New System.Drawing.Point(282, 514)
+        Me.Label2.Location = New System.Drawing.Point(12, 516)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(113, 13)
         Me.Label2.TabIndex = 61
@@ -194,7 +183,7 @@ Partial Class VaporMainScreen
         Me.LblNofUsers.AutoSize = True
         Me.LblNofUsers.BackColor = System.Drawing.Color.Transparent
         Me.LblNofUsers.ForeColor = System.Drawing.Color.Lime
-        Me.LblNofUsers.Location = New System.Drawing.Point(395, 514)
+        Me.LblNofUsers.Location = New System.Drawing.Point(125, 516)
         Me.LblNofUsers.Name = "LblNofUsers"
         Me.LblNofUsers.Size = New System.Drawing.Size(19, 13)
         Me.LblNofUsers.TabIndex = 62
@@ -209,6 +198,11 @@ Partial Class VaporMainScreen
         '
         Me.TimerPubBlock.Interval = 500
         '
+        'TimerAutoCloser
+        '
+        Me.TimerAutoCloser.Enabled = True
+        Me.TimerAutoCloser.Interval = 30000
+        '
         'VaporMainScreen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -217,7 +211,6 @@ Partial Class VaporMainScreen
         Me.ClientSize = New System.Drawing.Size(484, 531)
         Me.Controls.Add(Me.LblNofUsers)
         Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.cmdLogOut)
         Me.Controls.Add(Me.lblLog)
         Me.Controls.Add(Me.cmdLogIn)
         Me.Controls.Add(Me.txtUser)
@@ -246,9 +239,9 @@ Partial Class VaporMainScreen
   Friend WithEvents txtChat As ListView
   Friend WithEvents TimerCheckMsg As Timer
   Friend WithEvents lblLog As Label
-  Friend WithEvents cmdLogOut As Label
-	Friend WithEvents Label2 As Label
+    Friend WithEvents Label2 As Label
     Friend WithEvents LblNofUsers As Label
     Friend WithEvents TimerGUI As Timer
     Friend WithEvents TimerPubBlock As Timer
+    Friend WithEvents TimerAutoCloser As Timer
 End Class
