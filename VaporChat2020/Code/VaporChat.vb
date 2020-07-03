@@ -28,7 +28,7 @@ Public Class VaporChat
   Private Const MQTTUSER As String = ""
   Private Const MQTTPASS As String = ""
   Private Const MQTTPORT As UShort = 1883
-  Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.ExactlyOnce
+  Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.AtMostOnce
 #Else
   Private Const MQTTHOST As String = "m24.cloudmqtt.com"
   Private Const MQTTUSER As String = "lyomijtv"
@@ -56,7 +56,6 @@ Public Class VaporChat
   Public Const LOGNOERR As String = "connected"
   Public Const SENDISOK As String = "message forwarded"
   Public Const SENDISKO As String = "message not forwarded"
-  Public Const LASTWILL As String = "A E S T H E T I C   C R A S H"
   Public Const ICONPATH As String = "logo.ico"
   Public Const ICONNMSG As String = "logonewmsg.ico"
   Public Const SENDUKEY As Keys = Keys.Enter
@@ -134,17 +133,17 @@ Public Class VaporChat
     Dim cancellationToken As Threading.CancellationToken
     Dim lastwill As New MqttApplicationMessage
     MqttClient = Factory.CreateMqttClient()
-    messageBuilder.WithClientId(id)
-    messageBuilder.WithCredentials(user, pwd)
-    messageBuilder.WithTcpServer(uri, CInt(port))
-    messageBuilder.WithCleanSession(False)
-    messageBuilder.Build()
-    messageBuilder.WithKeepAlivePeriod(TimeSpan.FromSeconds(30))
-    messageBuilder.WithKeepAliveSendInterval(TimeSpan.FromSeconds(30))
     lastwill.Topic = messagetopic
     lastwill.Payload = Text.Encoding.ASCII.GetBytes(LEAVEVAP)
     lastwill.QualityOfServiceLevel = MQTTQOFS
     lastwill.Retain = False
+    messageBuilder.WithClientId(id)
+    messageBuilder.WithCredentials(user, pwd)
+    messageBuilder.WithTcpServer(uri, CInt(port))
+    messageBuilder.WithCleanSession(True)
+    messageBuilder.Build()
+    messageBuilder.WithKeepAlivePeriod(TimeSpan.FromSeconds(30))
+    messageBuilder.WithKeepAliveSendInterval(TimeSpan.FromSeconds(30))
     messageBuilder.WithWillMessage(lastwill)
     conongoing = True
     Try
