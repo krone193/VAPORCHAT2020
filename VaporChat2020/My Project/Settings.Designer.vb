@@ -68,7 +68,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1.0.5.6")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1.0.5.1 夢 02")>  _
         Public ReadOnly Property VaporChat2020Ver() As String
             Get
                 Return CType(Me("VaporChat2020Ver"),String)
@@ -77,7 +77,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1.0.4.1")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1.0.3.1 夢 02")>  _
         Public ReadOnly Property VaporChatVer() As String
             Get
                 Return CType(Me("VaporChatVer"),String)
@@ -86,7 +86,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1.0.4.5")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1.0.4.1 夢 02")>  _
         Public ReadOnly Property VaporFuncVer() As String
             Get
                 Return CType(Me("VaporFuncVer"),String)

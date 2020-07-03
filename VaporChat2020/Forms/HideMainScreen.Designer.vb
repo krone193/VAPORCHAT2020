@@ -91,7 +91,7 @@ Partial Class HideMainScreen
         Me.txtUser.Location = New System.Drawing.Point(5, 5)
         Me.txtUser.Name = "txtUser"
         Me.txtUser.Size = New System.Drawing.Size(105, 20)
-        Me.txtUser.TabIndex = 54
+        Me.txtUser.TabIndex = 1
         '
         'clmUser
         '

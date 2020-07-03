@@ -69,10 +69,12 @@
   '--- V A P O R F U N C | Private Functions -----------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Sub Notify_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles Notify.DoubleClick
-    NotifyIconRead()
-    ShowFormGest()
-    Vapor.Connect(My.Settings.LastUser)
-    HideStatus = False
+    If HideStatus = True Then
+      HideStatus = False
+      NotifyIconRead()
+      ShowFormGest()
+      'Vapor.Connect(My.Settings.LastUser)
+    End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Sub ClearTextBox(ByRef box As TextBox)
@@ -189,55 +191,88 @@
     Notify.Visible = True
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
-  Private Sub MessageRecvFunc(ByRef chat As ListView, ByRef user As User, ByVal message As String)
+  Private Sub MessageRecvFunc()
     Dim strdata As String = Date.Now().ToString()
-    Dim item As New ListViewItem(New String() {user.Name, message, strdata})
     Dim copieditems As ListViewItem
+    Dim show As Boolean = True
+    Dim name As String = ""
+    Dim message As String = ""
+    Dim color As Color
+    Dim index As Short
+    Vapor.GetMessageUserAndText(name, message)
+    Dim item As New ListViewItem(New String() {name, message, strdata})
 
-    MessageRxOn = True
-
-    ' Date assign
-    Select Case ThisTheme
-      Case Themes.Vapor
-        item.ForeColor = user.Color
-      Case Themes.Hide
-        item.ForeColor = SystemColors.WindowText
-    End Select
-
-    ' Protect a message if date is displayed
-    ForceSwitchOffFunc()
-
-    ' Copy items in list view
-    For i As Byte = 0 To MAXROWS - 1
-      copieditems = chat.Items(i + 1).Clone
-      chat.Items(i) = copieditems
-    Next
-
-    ' Add item to ListView
-    chat.Items(MAXROWS) = item
-    If NofMessages < MAXROWS Then
-      NofMessages += 1
+    index = SearchNameInList(name) ' Search for new user
+    If index < 0 Then
+      AddUserToList(name)
+      index = SearchNameInList(name)
     End If
 
-    ' Restore date
-    ' TBI
+    color = GetColorAtIndex(index) ' Color assign
 
-    ' Notify if minimized
-    If HideStatus = True Then
-      NotifyIconUnread()
+    Select Case message
+      Case VaporChat.JOINVAPO
+        If ThisTheme = Themes.Hide Then
+          message = VaporChat.JOINHIDE
+        End If
+      Case VaporChat.ITSMEMSG
+        show = False
+    End Select
+
+    MessageRxOn = True
+    If show = True Then
+      ' Date assign
+      Select Case ThisTheme
+        Case Themes.Vapor
+          item.ForeColor = color
+        Case Themes.Hide
+          item.ForeColor = SystemColors.WindowText
+      End Select
+
+      ' Protect a message if date is displayed
+      ForceSwitchOffFunc()
+
+      ' Copy items in list view
+      For i As Byte = 0 To MAXROWS - 1
+        copieditems = CallerListView.Items(i + 1).Clone
+        CallerListView.Items(i) = copieditems
+      Next
+
+      ' Add item to ListView
+      CallerListView.Items(MAXROWS) = item
+      If NofMessages < MAXROWS Then
+        NofMessages += 1
+      End If
+
+      ' Notify if minimized
+      If HideStatus = True Then
+        NotifyIconUnread()
+      End If
+    End If
+
+    ' Check message type for Users management
+    If name <> My.Settings.LastUser Then
+      Select Case message
+        Case VaporChat.LEAVEVAP
+          RemoveUserFromList(name)
+        Case VaporChat.JOINHIDE
+          Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
+        Case VaporChat.JOINVAPO
+          Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
+      End Select
     End If
 
     MessageRxOn = False
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Sub ConfigRecvFunc()
-    Dim struser As String = Vapor.GetConfigUser()
-    Dim strtext As String = Vapor.GetConfigText()
+    Dim struser As String = ""
+    Dim strtext As String = ""
     Dim strdata() As String = strtext.Split(":")
     Dim confcommand As String = strdata(0)
     Dim confuserdes As String = strdata(1)
 
-    Vapor.CleanConfigRecv()
+    Vapor.GetConfigUserAndText(struser, strtext)
 
     If confuserdes = My.Settings.LastUser Then
       Select Case confcommand
@@ -255,7 +290,7 @@
       End Select
     End If
   End Sub
-  '-----------------------------------------------------------------------------------------------------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------' 
   Private Sub RefreshTimCloserFunc()
     Static modder As Boolean = True
     If modder = True Then
@@ -287,7 +322,7 @@
     CallerTimGui = timgui
     CallerTimCloser = timcloser
     ThisTheme = theme
-    ' Init timers
+    ' Init timers 
     CallerTimCheck.Interval = VaporChat.TCHKMSGR
     CallerTimBlock.Interval = VaporChat.TSTOPPUB
     CallerTimGui.Interval = VaporChat.TUPDTGUI
@@ -315,8 +350,6 @@
       My.Settings.Save()
       CallerBtnLogin.Text = "Log out"
       CallerTextUser.Enabled = False
-      Vapor.CleanMessageRecv()
-      Vapor.CleanConfigRecv()
       CallerTextMessage.MaxLength = Vapor.MaxMessageLen()
       If Vapor.Connect(My.Settings.LastUser) Then
         AsyncOp = True
@@ -373,55 +406,12 @@
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub TimerChkMsgFunc()
-    If Vapor.CheckMessageRecv() Then
-      Dim show As Boolean = True
-      Dim user As String = Vapor.GetMessageUser
-      Dim message As String = Vapor.GetMessageText()
-      Dim color As Color
-      Dim index As Short
-      Vapor.CleanMessageRecv()
-
-      ' Search for new user
-      index = SearchNameInList(user)
-      If index < 0 Then
-        AddUserToList(user)
-        index = SearchNameInList(user)
-      End If
-      ' Color assign
-      color = GetColorAtIndex(index)
-
-      Select Case message
-        Case VaporChat.JOINVAPO
-          If ThisTheme = Themes.Hide Then
-            message = VaporChat.JOINHIDE
-          End If
-        Case VaporChat.ITSMEMSG
-#If SHOW_ITSME_MESSAGE = True Then
-          show = True
-#Else
-          show = False
-#End If
-      End Select
-
-      ' Message receive function
-      If show Then
-        MessageRecvFunc(CallerListView, UserList(index), message)
-      End If
-
-      ' Check message type for Users management
-      If user <> My.Settings.LastUser Then
-        Select Case message
-          Case VaporChat.LEAVEVAP
-            RemoveUserFromList(user)
-          Case VaporChat.JOINHIDE
-            Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
-          Case VaporChat.JOINVAPO
-            Vapor.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
-        End Select
-      End If
-    ElseIf Vapor.CheckConfigRecv() Then
-        ConfigRecvFunc()
-    End If
+    While Vapor.CheckMessageRecv()
+      MessageRecvFunc()
+    End While
+    While Vapor.CheckConfigRecv()
+      ConfigRecvFunc()
+    End While
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub MsgBoxKeyDownFunc(ByRef e As KeyEventArgs)
@@ -456,7 +446,7 @@
   Public Sub FormKeyDownFunc(ByRef e As KeyEventArgs)
     Select Case e.KeyCode
       Case VaporChat.HIDEUKEY
-        If My.Computer.Keyboard.CtrlKeyDown Then
+        If My.Computer.Keyboard.AltKeyDown Then
           ForcePass = True
         Else
           ForcePass = False
@@ -476,8 +466,8 @@
   Public Sub ClosingFunc()
     If Connected = True Then
       Vapor.SendMessage(My.Settings.LastUser, VaporChat.LEAVEVAP)
-      Connected = False
       Vapor.Disconnect()
+      Connected = False
     End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'

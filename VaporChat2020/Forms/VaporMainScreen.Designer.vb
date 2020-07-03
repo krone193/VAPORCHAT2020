@@ -91,7 +91,7 @@ Partial Class VaporMainScreen
         Me.txtUser.Location = New System.Drawing.Point(4, 6)
         Me.txtUser.Name = "txtUser"
         Me.txtUser.Size = New System.Drawing.Size(105, 20)
-        Me.txtUser.TabIndex = 45
+        Me.txtUser.TabIndex = 1
         '
         'clmUser
         '
@@ -172,7 +172,7 @@ Partial Class VaporMainScreen
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
         Me.Label2.ForeColor = System.Drawing.Color.Chartreuse
-        Me.Label2.Location = New System.Drawing.Point(12, 515)
+        Me.Label2.Location = New System.Drawing.Point(12, 516)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(113, 13)
         Me.Label2.TabIndex = 61
@@ -183,7 +183,7 @@ Partial Class VaporMainScreen
         Me.LblNofUsers.AutoSize = True
         Me.LblNofUsers.BackColor = System.Drawing.Color.Transparent
         Me.LblNofUsers.ForeColor = System.Drawing.Color.Lime
-        Me.LblNofUsers.Location = New System.Drawing.Point(125, 515)
+        Me.LblNofUsers.Location = New System.Drawing.Point(125, 516)
         Me.LblNofUsers.Name = "LblNofUsers"
         Me.LblNofUsers.Size = New System.Drawing.Size(19, 13)
         Me.LblNofUsers.TabIndex = 62

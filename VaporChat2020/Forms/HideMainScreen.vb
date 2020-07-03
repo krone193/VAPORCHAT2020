@@ -29,10 +29,6 @@ Public Class HideMainScreen
     Vapor.UserBoxKeyDownFunc(e)
   End Sub
 
-  Private Sub CmdLogOut_Click(sender As Object, e As EventArgs)
-    Vapor.LogOutFunc()
-  End Sub
-
   Private Sub HideMainScreen_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
     Vapor.FormKeyDownFunc(e)
   End Sub
