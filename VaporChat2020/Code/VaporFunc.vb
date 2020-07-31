@@ -73,6 +73,7 @@
       HideStatus = False
       NotifyIconRead()
       ShowFormGest()
+      VaporMainScreen.PnlInsertPass.BringToFront()
       'Vapor.Connect(My.Settings.LastUser)
     End If
   End Sub
@@ -268,13 +269,13 @@
   Private Sub ConfigRecvFunc()
     Dim struser As String = ""
     Dim strtext As String = ""
-    Dim strdata() As String = strtext.Split(":")
-    Dim confcommand As String = strdata(0)
-    Dim confuserdes As String = strdata(1)
 
     Vapor.GetConfigUserAndText(struser, strtext)
 
-    If confuserdes = My.Settings.LastUser Then
+    Dim strdata() As String = strtext.Split(":")
+    Dim confcommand As String = strdata(0)
+
+    If struser = My.Settings.LastUser Then
       Select Case confcommand
         Case VaporChat.ADMINMUTEU
           My.Settings.Muted = True
@@ -283,7 +284,7 @@
           My.Settings.Muted = False
           My.Settings.Save()
         Case VaporChat.ADMINLOBBY
-          My.Settings.Lobby = strdata(2)
+          My.Settings.Lobby = strdata(1)
           My.Settings.Save()
           Vapor.Disconnect()
           Vapor.Connect(My.Settings.LastUser)
@@ -390,6 +391,8 @@
         If BannedText.Contains(CallerTextMessage.Text.ToLower().Replace(" ", "")) Then
           CallerLabelLog.Text = VaporChat.FUNNYBOI
           ClearTextBox(CallerTextMessage)
+        ElseIf CallerTextMessage.Text = VaporChat.TOKIDRIFT Then
+          ClearTextBox(CallerTextMessage)
         Else
           If Vapor.SendMessage(My.Settings.LastUser, CallerTextMessage.Text) Then
             CallerLabelLog.Text = VaporChat.SENDISOK
@@ -403,6 +406,10 @@
       End If
     End If
     RefreshTimCloserFunc()
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public Sub SendCmdFunc(ByVal user As String, ByVal command As String)
+    Vapor.SendConfig(user, command)
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub TimerChkMsgFunc()
@@ -452,7 +459,7 @@
           ForcePass = False
         End If
         HideKeyGest()
-          Case VaporChat.SHOWUKEY
+      Case VaporChat.SHOWUKEY
         ShowFormGest()
     End Select
     RefreshTimCloserFunc()
@@ -510,11 +517,10 @@
         End If
       End If
       If Vapor.GetPubState() = False Then
-        CallerBtnLogin.Enabled = True
-        CallerBtnSend.Enabled = False
         If Vapor.GetSubOngoing() = False And Vapor.GetPubOngoing() = False Then
           If CallerLabelLog.Text <> VaporChat.LOGERROR Then
             CallerLabelLog.Text = VaporChat.SENDISKO
+            CallerBtnSend.Enabled = True
           End If
         End If
       End If

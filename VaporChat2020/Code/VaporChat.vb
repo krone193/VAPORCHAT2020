@@ -56,8 +56,8 @@ Public Class VaporChat
   Public Const LOGNOERR As String = "connected"
   Public Const SENDISOK As String = "message forwarded"
   Public Const SENDISKO As String = "message not forwarded"
-  Public Const ICONPATH As String = "logo.ico"
-  Public Const ICONNMSG As String = "logonewmsg.ico"
+  Public Const ICONPATH As String = "Resources/logo.ico"
+  Public Const ICONNMSG As String = "Resources/logonewmsg.ico"
   Public Const SENDUKEY As Keys = Keys.Enter
   Public Const HIDEUKEY As Keys = Keys.F1
   Public Const SHOWUKEY As Keys = Keys.F2
@@ -68,11 +68,11 @@ Public Class VaporChat
   '-----------------------------------------------------------------------------------------------------------------------' 
   ' Command format >  /<command>:<target user>:<optional>
   Public Const ADMINPASSW As String = "Tassorosso"
-  Public Const ADMINSUPER As String = "/kronelab"
   Public Const ADMINMUTEU As String = "/mute"
   Public Const ADMINUMUTE As String = "/allow"
-  Public Const ADMINCRKEY As String = "/key"
   Public Const ADMINLOBBY As String = "/lobby"
+  '-----------------------------------------------------------------------------------------------------------------------' 
+  Public Const TOKIDRIFT As String = "/tokidrift"
 
 
   '--- V A P O R C H A T | Struct ----------------------------------------------------------------------------------------'

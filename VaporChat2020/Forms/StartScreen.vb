@@ -3,9 +3,9 @@
     If TxtPassword.Text = "" Then
       TxtPassword.Focus()
     ElseIf TxtPassword.Text = VaporChat.PASSCHAT Then
-      My.Settings.LastTheme = "Hide"
+      My.Settings.LastTheme = VaporFunc.Themes.Hide
       My.Settings.Save()
-      HideMainScreen.Show()
+      VaporMainScreen.Show()
       Close()
     Else
       Close()
@@ -16,7 +16,7 @@
     If TxtPassword.Text = "" Then
       TxtPassword.Focus()
     ElseIf TxtPassword.Text = VaporChat.PASSCHAT Then
-      My.Settings.LastTheme = "Vapor"
+      My.Settings.LastTheme = VaporFunc.Themes.Vapor
       My.Settings.Save()
       VaporMainScreen.Show()
       Close()
@@ -49,9 +49,9 @@
   Private Sub StartScreen_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
     If e.KeyValue = Keys.Enter Then
       Select Case My.Settings.LastTheme
-        Case "Vapor"
+        Case VaporFunc.Themes.Vapor
           cmdVapor.PerformClick()
-        Case "Hide"
+        Case VaporFunc.Themes.Hide
           cmdHideInPlainSight.PerformClick()
         Case Else
       End Select

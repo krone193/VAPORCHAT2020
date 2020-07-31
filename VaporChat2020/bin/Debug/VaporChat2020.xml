@@ -22,5 +22,10 @@ VaporChat2020
   ricerche di risorse eseguite utilizzando questa classe di risorse fortemente tipizzata.
 </summary>
 </member>
+<member name="P:VaporChat2020Application.My.Resources.Resources.ondulvapor">
+<summary>
+  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+</summary>
+</member>
 </members>
 </doc>
