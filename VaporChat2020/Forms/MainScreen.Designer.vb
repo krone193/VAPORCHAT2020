@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class VaporMainScreen
+Partial Class MainScreen
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -54,7 +54,7 @@ Partial Class VaporMainScreen
         Dim ListViewItem29 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {""}, -1, System.Drawing.Color.Empty, System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(51, Byte), Integer)), Nothing)
         Dim ListViewItem30 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {""}, -1, System.Drawing.Color.Empty, System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(51, Byte), Integer)), Nothing)
         Dim ListViewItem31 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {""}, -1, System.Drawing.Color.Empty, System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(51, Byte), Integer)), Nothing)
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(VaporMainScreen))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainScreen))
         Me.BtnLogIn = New System.Windows.Forms.Button()
         Me.TxtUser = New System.Windows.Forms.TextBox()
         Me.clmUser = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -73,8 +73,15 @@ Partial Class VaporMainScreen
         Me.PnlVaporChat = New System.Windows.Forms.Panel()
         Me.PnlInsertPass = New System.Windows.Forms.Panel()
         Me.TxtInsertPass = New System.Windows.Forms.TextBox()
+        Me.PnlAdmin = New System.Windows.Forms.Panel()
+        Me.BtnAdminSend = New System.Windows.Forms.Button()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.TxtAdminCommand = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.TxtAdminUser = New System.Windows.Forms.TextBox()
         Me.PnlVaporChat.SuspendLayout()
         Me.PnlInsertPass.SuspendLayout()
+        Me.PnlAdmin.SuspendLayout()
         Me.SuspendLayout()
         '
         'BtnLogIn
@@ -236,29 +243,105 @@ Partial Class VaporMainScreen
         '
         'TxtInsertPass
         '
+        Me.TxtInsertPass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TxtInsertPass.Location = New System.Drawing.Point(109, 124)
         Me.TxtInsertPass.Name = "TxtInsertPass"
+        Me.TxtInsertPass.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.TxtInsertPass.Size = New System.Drawing.Size(263, 20)
         Me.TxtInsertPass.TabIndex = 0
         '
-        'VaporMainScreen
+        'PnlAdmin
+        '
+        Me.PnlAdmin.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(51, Byte), Integer))
+        Me.PnlAdmin.Controls.Add(Me.BtnAdminSend)
+        Me.PnlAdmin.Controls.Add(Me.Label2)
+        Me.PnlAdmin.Controls.Add(Me.TxtAdminCommand)
+        Me.PnlAdmin.Controls.Add(Me.Label1)
+        Me.PnlAdmin.Controls.Add(Me.TxtAdminUser)
+        Me.PnlAdmin.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.PnlAdmin.Location = New System.Drawing.Point(0, 0)
+        Me.PnlAdmin.Name = "PnlAdmin"
+        Me.PnlAdmin.Size = New System.Drawing.Size(481, 531)
+        Me.PnlAdmin.TabIndex = 65
+        '
+        'BtnAdminSend
+        '
+        Me.BtnAdminSend.BackColor = System.Drawing.Color.DarkSlateBlue
+        Me.BtnAdminSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.BtnAdminSend.Font = New System.Drawing.Font("Consolas", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BtnAdminSend.ForeColor = System.Drawing.Color.Violet
+        Me.BtnAdminSend.Location = New System.Drawing.Point(115, 54)
+        Me.BtnAdminSend.Name = "BtnAdminSend"
+        Me.BtnAdminSend.Size = New System.Drawing.Size(251, 23)
+        Me.BtnAdminSend.TabIndex = 9
+        Me.BtnAdminSend.Text = "前方に"
+        Me.BtnAdminSend.UseVisualStyleBackColor = False
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Label2.Font = New System.Drawing.Font("Consolas", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.ForeColor = System.Drawing.Color.Yellow
+        Me.Label2.Location = New System.Drawing.Point(115, 10)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(42, 14)
+        Me.Label2.TabIndex = 8
+        Me.Label2.Text = "コマンド"
+        '
+        'TxtAdminCommand
+        '
+        Me.TxtAdminCommand.BackColor = System.Drawing.Color.Orange
+        Me.TxtAdminCommand.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TxtAdminCommand.ForeColor = System.Drawing.Color.BlueViolet
+        Me.TxtAdminCommand.Location = New System.Drawing.Point(177, 9)
+        Me.TxtAdminCommand.Name = "TxtAdminCommand"
+        Me.TxtAdminCommand.Size = New System.Drawing.Size(189, 20)
+        Me.TxtAdminCommand.TabIndex = 7
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Label1.Font = New System.Drawing.Font("Consolas", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.Label1.Location = New System.Drawing.Point(307, 34)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(59, 14)
+        Me.Label1.TabIndex = 6
+        Me.Label1.Text = "ユーザー名"
+        '
+        'TxtAdminUser
+        '
+        Me.TxtAdminUser.BackColor = System.Drawing.Color.LightSeaGreen
+        Me.TxtAdminUser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TxtAdminUser.ForeColor = System.Drawing.Color.Gold
+        Me.TxtAdminUser.Location = New System.Drawing.Point(115, 31)
+        Me.TxtAdminUser.Name = "TxtAdminUser"
+        Me.TxtAdminUser.Size = New System.Drawing.Size(189, 20)
+        Me.TxtAdminUser.TabIndex = 5
+        '
+        'MainScreen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(481, 531)
-        Me.Controls.Add(Me.PnlInsertPass)
         Me.Controls.Add(Me.PnlVaporChat)
+        Me.Controls.Add(Me.PnlAdmin)
+        Me.Controls.Add(Me.PnlInsertPass)
         Me.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.KeyPreview = True
-        Me.Name = "VaporMainScreen"
+        Me.Name = "MainScreen"
         Me.ShowInTaskbar = False
-        Me.Text = "(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ"
+        Me.Text = "Dummy text"
         Me.PnlVaporChat.ResumeLayout(False)
         Me.PnlVaporChat.PerformLayout()
         Me.PnlInsertPass.ResumeLayout(False)
         Me.PnlInsertPass.PerformLayout()
+        Me.PnlAdmin.ResumeLayout(False)
+        Me.PnlAdmin.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -280,4 +363,10 @@ Partial Class VaporMainScreen
     Friend WithEvents PnlVaporChat As Panel
     Friend WithEvents PnlInsertPass As Panel
     Friend WithEvents TxtInsertPass As TextBox
+    Friend WithEvents PnlAdmin As Panel
+    Friend WithEvents BtnAdminSend As Button
+    Friend WithEvents Label2 As Label
+    Friend WithEvents TxtAdminCommand As TextBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents TxtAdminUser As TextBox
 End Class

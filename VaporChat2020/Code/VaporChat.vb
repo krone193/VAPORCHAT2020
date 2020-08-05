@@ -50,6 +50,7 @@ Public Class VaporChat
   Public Const JOINVAPO As String = "(っ◔◡◔)っ ♥ Joins the chat ♥"
   Public Const LEAVEVAP As String = "see you space T A S S O N I ..."
   Public Const JOINHIDE As String = "Joins the chat"
+  Public Const BLOCKEDU As String = "ops, seems like you're a nasty boi"
   Public Const FUNNYBOI As String = "oh Rob, u funny boi"
   Public Const COMERROR As String = "please log in"
   Public Const LOGERROR As String = "connection error, please log again"
@@ -67,7 +68,7 @@ Public Class VaporChat
   Public Const TUPDTGUI As UShort = 500
   '-----------------------------------------------------------------------------------------------------------------------' 
   ' Command format >  /<command>:<target user>:<optional>
-  Public Const ADMINPASSW As String = "Tassorosso"
+  Public Const ADMINPASSW As String = "tassorosso"
   Public Const ADMINMUTEU As String = "/mute"
   Public Const ADMINUMUTE As String = "/allow"
   Public Const ADMINLOBBY As String = "/lobby"
@@ -86,6 +87,22 @@ Public Class VaporChat
     Dim user As String
     Dim text As String
   End Structure
+
+
+  '--- V A P O R C H A T | Enum ------------------------------------------------------------------------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public Enum Themes
+    Vapor   ' 0
+    Hide    ' 1
+    Admin   ' 2
+    NofElm
+  End Enum
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public Enum Panels
+    Chat
+    Pass
+    Admin
+  End Enum
 
 
   '--- V A P O R C H A T | Variables -------------------------------------------------------------------------------------'

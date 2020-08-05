@@ -1,6 +1,16 @@
-﻿Public Class VaporFunc
-  Dim WithEvents Notify As New NotifyIcon
+﻿Imports System.ComponentModel
 
+Public Class MainScreen
+  Dim WithEvents Notify As New NotifyIcon
+  ReadOnly Vapor As New VaporChat
+
+
+
+  '-----------------------------------------------------------------------------------------------------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
+  '------------------------ V A P O R C H A T | V A P O R F U N C  S Y S T E M  F U N C T I O N S ------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
 
   '--- V A P O R F U N C | Declarations ----------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
@@ -9,12 +19,11 @@
 
   '--- V A P O R F U N C | ReadOnly --------------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
-  ReadOnly Vapor As New VaporChat
   ReadOnly CONNSEC As UShort = 5
-  ReadOnly MAXROWS As UShort = 30
   ReadOnly NOFCLRS As UShort = 10
   ReadOnly ColorPool = New Color() {Color.Crimson, Color.HotPink, Color.Gold, Color.DarkOrchid, Color.Violet,
                                     Color.DodgerBlue, Color.Teal, Color.Lime, Color.DarkOrange, Color.SpringGreen}
+  ReadOnly MAXROWS As UShort = 30
   ReadOnly UserList As New List(Of User)
   ReadOnly BannedText As New List(Of String)
 
@@ -25,15 +34,6 @@
     Dim Name As String
     Dim Color As Color
   End Structure
-
-
-  '--- V A P O R F U N C | Enum ------------------------------------------------------------------------------------------'
-  '-----------------------------------------------------------------------------------------------------------------------'
-  Public Enum Themes
-    Vapor   ' 0
-    Hide    ' 1
-    NofElm
-  End Enum
 
 
   '--- V A P O R F U N C | Variables -------------------------------------------------------------------------------------'
@@ -52,7 +52,6 @@
   Private CallerTimCloser As Timer
   '-----------------------------------------------------------------------------------------------------------------------'
   Private NofUsers As UShort = 0
-  Private ThisTheme As Themes = Themes.NofElm
   Private HideStatus As Boolean = False
   Private Connected As Boolean = False
   Private TaskBarHid As Boolean = False
@@ -73,8 +72,10 @@
       HideStatus = False
       NotifyIconRead()
       ShowFormGest()
-      VaporMainScreen.PnlInsertPass.BringToFront()
-      'Vapor.Connect(My.Settings.LastUser)
+      If ForcePass Then
+        PnlInsertPass.BringToFront()
+        TxtInsertPass.Focus()
+      End If
     End If
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
@@ -157,27 +158,12 @@
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Sub ShowFormGest()
-    If ForcePass = True Then
-      Dim password As String = InputBox(" ン ウ ハ 何 ベ ", "(っ◔◡◔)っ")
-      If password <> VaporChat.PASSCHAT Then
-        ClosingFunc()
-        CallerForm.Close()
-      Else
-        CallerForm.Show()
-        CallerForm.WindowState = FormWindowState.Normal
-        CallerForm.ShowInTaskbar = False
-        Notify.Visible = False
-        RefreshTimCloserFunc()
-        CallerTimCloser.Enabled = True
-      End If
-    Else
-      CallerForm.Show()
-      CallerForm.WindowState = FormWindowState.Normal
-      CallerForm.ShowInTaskbar = False
-      Notify.Visible = False
-      RefreshTimCloserFunc()
-      CallerTimCloser.Enabled = True
-    End If
+    CallerForm.Show()
+    CallerForm.WindowState = FormWindowState.Normal
+    CallerForm.ShowInTaskbar = False
+    Notify.Visible = False
+    RefreshTimCloserFunc()
+    CallerTimCloser.Enabled = True
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Sub NotifyIconUnread()
@@ -213,7 +199,7 @@
 
     Select Case message
       Case VaporChat.JOINVAPO
-        If ThisTheme = Themes.Hide Then
+        If CurrentTheme = VaporChat.Themes.Hide Then
           message = VaporChat.JOINHIDE
         End If
       Case VaporChat.ITSMEMSG
@@ -223,10 +209,10 @@
     MessageRxOn = True
     If show = True Then
       ' Date assign
-      Select Case ThisTheme
-        Case Themes.Vapor
+      Select Case CurrentTheme
+        Case VaporChat.Themes.Vapor
           item.ForeColor = color
-        Case Themes.Hide
+        Case VaporChat.Themes.Hide
           item.ForeColor = SystemColors.WindowText
       End Select
 
@@ -306,7 +292,7 @@
 
   '--- V A P O R F U N C | Public Functions ------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
-  Public Sub FormLoadFunc(ByRef frame As Form, ByRef chat As ListView, ByRef send As Button, ByRef login As Button, ByRef message As TextBox, ByRef user As TextBox, ByRef log As Label, ByRef nuser As Label, ByRef timmsg As Timer, ByRef timblock As Timer, ByRef timgui As Timer, ByRef timcloser As Timer, ByVal theme As Themes)
+  Public Sub FormLoadFunc(ByRef frame As Form, ByRef chat As ListView, ByRef send As Button, ByRef login As Button, ByRef message As TextBox, ByRef user As TextBox, ByRef log As Label, ByRef nuser As Label, ByRef timmsg As Timer, ByRef timblock As Timer, ByRef timgui As Timer, ByRef timcloser As Timer)
     Dim NotifyIcon As New Icon(VaporChat.ICONPATH)
     Control.CheckForIllegalCrossThreadCalls = False
     ' Associations
@@ -322,7 +308,6 @@
     CallerTimBlock = timblock
     CallerTimGui = timgui
     CallerTimCloser = timcloser
-    ThisTheme = theme
     ' Init timers 
     CallerTimCheck.Interval = VaporChat.TCHKMSGR
     CallerTimBlock.Interval = VaporChat.TSTOPPUB
@@ -355,10 +340,10 @@
       If Vapor.Connect(My.Settings.LastUser) Then
         AsyncOp = True
         Connected = True
-        Select Case ThisTheme
-          Case VaporFunc.Themes.Vapor
+        Select Case CurrentTheme
+          Case VaporChat.Themes.Vapor
             Vapor.SendMessage(My.Settings.LastUser, VaporChat.JOINVAPO)
-          Case VaporFunc.Themes.Hide
+          Case VaporChat.Themes.Hide
             Vapor.SendMessage(My.Settings.LastUser, VaporChat.JOINHIDE)
         End Select
         If SearchNameInList(My.Settings.LastUser) < 0 Then
@@ -367,10 +352,10 @@
         CallerLabelLog.Text = VaporChat.LOGNOERR
         CallerTimCheck.Enabled = True
         CallerBtnSend.Enabled = True
-        Select Case ThisTheme
-          Case Themes.Vapor
+        Select Case CurrentTheme
+          Case VaporChat.Themes.Vapor
             CallerTextMessage.ForeColor = UserList(0).Color
-          Case Themes.Hide
+          Case VaporChat.Themes.Hide
         End Select
         ClearTextBox(CallerTextMessage)
       Else
@@ -383,27 +368,31 @@
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub SendMsgFunc()
-    If CallerBtnSend.Enabled = True Then
-      CallerBtnSend.Enabled = False
-      CallerTimBlock.Enabled = True
-      If Connected = True Then
-        AsyncOp = True
-        If BannedText.Contains(CallerTextMessage.Text.ToLower().Replace(" ", "")) Then
-          CallerLabelLog.Text = VaporChat.FUNNYBOI
-          ClearTextBox(CallerTextMessage)
-        ElseIf CallerTextMessage.Text = VaporChat.TOKIDRIFT Then
-          ClearTextBox(CallerTextMessage)
-        Else
-          If Vapor.SendMessage(My.Settings.LastUser, CallerTextMessage.Text) Then
-            CallerLabelLog.Text = VaporChat.SENDISOK
+    If My.Settings.Muted = False Then
+      If CallerBtnSend.Enabled = True Then
+        CallerBtnSend.Enabled = False
+        CallerTimBlock.Enabled = True
+        If Connected = True Then
+          AsyncOp = True
+          If BannedText.Contains(CallerTextMessage.Text.ToLower().Replace(" ", "")) Then
+            CallerLabelLog.Text = VaporChat.FUNNYBOI
+            ClearTextBox(CallerTextMessage)
+          ElseIf CallerTextMessage.Text = VaporChat.TOKIDRIFT Then
             ClearTextBox(CallerTextMessage)
           Else
-            CallerLabelLog.Text = VaporChat.LOGERROR
+            If Vapor.SendMessage(My.Settings.LastUser, CallerTextMessage.Text) Then
+              CallerLabelLog.Text = VaporChat.SENDISOK
+              ClearTextBox(CallerTextMessage)
+            Else
+              CallerLabelLog.Text = VaporChat.LOGERROR
+            End If
           End If
+        Else
+          CallerLabelLog.Text = VaporChat.COMERROR
         End If
-      Else
-        CallerLabelLog.Text = VaporChat.COMERROR
       End If
+    Else
+      CallerLabelLog.Text = VaporChat.BLOCKEDU
     End If
     RefreshTimCloserFunc()
   End Sub
@@ -532,10 +521,10 @@
     For Each user As User In UserList
       namelist = namelist & user.Name.Trim() & vbCrLf
     Next
-    Select Case ThisTheme
-      Case Themes.Vapor
+    Select Case CurrentTheme
+      Case VaporChat.Themes.Vapor
         MsgBox(namelist, vbOKOnly, VaporChat.USRBOXVP)
-      Case Themes.Hide
+      Case VaporChat.Themes.Hide
         MsgBox(namelist, vbOKOnly, VaporChat.USRBOXHI)
     End Select
     RefreshTimCloserFunc()
@@ -573,5 +562,226 @@
       End If
     End If
     RefreshTimCloserFunc()
+  End Sub
+
+
+
+  '-----------------------------------------------------------------------------------------------------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
+  '-------------------------- V A P O R C H A T | G R A P H I C A L  U S E R  I N T E R F A C E --------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
+
+  '--- V A P O R G U I | Structures --------------------------------------------------------------------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Structure ChatTheme
+    Dim MainWinTxt As String
+    Dim BackImage As Image
+    Dim BackColor As Color
+    Dim LstChat As TxtTheme
+    Dim TxtUser As TxtTheme
+    Dim TxtMsg As TxtTheme
+    Dim LblLogs As LblTheme
+    Dim LblUser As LblTheme
+  End Structure
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Structure LblTheme
+    Dim FixText As String
+    Dim FixColor As Color
+    Dim VarColor As Color
+  End Structure
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Structure TxtTheme
+    Dim BackColor As Color
+    Dim TextColor As Color
+  End Structure
+
+
+  '--- V A P O R G U I | Themes constants --------------------------------------------------------------------------------'
+  ' V A P O R C H A T 2 0 2 0 T H E M E ----------------------------------------------------------------------------------'
+  ReadOnly VAPOR_MAINWINTXT As String = "(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ"
+  ReadOnly VAPOR_MAINBCKIMG As Image = Image.FromFile("Resources/ondulvapor.jpg")
+  ReadOnly VAPOR_MAINBCKCLR As Color = Color.FromArgb(40, 31, 51)
+  ReadOnly VAPOR_CHATBCKCLR As Color = Color.FromArgb(40, 31, 51)
+  ReadOnly VAPOR_CHATFRTCLR As Color = Color.Gold
+  ReadOnly VAPOR_USERBCKCLR As Color = Color.FromArgb(40, 31, 51)
+  ReadOnly VAPOR_USERFRTCLR As Color = SystemColors.Highlight
+  ReadOnly VAPOR_SENDBCKCLR As Color = Color.FromArgb(40, 31, 51)
+  ReadOnly VAPOR_SENDFRTCLR As Color = Color.DarkOrchid
+  ReadOnly VAPOR_LBLLOGFTXT As String = "Logs をノだ"
+  ReadOnly VAPOR_LBLLOGFCLR As Color = Color.HotPink
+  ReadOnly VAPOR_LBLLOGVCLR As Color = Color.Pink
+  ReadOnly VAPOR_LBLUSRFTXT As String = "Logged users 俺鉛プ"
+  ReadOnly VAPOR_LBLUSRFCLR As Color = Color.Chartreuse
+  ReadOnly VAPOR_LBLUSRVCLR As Color = Color.Lime
+  ' H I D E C H A T 2 0 2 0 T H E M E ------------------------------------------------------------------------------------'
+  ReadOnly HIDE_MAINWINTXT As String = "IOT demo service"
+  ReadOnly HIDE_MAINBCKIMG As Image
+  ReadOnly HIDE_MAINBCKCLR As Color = SystemColors.Control
+  ReadOnly HIDE_CHATBCKCLR As Color = SystemColors.ControlLightLight
+  ReadOnly HIDE_CHATFRTCLR As Color = SystemColors.WindowText
+  ReadOnly HIDE_USERBCKCLR As Color = SystemColors.Control
+  ReadOnly HIDE_USERFRTCLR As Color = SystemColors.WindowText
+  ReadOnly HIDE_SENDBCKCLR As Color = SystemColors.Control
+  ReadOnly HIDE_SENDFRTCLR As Color = SystemColors.WindowText
+  ReadOnly HIDE_LBLLOGFTXT As String = "Logs"
+  ReadOnly HIDE_LBLLOGFCLR As Color = SystemColors.WindowText
+  ReadOnly HIDE_LBLLOGVCLR As Color = SystemColors.WindowText
+  ReadOnly HIDE_LBLUSRFTXT As String = "Logged users"
+  ReadOnly HIDE_LBLUSRFCLR As Color = SystemColors.WindowText
+  ReadOnly HIDE_LBLUSRVCLR As Color = SystemColors.WindowText
+
+
+  '--- V A P O R G U I | Variables ---------------------------------------------------------------------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private CurrentGUI As ChatTheme
+  Private CurrentTheme As VaporChat.Themes
+
+
+  ' V A P O R G U I | Functions ------------------------------------------------------------------------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub VapoMainScreen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Select Case My.Settings.LastTheme
+      Case VaporChat.Themes.Vapor
+        CurrentTheme = VaporChat.Themes.Vapor
+        CurrentGUI.MainWinTxt = VAPOR_MAINWINTXT
+        CurrentGUI.BackImage = VAPOR_MAINBCKIMG
+        CurrentGUI.BackColor = VAPOR_MAINBCKCLR
+        CurrentGUI.LstChat.BackColor = VAPOR_CHATBCKCLR
+        CurrentGUI.LstChat.TextColor = VAPOR_CHATFRTCLR
+        CurrentGUI.TxtUser.BackColor = VAPOR_USERBCKCLR
+        CurrentGUI.TxtUser.TextColor = VAPOR_USERFRTCLR
+        CurrentGUI.TxtMsg.BackColor = VAPOR_SENDBCKCLR
+        CurrentGUI.TxtMsg.TextColor = VAPOR_SENDFRTCLR
+        CurrentGUI.LblLogs.FixText = VAPOR_LBLLOGFTXT
+        CurrentGUI.LblLogs.FixColor = VAPOR_LBLLOGFCLR
+        CurrentGUI.LblLogs.VarColor = VAPOR_LBLLOGVCLR
+        CurrentGUI.LblUser.FixText = VAPOR_LBLUSRFTXT
+        CurrentGUI.LblUser.FixColor = VAPOR_LBLUSRFCLR
+        CurrentGUI.LblUser.VarColor = VAPOR_LBLUSRVCLR
+      Case VaporChat.Themes.Hide
+        CurrentTheme = VaporChat.Themes.Hide
+        CurrentGUI.MainWinTxt = HIDE_MAINWINTXT
+        CurrentGUI.BackImage = HIDE_MAINBCKIMG
+        CurrentGUI.BackColor = HIDE_MAINBCKCLR
+        CurrentGUI.LstChat.BackColor = HIDE_CHATBCKCLR
+        CurrentGUI.LstChat.TextColor = HIDE_CHATFRTCLR
+        CurrentGUI.TxtUser.BackColor = HIDE_USERBCKCLR
+        CurrentGUI.TxtUser.TextColor = HIDE_USERFRTCLR
+        CurrentGUI.TxtMsg.BackColor = HIDE_SENDBCKCLR
+        CurrentGUI.TxtMsg.TextColor = HIDE_SENDFRTCLR
+        CurrentGUI.LblLogs.FixText = HIDE_LBLLOGFTXT
+        CurrentGUI.LblLogs.FixColor = HIDE_LBLLOGFCLR
+        CurrentGUI.LblLogs.VarColor = HIDE_LBLLOGVCLR
+        CurrentGUI.LblUser.FixText = HIDE_LBLUSRFTXT
+        CurrentGUI.LblUser.FixColor = HIDE_LBLUSRFCLR
+        CurrentGUI.LblUser.VarColor = HIDE_LBLUSRVCLR
+      Case "null"
+    End Select
+    Text = CurrentGUI.MainWinTxt
+    PnlVaporChat.BackgroundImage = CurrentGUI.BackImage
+    PnlVaporChat.BackColor = CurrentGUI.BackColor
+    PnlInsertPass.BackgroundImage = CurrentGUI.BackImage
+    PnlInsertPass.BackColor = CurrentGUI.BackColor
+    LstChatVapo.BackColor = CurrentGUI.LstChat.BackColor
+    LstChatVapo.ForeColor = CurrentGUI.LstChat.BackColor
+    For i = 0 To MAXROWS
+      LstChatVapo.Items.Item(i).BackColor = CurrentGUI.LstChat.BackColor
+      LstChatVapo.Items.Item(i).ForeColor = CurrentGUI.LstChat.BackColor
+    Next
+    TxtUser.BackColor = CurrentGUI.TxtUser.BackColor
+    TxtUser.ForeColor = CurrentGUI.TxtUser.TextColor
+    TxtMsg.BackColor = CurrentGUI.TxtMsg.BackColor
+    TxtMsg.ForeColor = CurrentGUI.TxtMsg.TextColor
+    DskLblLogs.Text = CurrentGUI.LblLogs.FixText
+    DskLblLogs.ForeColor = CurrentGUI.LblLogs.FixColor
+    LblLog.ForeColor = CurrentGUI.LblLogs.VarColor
+    DskLblUsers.Text = CurrentGUI.LblUser.FixText
+    DskLblUsers.ForeColor = CurrentGUI.LblUser.FixColor
+    LblUsers.ForeColor = CurrentGUI.LblUser.VarColor
+
+    FormLoadFunc(Me, LstChatVapo, BtnSend, BtnLogIn, TxtMsg, TxtUser, LblLog, LblUsers, TimerCheckMsg, TimerPubBlock, TimerGUI, TimerAutoCloser)
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub CmdLogIn_Click(sender As Object, e As EventArgs) Handles BtnLogIn.Click
+    LogInFunc()
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub CmdSendMsg_Click(sender As Object, e As EventArgs) Handles BtnSend.Click
+    SendMsgFunc()
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub TimerCheckMsg_Tick(sender As Object, e As EventArgs) Handles TimerCheckMsg.Tick
+    TimerChkMsgFunc()
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub TxtMsg_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtMsg.KeyDown
+    MsgBoxKeyDownFunc(e)
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub TxtUser_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtUser.KeyDown
+    UserBoxKeyDownFunc(e)
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub VapoMainScreenvb_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+    FormKeyDownFunc(e)
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub VapoMainScreenvb_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+    If WindowState = FormWindowState.Minimized Then
+      MinimizeFormFunc(False)
+    End If
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub VapoMainScreenvb_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+    ClosingFunc()
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub TxtChat_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) Handles LstChatVapo.ItemSelectionChanged
+    ForceSwitchOffFunc()
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub TimerGUI_Tick(sender As Object, e As EventArgs) Handles TimerGUI.Tick
+    UpdateGUIFunc()
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub LblNofUsers_Click(sender As Object, e As EventArgs) Handles LblUsers.Click
+    ShowUserListFunc()
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub TimerPubBlock_Tick(sender As Object, e As EventArgs) Handles TimerPubBlock.Tick
+    PubBlockTickFunc()
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub TxtChat_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles LstChatVapo.MouseClick
+    CopyItemFunc(e)
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub VaporMainScreen_LostFocus(sender As Object, e As EventArgs) Handles Me.LostFocus
+    ForceSwitchOffFunc()
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub TimerAutoCloser_Tick(sender As Object, e As EventArgs) Handles TimerAutoCloser.Tick
+    MinimizeFormFunc(True)
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub TxtInsertPass_TextChanged(sender As Object, e As EventArgs) Handles TxtInsertPass.TextChanged
+    If TxtInsertPass.Text = VaporChat.PASSCHAT Then
+      TxtInsertPass.Text = ""
+      PnlVaporChat.BringToFront()
+      ForcePass = False
+    End If
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub BtnAdminSend_Click(sender As Object, e As EventArgs) Handles BtnAdminSend.Click
+    If TxtAdminCommand.Text <> "" Then
+      If TxtAdminUser.Text <> "" Then
+        If Vapor.Connect("V A P O R A D M I N") Then
+          SendCmdFunc(TxtAdminUser.Text, TxtAdminCommand.Text)
+          TxtAdminCommand.Text = ""
+          TxtAdminUser.Text = ""
+        End If
+      End If
+      End If
   End Sub
 End Class
