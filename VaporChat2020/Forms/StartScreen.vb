@@ -43,6 +43,7 @@
       Dim password As String = InputBox("You shall insert a passcode:")
       If password = VaporChat.ADMINPASSW Then
         MainScreen.Show()
+        MainScreen.Size = New Size(VaporChat.ADMNWIDTH, VaporChat.ADMNHEIGH)
         MainScreen.PnlAdmin.BringToFront()
         Close()
       End If

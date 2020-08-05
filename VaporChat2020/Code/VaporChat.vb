@@ -63,6 +63,13 @@ Public Class VaporChat
   Public Const HIDEUKEY As Keys = Keys.F1
   Public Const SHOWUKEY As Keys = Keys.F2
   '-----------------------------------------------------------------------------------------------------------------------'
+  Public Const CHATWIDTH As UShort = 497
+  Public Const CHATHEIGH As UShort = 570
+  Public Const PASSWIDTH As UShort = 497
+  Public Const PASSHEIGH As UShort = 100
+  Public Const ADMNWIDTH As UShort = 497
+  Public Const ADMNHEIGH As UShort = 130
+  '-----------------------------------------------------------------------------------------------------------------------'
   Public Const TSTOPPUB As UShort = 500
   Public Const TCHKMSGR As UShort = 200
   Public Const TUPDTGUI As UShort = 500

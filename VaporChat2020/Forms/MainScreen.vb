@@ -73,6 +73,9 @@ Public Class MainScreen
       NotifyIconRead()
       ShowFormGest()
       If ForcePass Then
+        Size = New Size(VaporChat.PASSWIDTH, VaporChat.PASSHEIGH)
+        TxtInsertPass.BackColor = CurrentGUI.TxtUser.BackColor
+        TxtInsertPass.ForeColor = CurrentGUI.TxtUser.TextColor
         PnlInsertPass.BringToFront()
         TxtInsertPass.Focus()
       End If
@@ -487,9 +490,6 @@ Public Class MainScreen
             DotIndex += 1
           Case 2
             CallerLabelLog.Text = "..."
-            DotIndex += 1
-          Case 3
-            CallerLabelLog.Text = "...."
             DotIndex = 0
         End Select
       Else
@@ -769,6 +769,7 @@ Public Class MainScreen
     If TxtInsertPass.Text = VaporChat.PASSCHAT Then
       TxtInsertPass.Text = ""
       PnlVaporChat.BringToFront()
+      Size = New Size(VaporChat.CHATWIDTH, VaporChat.CHATHEIGH)
       ForcePass = False
     End If
   End Sub
