@@ -74,11 +74,13 @@ Partial Class MainScreen
 		Me.PnlInsertPass = New System.Windows.Forms.Panel()
 		Me.TxtInsertPass = New System.Windows.Forms.TextBox()
 		Me.PnlAdmin = New System.Windows.Forms.Panel()
+		Me.BtnAdminBackToStart = New System.Windows.Forms.Button()
 		Me.BtnAdminSend = New System.Windows.Forms.Button()
 		Me.Label2 = New System.Windows.Forms.Label()
 		Me.TxtAdminCommand = New System.Windows.Forms.TextBox()
 		Me.Label1 = New System.Windows.Forms.Label()
 		Me.TxtAdminUser = New System.Windows.Forms.TextBox()
+		Me.BtnBackToStart = New System.Windows.Forms.Button()
 		Me.PnlVaporChat.SuspendLayout()
 		Me.PnlInsertPass.SuspendLayout()
 		Me.PnlAdmin.SuspendLayout()
@@ -130,9 +132,9 @@ Partial Class MainScreen
 		'
 		Me.TxtMsg.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(51, Byte), Integer))
 		Me.TxtMsg.ForeColor = System.Drawing.Color.DarkOrchid
-		Me.TxtMsg.Location = New System.Drawing.Point(3, 490)
+		Me.TxtMsg.Location = New System.Drawing.Point(34, 490)
 		Me.TxtMsg.Name = "TxtMsg"
-		Me.TxtMsg.Size = New System.Drawing.Size(414, 20)
+		Me.TxtMsg.Size = New System.Drawing.Size(383, 20)
 		Me.TxtMsg.TabIndex = 47
 		'
 		'BtnSend
@@ -184,7 +186,7 @@ Partial Class MainScreen
 		Me.DskLblUsers.AutoSize = True
 		Me.DskLblUsers.BackColor = System.Drawing.Color.Transparent
 		Me.DskLblUsers.ForeColor = System.Drawing.Color.Chartreuse
-		Me.DskLblUsers.Location = New System.Drawing.Point(11, 513)
+		Me.DskLblUsers.Location = New System.Drawing.Point(3, 513)
 		Me.DskLblUsers.Name = "DskLblUsers"
 		Me.DskLblUsers.Size = New System.Drawing.Size(113, 13)
 		Me.DskLblUsers.TabIndex = 61
@@ -195,7 +197,7 @@ Partial Class MainScreen
 		Me.LblUsers.AutoSize = True
 		Me.LblUsers.BackColor = System.Drawing.Color.Transparent
 		Me.LblUsers.ForeColor = System.Drawing.Color.Lime
-		Me.LblUsers.Location = New System.Drawing.Point(124, 513)
+		Me.LblUsers.Location = New System.Drawing.Point(116, 513)
 		Me.LblUsers.Name = "LblUsers"
 		Me.LblUsers.Size = New System.Drawing.Size(19, 13)
 		Me.LblUsers.TabIndex = 62
@@ -217,6 +219,7 @@ Partial Class MainScreen
 		'
 		'PnlVaporChat
 		'
+		Me.PnlVaporChat.Controls.Add(Me.BtnBackToStart)
 		Me.PnlVaporChat.Controls.Add(Me.LblUsers)
 		Me.PnlVaporChat.Controls.Add(Me.TxtUser)
 		Me.PnlVaporChat.Controls.Add(Me.DskLblUsers)
@@ -254,6 +257,7 @@ Partial Class MainScreen
 		'
 		Me.PnlAdmin.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(51, Byte), Integer))
 		Me.PnlAdmin.BackgroundImage = Global.VaporChat2020Application.My.Resources.Resources.ondulvapor
+		Me.PnlAdmin.Controls.Add(Me.BtnAdminBackToStart)
 		Me.PnlAdmin.Controls.Add(Me.BtnAdminSend)
 		Me.PnlAdmin.Controls.Add(Me.Label2)
 		Me.PnlAdmin.Controls.Add(Me.TxtAdminCommand)
@@ -265,15 +269,28 @@ Partial Class MainScreen
 		Me.PnlAdmin.Size = New System.Drawing.Size(481, 531)
 		Me.PnlAdmin.TabIndex = 65
 		'
+		'BtnAdminBackToStart
+		'
+		Me.BtnAdminBackToStart.BackColor = System.Drawing.Color.HotPink
+		Me.BtnAdminBackToStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+		Me.BtnAdminBackToStart.Font = New System.Drawing.Font("Consolas", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+		Me.BtnAdminBackToStart.ForeColor = System.Drawing.Color.Yellow
+		Me.BtnAdminBackToStart.Location = New System.Drawing.Point(115, 54)
+		Me.BtnAdminBackToStart.Name = "BtnAdminBackToStart"
+		Me.BtnAdminBackToStart.Size = New System.Drawing.Size(23, 23)
+		Me.BtnAdminBackToStart.TabIndex = 10
+		Me.BtnAdminBackToStart.Text = "<"
+		Me.BtnAdminBackToStart.UseVisualStyleBackColor = False
+		'
 		'BtnAdminSend
 		'
 		Me.BtnAdminSend.BackColor = System.Drawing.Color.DarkSlateBlue
 		Me.BtnAdminSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat
 		Me.BtnAdminSend.Font = New System.Drawing.Font("Consolas", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.BtnAdminSend.ForeColor = System.Drawing.Color.Violet
-		Me.BtnAdminSend.Location = New System.Drawing.Point(115, 54)
+		Me.BtnAdminSend.Location = New System.Drawing.Point(142, 54)
 		Me.BtnAdminSend.Name = "BtnAdminSend"
-		Me.BtnAdminSend.Size = New System.Drawing.Size(251, 23)
+		Me.BtnAdminSend.Size = New System.Drawing.Size(224, 23)
 		Me.BtnAdminSend.TabIndex = 9
 		Me.BtnAdminSend.Text = "前方に"
 		Me.BtnAdminSend.UseVisualStyleBackColor = False
@@ -322,14 +339,26 @@ Partial Class MainScreen
 		Me.TxtAdminUser.Size = New System.Drawing.Size(189, 20)
 		Me.TxtAdminUser.TabIndex = 5
 		'
+		'BtnBackToStart
+		'
+		Me.BtnBackToStart.BackColor = System.Drawing.SystemColors.ControlLight
+		Me.BtnBackToStart.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray
+		Me.BtnBackToStart.FlatStyle = System.Windows.Forms.FlatStyle.System
+		Me.BtnBackToStart.Location = New System.Drawing.Point(3, 490)
+		Me.BtnBackToStart.Name = "BtnBackToStart"
+		Me.BtnBackToStart.Size = New System.Drawing.Size(25, 20)
+		Me.BtnBackToStart.TabIndex = 63
+		Me.BtnBackToStart.Text = "<"
+		Me.BtnBackToStart.UseVisualStyleBackColor = False
+		'
 		'MainScreen
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
 		Me.ClientSize = New System.Drawing.Size(481, 531)
-		Me.Controls.Add(Me.PnlInsertPass)
 		Me.Controls.Add(Me.PnlVaporChat)
 		Me.Controls.Add(Me.PnlAdmin)
+		Me.Controls.Add(Me.PnlInsertPass)
 		Me.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
 		Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -370,4 +399,6 @@ Partial Class MainScreen
     Friend WithEvents TxtAdminCommand As TextBox
     Friend WithEvents Label1 As Label
     Friend WithEvents TxtAdminUser As TextBox
+	Friend WithEvents BtnAdminBackToStart As Button
+	Friend WithEvents BtnBackToStart As Button
 End Class

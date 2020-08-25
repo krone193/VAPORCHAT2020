@@ -464,7 +464,9 @@ Public Class MainScreen
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub ClosingFunc()
     If Connected = True Then
-      Vapor.SendMessage(My.Settings.LastUser, VaporChat.LEAVEVAP)
+      If CurrentTheme <> VaporChat.Themes.Admin Then
+        Vapor.SendMessage(My.Settings.LastUser, VaporChat.LEAVEVAP)
+      End If
       Vapor.Disconnect()
       Connected = False
     End If
@@ -630,6 +632,8 @@ Public Class MainScreen
   ReadOnly HIDE_LBLUSRFTXT As String = "Logged users"
   ReadOnly HIDE_LBLUSRFCLR As Color = SystemColors.WindowText
   ReadOnly HIDE_LBLUSRVCLR As Color = SystemColors.WindowText
+  ' A D M I N P A N E L T H E M E ----------------------------------------------------------------------------------------'
+  ReadOnly ADMIN_MAINWINTXT As String = "Λ░Ｄ░Ｍ░Ｉ░Ｎ░Ｐ░Λ░Ｎ░Ξ░Ｌ"
 
 
   '--- V A P O R G U I | Variables ---------------------------------------------------------------------------------------'
@@ -676,7 +680,9 @@ Public Class MainScreen
         CurrentGUI.LblUser.FixText = HIDE_LBLUSRFTXT
         CurrentGUI.LblUser.FixColor = HIDE_LBLUSRFCLR
         CurrentGUI.LblUser.VarColor = HIDE_LBLUSRVCLR
-      Case "null"
+      Case VaporChat.Themes.Admin
+        CurrentTheme = VaporChat.Themes.Admin
+        CurrentGUI.MainWinTxt = ADMIN_MAINWINTXT
     End Select
     Text = CurrentGUI.MainWinTxt
     PnlVaporChat.BackgroundImage = CurrentGUI.BackImage
@@ -684,10 +690,10 @@ Public Class MainScreen
     PnlInsertPass.BackgroundImage = CurrentGUI.BackImage
     PnlInsertPass.BackColor = CurrentGUI.BackColor
     LstChatVapo.BackColor = CurrentGUI.LstChat.BackColor
-    LstChatVapo.ForeColor = CurrentGUI.LstChat.BackColor
+    LstChatVapo.ForeColor = CurrentGUI.LstChat.TextColor
     For i = 0 To MAXROWS
       LstChatVapo.Items.Item(i).BackColor = CurrentGUI.LstChat.BackColor
-      LstChatVapo.Items.Item(i).ForeColor = CurrentGUI.LstChat.BackColor
+      LstChatVapo.Items.Item(i).ForeColor = CurrentGUI.LstChat.TextColor
     Next
     TxtUser.BackColor = CurrentGUI.TxtUser.BackColor
     TxtUser.ForeColor = CurrentGUI.TxtUser.TextColor
@@ -768,8 +774,17 @@ Public Class MainScreen
   Private Sub TxtInsertPass_TextChanged(sender As Object, e As EventArgs) Handles TxtInsertPass.TextChanged
     If TxtInsertPass.Text = VaporChat.PASSCHAT Then
       TxtInsertPass.Text = ""
-      PnlVaporChat.BringToFront()
-      Size = New Size(VaporChat.CHATWIDTH, VaporChat.CHATHEIGH)
+      Select Case CurrentTheme
+        Case VaporChat.Themes.Vapor
+          PnlVaporChat.BringToFront()
+          Size = New Size(VaporChat.CHATWIDTH, VaporChat.CHATHEIGH)
+        Case VaporChat.Themes.Hide
+          PnlVaporChat.BringToFront()
+          Size = New Size(VaporChat.CHATWIDTH, VaporChat.CHATHEIGH)
+        Case VaporChat.Themes.Admin
+          PnlAdmin.BringToFront()
+          Size = New Size(VaporChat.ADMNWIDTH, VaporChat.ADMNHEIGH)
+      End Select
       ForcePass = False
     End If
   End Sub
@@ -783,6 +798,14 @@ Public Class MainScreen
           TxtAdminUser.Text = ""
         End If
       End If
-      End If
+    End If
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub BtnAdminBackToStart_Click(sender As Object, e As EventArgs) Handles BtnAdminBackToStart.Click
+    LogOutFunc()
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub BtnBackToStart_Click(sender As Object, e As EventArgs) Handles BtnBackToStart.Click
+    LogOutFunc()
   End Sub
 End Class

@@ -42,6 +42,8 @@
       My.Computer.Keyboard.CapsLock Then
       Dim password As String = InputBox("You shall insert a passcode:")
       If password = VaporChat.ADMINPASSW Then
+        My.Settings.LastTheme = VaporChat.Themes.Admin
+        My.Settings.Save()
         MainScreen.Show()
         MainScreen.Size = New Size(VaporChat.ADMNWIDTH, VaporChat.ADMNHEIGH)
         MainScreen.PnlAdmin.BringToFront()
