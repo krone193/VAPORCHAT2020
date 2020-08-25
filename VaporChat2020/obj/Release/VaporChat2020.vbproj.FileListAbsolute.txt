@@ -103,3 +103,4 @@ C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020
 C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020\VaporChat2020\obj\Release\VaporChat2020.exe
 C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020\VaporChat2020\obj\Release\VaporChat2020.xml
 C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020\VaporChat2020\obj\Release\VaporChat2020.pdb
+C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020\VaporChat2020\obj\Release\VaporChat2020.vbprojAssemblyReference.cache
