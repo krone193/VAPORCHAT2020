@@ -1,27 +1,27 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class MainScreen
-    Inherits System.Windows.Forms.Form
+	Inherits System.Windows.Forms.Form
 
-    'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()>
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        Try
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-        Finally
-            MyBase.Dispose(disposing)
-        End Try
-    End Sub
+	'Form overrides dispose to clean up the component list.
+	<System.Diagnostics.DebuggerNonUserCode()>
+	Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+		Try
+			If disposing AndAlso components IsNot Nothing Then
+				components.Dispose()
+			End If
+		Finally
+			MyBase.Dispose(disposing)
+		End Try
+	End Sub
 
-    'Required by the Windows Form Designer
-    Private components As System.ComponentModel.IContainer
+	'Required by the Windows Form Designer
+	Private components As System.ComponentModel.IContainer
 
-    'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
-    'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()>
-    Private Sub InitializeComponent()
+	'NOTE: The following procedure is required by the Windows Form Designer
+	'It can be modified using the Windows Form Designer.  
+	'Do not modify it using the code editor.
+	<System.Diagnostics.DebuggerStepThrough()>
+	Private Sub InitializeComponent()
 		Me.components = New System.ComponentModel.Container()
 		Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"", "", ""}, -1, System.Drawing.Color.Empty, System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(51, Byte), Integer)), Nothing)
 		Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {""}, -1, System.Drawing.Color.Empty, System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(51, Byte), Integer)), Nothing)
@@ -71,6 +71,14 @@ Partial Class MainScreen
 		Me.TimerPubBlock = New System.Windows.Forms.Timer(Me.components)
 		Me.TimerAutoCloser = New System.Windows.Forms.Timer(Me.components)
 		Me.PnlVaporChat = New System.Windows.Forms.Panel()
+		Me.PnlUsersList = New System.Windows.Forms.Panel()
+		Me.LstUsersList = New System.Windows.Forms.ListView()
+		Me.ClmUsername = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+		Me.ClmLastMsg = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+		Me.BtnCloseUsersList = New System.Windows.Forms.Button()
+		Me.StsUsersList = New System.Windows.Forms.StatusStrip()
+		Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+		Me.BtnBackToStart = New System.Windows.Forms.Button()
 		Me.PnlInsertPass = New System.Windows.Forms.Panel()
 		Me.TxtInsertPass = New System.Windows.Forms.TextBox()
 		Me.PnlAdmin = New System.Windows.Forms.Panel()
@@ -80,20 +88,21 @@ Partial Class MainScreen
 		Me.TxtAdminCommand = New System.Windows.Forms.TextBox()
 		Me.Label1 = New System.Windows.Forms.Label()
 		Me.TxtAdminUser = New System.Windows.Forms.TextBox()
-		Me.BtnBackToStart = New System.Windows.Forms.Button()
 		Me.PnlVaporChat.SuspendLayout()
+		Me.PnlUsersList.SuspendLayout()
+		Me.StsUsersList.SuspendLayout()
 		Me.PnlInsertPass.SuspendLayout()
 		Me.PnlAdmin.SuspendLayout()
 		Me.SuspendLayout()
 		'
 		'BtnLogIn
 		'
-		Me.BtnLogIn.BackColor = System.Drawing.SystemColors.ControlLight
+		Me.BtnLogIn.BackColor = System.Drawing.Color.Orchid
 		Me.BtnLogIn.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray
-		Me.BtnLogIn.FlatStyle = System.Windows.Forms.FlatStyle.System
+		Me.BtnLogIn.ForeColor = System.Drawing.Color.Aquamarine
 		Me.BtnLogIn.Location = New System.Drawing.Point(114, 3)
 		Me.BtnLogIn.Name = "BtnLogIn"
-		Me.BtnLogIn.Size = New System.Drawing.Size(55, 20)
+		Me.BtnLogIn.Size = New System.Drawing.Size(63, 20)
 		Me.BtnLogIn.TabIndex = 44
 		Me.BtnLogIn.Text = "Log in"
 		Me.BtnLogIn.UseVisualStyleBackColor = False
@@ -139,10 +148,10 @@ Partial Class MainScreen
 		'
 		'BtnSend
 		'
-		Me.BtnSend.BackColor = System.Drawing.SystemColors.ControlLight
+		Me.BtnSend.BackColor = System.Drawing.Color.Crimson
 		Me.BtnSend.Enabled = False
 		Me.BtnSend.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray
-		Me.BtnSend.FlatStyle = System.Windows.Forms.FlatStyle.System
+		Me.BtnSend.ForeColor = System.Drawing.Color.Gold
 		Me.BtnSend.Location = New System.Drawing.Point(423, 490)
 		Me.BtnSend.Name = "BtnSend"
 		Me.BtnSend.Size = New System.Drawing.Size(55, 20)
@@ -219,6 +228,7 @@ Partial Class MainScreen
 		'
 		'PnlVaporChat
 		'
+		Me.PnlVaporChat.Controls.Add(Me.PnlUsersList)
 		Me.PnlVaporChat.Controls.Add(Me.BtnBackToStart)
 		Me.PnlVaporChat.Controls.Add(Me.LblUsers)
 		Me.PnlVaporChat.Controls.Add(Me.TxtUser)
@@ -234,6 +244,84 @@ Partial Class MainScreen
 		Me.PnlVaporChat.Name = "PnlVaporChat"
 		Me.PnlVaporChat.Size = New System.Drawing.Size(481, 531)
 		Me.PnlVaporChat.TabIndex = 63
+		'
+		'PnlUsersList
+		'
+		Me.PnlUsersList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.PnlUsersList.Controls.Add(Me.LstUsersList)
+		Me.PnlUsersList.Controls.Add(Me.BtnCloseUsersList)
+		Me.PnlUsersList.Controls.Add(Me.StsUsersList)
+		Me.PnlUsersList.Location = New System.Drawing.Point(84, 57)
+		Me.PnlUsersList.Name = "PnlUsersList"
+		Me.PnlUsersList.Size = New System.Drawing.Size(310, 241)
+		Me.PnlUsersList.TabIndex = 64
+		'
+		'LstUsersList
+		'
+		Me.LstUsersList.BackColor = System.Drawing.Color.MistyRose
+		Me.LstUsersList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ClmUsername, Me.ClmLastMsg})
+		Me.LstUsersList.FullRowSelect = True
+		Me.LstUsersList.GridLines = True
+		Me.LstUsersList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
+		Me.LstUsersList.HideSelection = False
+		Me.LstUsersList.Location = New System.Drawing.Point(3, 25)
+		Me.LstUsersList.MultiSelect = False
+		Me.LstUsersList.Name = "LstUsersList"
+		Me.LstUsersList.Scrollable = False
+		Me.LstUsersList.Size = New System.Drawing.Size(302, 211)
+		Me.LstUsersList.TabIndex = 66
+		Me.LstUsersList.UseCompatibleStateImageBehavior = False
+		Me.LstUsersList.View = System.Windows.Forms.View.List
+		'
+		'ClmUsername
+		'
+		Me.ClmUsername.Text = "Username"
+		Me.ClmUsername.Width = 151
+		'
+		'ClmLastMsg
+		'
+		Me.ClmLastMsg.Text = "Last message"
+		'
+		'BtnCloseUsersList
+		'
+		Me.BtnCloseUsersList.BackColor = System.Drawing.Color.FromArgb(CType(CType(225, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(50, Byte), Integer))
+		Me.BtnCloseUsersList.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray
+		Me.BtnCloseUsersList.ForeColor = System.Drawing.Color.White
+		Me.BtnCloseUsersList.Location = New System.Drawing.Point(287, 3)
+		Me.BtnCloseUsersList.Name = "BtnCloseUsersList"
+		Me.BtnCloseUsersList.Size = New System.Drawing.Size(18, 18)
+		Me.BtnCloseUsersList.TabIndex = 64
+		Me.BtnCloseUsersList.Text = "X"
+		Me.BtnCloseUsersList.UseVisualStyleBackColor = False
+		'
+		'StsUsersList
+		'
+		Me.StsUsersList.Dock = System.Windows.Forms.DockStyle.Top
+		Me.StsUsersList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
+		Me.StsUsersList.Location = New System.Drawing.Point(0, 0)
+		Me.StsUsersList.Name = "StsUsersList"
+		Me.StsUsersList.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
+		Me.StsUsersList.Size = New System.Drawing.Size(308, 22)
+		Me.StsUsersList.TabIndex = 65
+		Me.StsUsersList.Text = "Users list"
+		'
+		'ToolStripStatusLabel1
+		'
+		Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
+		Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(53, 17)
+		Me.ToolStripStatusLabel1.Text = "Users list"
+		'
+		'BtnBackToStart
+		'
+		Me.BtnBackToStart.BackColor = System.Drawing.Color.Orange
+		Me.BtnBackToStart.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray
+		Me.BtnBackToStart.ForeColor = System.Drawing.Color.CadetBlue
+		Me.BtnBackToStart.Location = New System.Drawing.Point(3, 490)
+		Me.BtnBackToStart.Name = "BtnBackToStart"
+		Me.BtnBackToStart.Size = New System.Drawing.Size(25, 20)
+		Me.BtnBackToStart.TabIndex = 63
+		Me.BtnBackToStart.Text = "<"
+		Me.BtnBackToStart.UseVisualStyleBackColor = False
 		'
 		'PnlInsertPass
 		'
@@ -339,18 +427,6 @@ Partial Class MainScreen
 		Me.TxtAdminUser.Size = New System.Drawing.Size(189, 20)
 		Me.TxtAdminUser.TabIndex = 5
 		'
-		'BtnBackToStart
-		'
-		Me.BtnBackToStart.BackColor = System.Drawing.SystemColors.ControlLight
-		Me.BtnBackToStart.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray
-		Me.BtnBackToStart.FlatStyle = System.Windows.Forms.FlatStyle.System
-		Me.BtnBackToStart.Location = New System.Drawing.Point(3, 490)
-		Me.BtnBackToStart.Name = "BtnBackToStart"
-		Me.BtnBackToStart.Size = New System.Drawing.Size(25, 20)
-		Me.BtnBackToStart.TabIndex = 63
-		Me.BtnBackToStart.Text = "<"
-		Me.BtnBackToStart.UseVisualStyleBackColor = False
-		'
 		'MainScreen
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -368,6 +444,10 @@ Partial Class MainScreen
 		Me.Text = "Dummy text"
 		Me.PnlVaporChat.ResumeLayout(False)
 		Me.PnlVaporChat.PerformLayout()
+		Me.PnlUsersList.ResumeLayout(False)
+		Me.PnlUsersList.PerformLayout()
+		Me.StsUsersList.ResumeLayout(False)
+		Me.StsUsersList.PerformLayout()
 		Me.PnlInsertPass.ResumeLayout(False)
 		Me.PnlInsertPass.PerformLayout()
 		Me.PnlAdmin.ResumeLayout(False)
@@ -376,29 +456,36 @@ Partial Class MainScreen
 
 	End Sub
 	Friend WithEvents BtnLogIn As Button
-    Friend WithEvents TxtUser As TextBox
-    Friend WithEvents clmUser As ColumnHeader
-    Friend WithEvents clmMessage As ColumnHeader
-    Friend WithEvents DskLblLogs As Label
-    Friend WithEvents TxtMsg As TextBox
-    Friend WithEvents BtnSend As Button
-    Friend WithEvents LstChatVapo As ListView
-    Friend WithEvents TimerCheckMsg As Timer
-    Friend WithEvents LblLog As Label
-    Friend WithEvents DskLblUsers As Label
-    Friend WithEvents LblUsers As Label
-    Friend WithEvents TimerGUI As Timer
-    Friend WithEvents TimerPubBlock As Timer
-    Friend WithEvents TimerAutoCloser As Timer
-    Friend WithEvents PnlVaporChat As Panel
-    Friend WithEvents PnlInsertPass As Panel
-    Friend WithEvents TxtInsertPass As TextBox
-    Friend WithEvents PnlAdmin As Panel
-    Friend WithEvents BtnAdminSend As Button
-    Friend WithEvents Label2 As Label
-    Friend WithEvents TxtAdminCommand As TextBox
-    Friend WithEvents Label1 As Label
-    Friend WithEvents TxtAdminUser As TextBox
+	Friend WithEvents TxtUser As TextBox
+	Friend WithEvents clmUser As ColumnHeader
+	Friend WithEvents clmMessage As ColumnHeader
+	Friend WithEvents DskLblLogs As Label
+	Friend WithEvents TxtMsg As TextBox
+	Friend WithEvents BtnSend As Button
+	Friend WithEvents LstChatVapo As ListView
+	Friend WithEvents TimerCheckMsg As Timer
+	Friend WithEvents LblLog As Label
+	Friend WithEvents DskLblUsers As Label
+	Friend WithEvents LblUsers As Label
+	Friend WithEvents TimerGUI As Timer
+	Friend WithEvents TimerPubBlock As Timer
+	Friend WithEvents TimerAutoCloser As Timer
+	Friend WithEvents PnlVaporChat As Panel
+	Friend WithEvents PnlInsertPass As Panel
+	Friend WithEvents TxtInsertPass As TextBox
+	Friend WithEvents PnlAdmin As Panel
+	Friend WithEvents BtnAdminSend As Button
+	Friend WithEvents Label2 As Label
+	Friend WithEvents TxtAdminCommand As TextBox
+	Friend WithEvents Label1 As Label
+	Friend WithEvents TxtAdminUser As TextBox
 	Friend WithEvents BtnAdminBackToStart As Button
 	Friend WithEvents BtnBackToStart As Button
+	Friend WithEvents PnlUsersList As Panel
+	Friend WithEvents BtnCloseUsersList As Button
+	Friend WithEvents LstUsersList As ListView
+	Friend WithEvents StsUsersList As StatusStrip
+	Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
+	Friend WithEvents ClmUsername As ColumnHeader
+	Friend WithEvents ClmLastMsg As ColumnHeader
 End Class

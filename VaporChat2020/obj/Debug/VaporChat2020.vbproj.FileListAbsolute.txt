@@ -96,7 +96,6 @@ C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020
 C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020\VaporChat2020\bin\Debug\VaporChat2020.pdb
 C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020\VaporChat2020\bin\Debug\VaporChat2020.xml
 C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020\VaporChat2020\bin\Debug\MQTTnet.dll
-C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020.vbprojAssemblyReference.cache
 C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020Application.StartScreen.resources
 C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020Application.Resources.resources
 C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020Application.MainScreen.resources
