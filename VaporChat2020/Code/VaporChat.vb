@@ -13,7 +13,7 @@ Public Class VaporChat
 
   '--- V A P O R C H A T | Declarations ----------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
-#Const USE_PUBLIC_SERVER = True
+#Const USE_SERVER = "MOSQUITTO"
 
 
   '--- V A P O R C H A T | Private Constants -----------------------------------------------------------------------------'
@@ -23,13 +23,19 @@ Public Class VaporChat
   ' MQTT -----------------------------------------------------------------------------------------------------------------'
   Private Const MQTTROOT As String = "kronelab/vaporchat/"
   Private Const MQTTCONF As String = "conf/"
-#If USE_PUBLIC_SERVER = True Then
-  Private Const MQTTHOST As String = "broker.hivemq.com"
+#If USE_SERVER = "HIVEMQ" Then
+  'Private Const MQTTHOST As String = "broker.hivemq.com"
   Private Const MQTTUSER As String = ""
   Private Const MQTTPASS As String = ""
   Private Const MQTTPORT As UShort = 1883
-  Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.AtMostOnce
-#Else
+  'Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.AtMostOnce
+#ElseIf USE_SERVER = "MOSQUITTO" Then
+  Private Const MQTTHOST As String = "test.mosquitto.org"
+  Private Const MQTTUSER As String = ""
+  Private Const MQTTPASS As String = ""
+  Private Const MQTTPORT As UShort = 1883
+  Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.ExactlyOnce
+#ElseIf USE_SERVER = "CLOUDMQTT" Then
   Private Const MQTTHOST As String = "m24.cloudmqtt.com"
   Private Const MQTTUSER As String = "lyomijtv"
   Private Const MQTTPASS As String = "HsCyFqrM3ghT"
