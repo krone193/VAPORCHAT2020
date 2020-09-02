@@ -46,19 +46,68 @@ Public Class VaporChat
   Private Const CRYPTERR As String = "void" & SEPTCHAR & "drink some T A S S O N I and try again"
 
 
+  '--- V A P O R C H A T | Public ReadOnly -------------------------------------------------------------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public ReadOnly NOFCLRS As UShort = 10
+  Public ReadOnly ColorPool = New Color() {Color.Crimson, Color.HotPink, Color.Gold, Color.DarkOrchid, Color.Violet,
+                                    Color.DodgerBlue, Color.Teal, Color.Lime, Color.DarkOrange, Color.SpringGreen}
+  ' V A P O R C H A T 2 0 2 0 T H E M E ----------------------------------------------------------------------------------'
+  Public ReadOnly VAPOR_MAINWINTXT As String = "(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ"
+  Public ReadOnly VAPOR_MAINBCKIMG As Image = Image.FromFile("Resources/ondulvapor.jpg")
+  Public ReadOnly VAPOR_MAINBCKCLR As Color = Color.FromArgb(40, 31, 51)
+  Public ReadOnly VAPOR_CHATBCKCLR As Color = Color.FromArgb(40, 31, 51)
+  Public ReadOnly VAPOR_CHATFRTCLR As Color = Color.Gold
+  Public ReadOnly VAPOR_USERBCKCLR As Color = Color.FromArgb(40, 31, 51)
+  Public ReadOnly VAPOR_USERFRTCLR As Color = SystemColors.Highlight
+  Public ReadOnly VAPOR_SENDBCKCLR As Color = Color.FromArgb(40, 31, 51)
+  Public ReadOnly VAPOR_SENDFRTCLR As Color = Color.DarkOrchid
+  Public ReadOnly VAPOR_LBLLOGFTXT As String = "Logs をノだ"
+  Public ReadOnly VAPOR_LBLLOGFCLR As Color = Color.HotPink
+  Public ReadOnly VAPOR_LBLLOGVCLR As Color = Color.Pink
+  Public ReadOnly VAPOR_LBLUSRFTXT As String = "Logged users 俺鉛プ"
+  Public ReadOnly VAPOR_LBLUSRFCLR As Color = Color.Chartreuse
+  Public ReadOnly VAPOR_LBLUSRVCLR As Color = Color.Lime
+  Public ReadOnly VAPOR_BTNFLSTYLE As FlatStyle = FlatStyle.Standard
+  Public ReadOnly VAPOR_BTNLOGBCLR As Color = Color.Orchid
+  Public ReadOnly VAPOR_BTNLOGFCLR As Color = Color.Aquamarine
+  Public ReadOnly VAPOR_BTNSNDBCLR As Color = Color.Crimson
+  Public ReadOnly VAPOR_BTNSNDFCLR As Color = Color.Gold
+  Public ReadOnly VAPOR_BTNBCKBCLR As Color = Color.DarkOrange
+  Public ReadOnly VAPOR_BTNBCKFCLR As Color = Color.CadetBlue
+  Public ReadOnly VAPOR_USRLSTBCLR As Color = Color.DarkSlateGray
+  ' H I D E C H A T 2 0 2 0 T H E M E ------------------------------------------------------------------------------------'
+  Public ReadOnly HIDE_MAINWINTXT As String = "IOT demo service"
+  Public ReadOnly HIDE_MAINBCKIMG As Image
+  Public ReadOnly HIDE_MAINBCKCLR As Color = SystemColors.Control
+  Public ReadOnly HIDE_CHATBCKCLR As Color = SystemColors.ControlLightLight
+  Public ReadOnly HIDE_CHATFRTCLR As Color = SystemColors.WindowText
+  Public ReadOnly HIDE_USERBCKCLR As Color = SystemColors.Control
+  Public ReadOnly HIDE_USERFRTCLR As Color = SystemColors.WindowText
+  Public ReadOnly HIDE_SENDBCKCLR As Color = SystemColors.Control
+  Public ReadOnly HIDE_SENDFRTCLR As Color = SystemColors.WindowText
+  Public ReadOnly HIDE_LBLLOGFTXT As String = "Logs"
+  Public ReadOnly HIDE_LBLLOGFCLR As Color = SystemColors.WindowText
+  Public ReadOnly HIDE_LBLLOGVCLR As Color = SystemColors.WindowText
+  Public ReadOnly HIDE_LBLUSRFTXT As String = "Logged users"
+  Public ReadOnly HIDE_LBLUSRFCLR As Color = SystemColors.WindowText
+  Public ReadOnly HIDE_LBLUSRVCLR As Color = SystemColors.WindowText
+  Public ReadOnly HIDE_BTNFLSTYLE As FlatStyle = FlatStyle.System
+  Public ReadOnly HIDE_BTNLOGBCLR As Color = SystemColors.ControlLight
+  Public ReadOnly HIDE_BTNLOGFCLR As Color = SystemColors.ControlText
+  Public ReadOnly HIDE_BTNSNDBCLR As Color = SystemColors.ControlLight
+  Public ReadOnly HIDE_BTNSNDFCLR As Color = SystemColors.ControlText
+  Public ReadOnly HIDE_BTNBCKBCLR As Color = SystemColors.ControlLight
+  Public ReadOnly HIDE_BTNBCKFCLR As Color = SystemColors.ControlText
+  Public ReadOnly HIDE_USRLSTBCLR As Color = SystemColors.Window
+
+
+  ' A D M I N P A N E L T H E M E ----------------------------------------------------------------------------------------'
+  Public ReadOnly ADMIN_MAINWINTXT As String = "Λ░Ｄ░Ｍ░Ｉ░Ｎ░Ｐ░Λ░Ｎ░Ξ░Ｌ"
+
+
   '--- V A P O R C H A T | Public Constants ------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Const MAXROWS As UShort = 30
-  ' V A P O R C H A T 2 0 2 0 T H E M E ----------------------------------------------------------------------------------'
-  Public Const VAPOR_MAINWINTXT As String = "(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ"
-  Public Const VAPOR_LBLLOGFTXT As String = "Logs をノだ"
-  Public Const VAPOR_LBLUSRFTXT As String = "Logged users 俺鉛プ"
-  ' H I D E C H A T 2 0 2 0 T H E M E ------------------------------------------------------------------------------------'
-  Public Const HIDE_MAINWINTXT As String = "IOT demo service"
-  Public Const HIDE_LBLLOGFTXT As String = "Logs"
-  Public Const HIDE_LBLUSRFTXT As String = "Logged users"
-  ' A D M I N P A N E L T H E M E ----------------------------------------------------------------------------------------'
-  Public Const ADMIN_MAINWINTXT As String = "Λ░Ｄ░Ｍ░Ｉ░Ｎ░Ｐ░Λ░Ｎ░Ξ░Ｌ"
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Const PASSCHAT As String = "paint"
   Public Const SEPTCHAR As String = "ヿーニ"
@@ -83,6 +132,9 @@ Public Class VaporChat
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Const LOGINBTXT As String = "Log in"
   Public Const LOGOUBTXT As String = "Log out"
+  Public Const LOGPROG01 As String = "."
+  Public Const LOGPROG02 As String = ".."
+  Public Const LOGPROG03 As String = "..."
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Const CHATWIDTH As UShort = 497
   Public Const CHATHEIGH As UShort = 570
@@ -96,6 +148,8 @@ Public Class VaporChat
   Public Const TUPDTGUI As UShort = 500
   '-----------------------------------------------------------------------------------------------------------------------' 
   ' Command format >  /<command>:<target user>:<optional>
+  Public Const ADMINUNAME As String = "V A P O R A D M I N"
+  Public Const ADMINSPLIT As String = ":"
   Public Const ADMINPASSW As String = "tassorosso"
   Public Const ADMINMUTEU As String = "/mute"
   Public Const ADMINUMUTE As String = "/allow"
