@@ -13,7 +13,7 @@ Public Class VaporChat
 
   '--- V A P O R C H A T | Declarations ----------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
-#Const USE_SERVER = "MOSQUITTO"
+#Const USE_SERVER = "HIVEMQ"
 
 
   '--- V A P O R C H A T | Private Constants -----------------------------------------------------------------------------'
@@ -24,17 +24,17 @@ Public Class VaporChat
   Private Const MQTTROOT As String = "kronelab/vaporchat/"
   Private Const MQTTCONF As String = "conf/"
 #If USE_SERVER = "HIVEMQ" Then
-  'Private Const MQTTHOST As String = "broker.hivemq.com"
+  Private Const MQTTHOST As String = "broker.hivemq.com"
   Private Const MQTTUSER As String = ""
   Private Const MQTTPASS As String = ""
   Private Const MQTTPORT As UShort = 1883
-  'Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.AtMostOnce
+  Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.AtMostOnce
 #ElseIf USE_SERVER = "MOSQUITTO" Then
   Private Const MQTTHOST As String = "test.mosquitto.org"
   Private Const MQTTUSER As String = ""
   Private Const MQTTPASS As String = ""
   Private Const MQTTPORT As UShort = 1883
-  Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.ExactlyOnce
+  Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.AtMostOnce
 #ElseIf USE_SERVER = "CLOUDMQTT" Then
   Private Const MQTTHOST As String = "m24.cloudmqtt.com"
   Private Const MQTTUSER As String = "lyomijtv"
@@ -47,6 +47,18 @@ Public Class VaporChat
 
 
   '--- V A P O R C H A T | Public Constants ------------------------------------------------------------------------------'
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public Const MAXROWS As UShort = 30
+  ' V A P O R C H A T 2 0 2 0 T H E M E ----------------------------------------------------------------------------------'
+  Public Const VAPOR_MAINWINTXT As String = "(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ"
+  Public Const VAPOR_LBLLOGFTXT As String = "Logs をノだ"
+  Public Const VAPOR_LBLUSRFTXT As String = "Logged users 俺鉛プ"
+  ' H I D E C H A T 2 0 2 0 T H E M E ------------------------------------------------------------------------------------'
+  Public Const HIDE_MAINWINTXT As String = "IOT demo service"
+  Public Const HIDE_LBLLOGFTXT As String = "Logs"
+  Public Const HIDE_LBLUSRFTXT As String = "Logged users"
+  ' A D M I N P A N E L T H E M E ----------------------------------------------------------------------------------------'
+  Public Const ADMIN_MAINWINTXT As String = "Λ░Ｄ░Ｍ░Ｉ░Ｎ░Ｐ░Λ░Ｎ░Ξ░Ｌ"
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Const PASSCHAT As String = "paint"
   Public Const SEPTCHAR As String = "ヿーニ"
@@ -68,6 +80,9 @@ Public Class VaporChat
   Public Const SENDUKEY As Keys = Keys.Enter
   Public Const HIDEUKEY As Keys = Keys.F1
   Public Const SHOWUKEY As Keys = Keys.F2
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public Const LOGINBTXT As String = "Log in"
+  Public Const LOGOUBTXT As String = "Log out"
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Const CHATWIDTH As UShort = 497
   Public Const CHATHEIGH As UShort = 570
@@ -173,7 +188,6 @@ Public Class VaporChat
     messageBuilder.WithCleanSession(True)
     messageBuilder.Build()
     messageBuilder.WithKeepAlivePeriod(TimeSpan.FromSeconds(30))
-    messageBuilder.WithKeepAliveSendInterval(TimeSpan.FromSeconds(30))
     messageBuilder.WithWillMessage(lastwill)
     conongoing = True
     Try
@@ -190,13 +204,13 @@ Public Class VaporChat
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Async Sub MQTTSubscribe(ByVal topic As String, qos As Protocol.MqttQualityOfServiceLevel)
-    Dim mqttTopicFilterBuilder As New TopicFilterBuilder
-    mqttTopicFilterBuilder.WithTopic(topic)
-    mqttTopicFilterBuilder.WithQualityOfServiceLevel(qos)
-    mqttTopicFilterBuilder.Build()
+    Dim mqttTopicFilter As New MqttTopicFilter With {
+      .Topic = topic,
+      .QualityOfServiceLevel = qos
+    }
     subongoing = True
     Try
-      Await MqttClient.SubscribeAsync(mqttTopicFilterBuilder.Build())
+      Await MqttClient.SubscribeAsync(mqttTopicFilter)
     Catch ex As Exception
       subok = False
     Finally

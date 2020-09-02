@@ -3,13 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="LastUser" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">.</Value>
     </Setting>
     <Setting Name="VaporChat2020Ver" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">1.2.3.1</Value>
+      <Value Profile="(Default)">1.2.3.2</Value>
     </Setting>
     <Setting Name="VaporChatVer" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">1.1.0.4</Value>
+      <Value Profile="(Default)">1.1.0.5</Value>
     </Setting>
     <Setting Name="Muted" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

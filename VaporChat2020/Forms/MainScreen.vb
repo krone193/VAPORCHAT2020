@@ -23,7 +23,6 @@ Public Class MainScreen
   ReadOnly NOFCLRS As UShort = 10
   ReadOnly ColorPool = New Color() {Color.Crimson, Color.HotPink, Color.Gold, Color.DarkOrchid, Color.Violet,
                                     Color.DodgerBlue, Color.Teal, Color.Lime, Color.DarkOrange, Color.SpringGreen}
-  ReadOnly MAXROWS As UShort = 30
   ReadOnly UserList As New List(Of User)
   ReadOnly BannedText As New List(Of String)
 
@@ -209,14 +208,14 @@ Public Class MainScreen
       ForceSwitchOffFunc()
 
       ' Copy items in list view
-      For i As Byte = 0 To MAXROWS - 1
+      For i As Byte = 0 To VaporChat.MAXROWS - 1
         copieditems = LstChatVapo.Items(i + 1).Clone
         LstChatVapo.Items(i) = copieditems
       Next
 
       ' Add item to ListView
-      LstChatVapo.Items(MAXROWS) = item
-      If NofMessages < MAXROWS Then
+      LstChatVapo.Items(VaporChat.MAXROWS) = item
+      If NofMessages < VaporChat.MAXROWS Then
         NofMessages += 1
       End If
 
@@ -301,10 +300,10 @@ Public Class MainScreen
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Sub LogInFunc()
-    If BtnLogIn.Text = "Log in" Then
+    If BtnLogIn.Text = VaporChat.LOGINBTXT Then
       My.Settings.LastUser = TxtUser.Text
       My.Settings.Save()
-      BtnLogIn.Text = "Log out"
+      BtnLogIn.Text = VaporChat.LOGOUBTXT
       TxtUser.Enabled = False
       TxtMsg.MaxLength = Vapor.MaxMessageLen()
       If Vapor.Connect(My.Settings.LastUser) Then
@@ -475,6 +474,7 @@ Public Class MainScreen
       If Vapor.GetSubState() = False Then
         If Vapor.GetSubOngoing() = False Then
           LblLog.Text = VaporChat.LOGERROR
+          BtnLogIn.Text = VaporChat.LOGINBTXT
         End If
       End If
       If Vapor.GetPubState() = False Then
@@ -518,7 +518,7 @@ Public Class MainScreen
   Private Sub CopyItemFunc(ByVal e As MouseEventArgs)
     If e.Button = MouseButtons.Left And My.Computer.Keyboard.CtrlKeyDown Then
       If UsersListOn = False Then
-        If LstChatVapo.SelectedIndices(0) > MAXROWS - NofMessages Then
+        If LstChatVapo.SelectedIndices(0) > VaporChat.MAXROWS - NofMessages Then
           If LstChatVapo.Items(LstChatVapo.SelectedIndices(0)).SubItems.Count > 0 Then
             If LstChatVapo.Items(LstChatVapo.SelectedIndices(0)).SubItems(1).Text <> "" Then
               Clipboard.Clear()
@@ -538,7 +538,7 @@ Public Class MainScreen
     ElseIf e.Button = MouseButtons.Right Then
       If UsersListOn = False Then
         If MessageRxOn = False Then
-          If LstChatVapo.SelectedIndices(0) > MAXROWS - NofMessages Then
+          If LstChatVapo.SelectedIndices(0) > VaporChat.MAXROWS - NofMessages Then
             If SwitchOn = False Then
               SwitchIndex = LstChatVapo.SelectedIndices(0)
               SwitchText = LstChatVapo.Items(SwitchIndex).SubItems(1).Text
@@ -618,7 +618,6 @@ Public Class MainScreen
 
   '--- V A P O R G U I | Themes constants --------------------------------------------------------------------------------'
   ' V A P O R C H A T 2 0 2 0 T H E M E ----------------------------------------------------------------------------------'
-  ReadOnly VAPOR_MAINWINTXT As String = "(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ"
   ReadOnly VAPOR_MAINBCKIMG As Image = Image.FromFile("Resources/ondulvapor.jpg")
   ReadOnly VAPOR_MAINBCKCLR As Color = Color.FromArgb(40, 31, 51)
   ReadOnly VAPOR_CHATBCKCLR As Color = Color.FromArgb(40, 31, 51)
@@ -627,10 +626,8 @@ Public Class MainScreen
   ReadOnly VAPOR_USERFRTCLR As Color = SystemColors.Highlight
   ReadOnly VAPOR_SENDBCKCLR As Color = Color.FromArgb(40, 31, 51)
   ReadOnly VAPOR_SENDFRTCLR As Color = Color.DarkOrchid
-  ReadOnly VAPOR_LBLLOGFTXT As String = "Logs をノだ"
   ReadOnly VAPOR_LBLLOGFCLR As Color = Color.HotPink
   ReadOnly VAPOR_LBLLOGVCLR As Color = Color.Pink
-  ReadOnly VAPOR_LBLUSRFTXT As String = "Logged users 俺鉛プ"
   ReadOnly VAPOR_LBLUSRFCLR As Color = Color.Chartreuse
   ReadOnly VAPOR_LBLUSRVCLR As Color = Color.Lime
   ReadOnly VAPOR_BTNFLSTYLE As FlatStyle = FlatStyle.Standard
@@ -640,9 +637,8 @@ Public Class MainScreen
   ReadOnly VAPOR_BTNSNDFCLR As Color = Color.Gold
   ReadOnly VAPOR_BTNBCKBCLR As Color = Color.DarkOrange
   ReadOnly VAPOR_BTNBCKFCLR As Color = Color.CadetBlue
-  ReadOnly VAPOR_USRLSTBCLR As Color = Color.MistyRose
+  ReadOnly VAPOR_USRLSTBCLR As Color = Color.DarkSlateGray
   ' H I D E C H A T 2 0 2 0 T H E M E ------------------------------------------------------------------------------------'
-  ReadOnly HIDE_MAINWINTXT As String = "IOT demo service"
   ReadOnly HIDE_MAINBCKIMG As Image
   ReadOnly HIDE_MAINBCKCLR As Color = SystemColors.Control
   ReadOnly HIDE_CHATBCKCLR As Color = SystemColors.ControlLightLight
@@ -651,10 +647,8 @@ Public Class MainScreen
   ReadOnly HIDE_USERFRTCLR As Color = SystemColors.WindowText
   ReadOnly HIDE_SENDBCKCLR As Color = SystemColors.Control
   ReadOnly HIDE_SENDFRTCLR As Color = SystemColors.WindowText
-  ReadOnly HIDE_LBLLOGFTXT As String = "Logs"
   ReadOnly HIDE_LBLLOGFCLR As Color = SystemColors.WindowText
   ReadOnly HIDE_LBLLOGVCLR As Color = SystemColors.WindowText
-  ReadOnly HIDE_LBLUSRFTXT As String = "Logged users"
   ReadOnly HIDE_BTNFLSTYLE As FlatStyle = FlatStyle.System
   ReadOnly HIDE_LBLUSRFCLR As Color = SystemColors.WindowText
   ReadOnly HIDE_LBLUSRVCLR As Color = SystemColors.WindowText
@@ -665,8 +659,6 @@ Public Class MainScreen
   ReadOnly HIDE_BTNBCKBCLR As Color = SystemColors.ControlLight
   ReadOnly HIDE_BTNBCKFCLR As Color = SystemColors.ControlText
   ReadOnly HIDE_USRLSTBCLR As Color = SystemColors.Window
-  ' A D M I N P A N E L T H E M E ----------------------------------------------------------------------------------------'
-  ReadOnly ADMIN_MAINWINTXT As String = "Λ░Ｄ░Ｍ░Ｉ░Ｎ░Ｐ░Λ░Ｎ░Ξ░Ｌ"
 
 
   '--- V A P O R G U I | Variables ---------------------------------------------------------------------------------------'
@@ -683,7 +675,7 @@ Public Class MainScreen
     Select Case My.Settings.LastTheme
       Case VaporChat.Themes.Vapor
         CurrentTheme = VaporChat.Themes.Vapor
-        Text = VAPOR_MAINWINTXT
+        Text = VaporChat.VAPOR_MAINWINTXT
         PnlVaporChat.BackgroundImage = VAPOR_MAINBCKIMG
         PnlVaporChat.BackColor = VAPOR_MAINBCKCLR
         PnlInsertPass.BackgroundImage = VAPOR_MAINBCKIMG
@@ -692,7 +684,7 @@ Public Class MainScreen
         TxtInsertPass.ForeColor = VAPOR_USERFRTCLR
         LstChatVapo.BackColor = VAPOR_CHATBCKCLR
         LstChatVapo.ForeColor = VAPOR_CHATFRTCLR
-        For i = 0 To MAXROWS
+        For i = 0 To VaporChat.MAXROWS
           LstChatVapo.Items.Item(i).BackColor = VAPOR_CHATBCKCLR
           LstChatVapo.Items.Item(i).ForeColor = VAPOR_CHATFRTCLR
         Next
@@ -700,10 +692,10 @@ Public Class MainScreen
         TxtUser.ForeColor = VAPOR_USERFRTCLR
         TxtMsg.BackColor = VAPOR_SENDBCKCLR
         TxtMsg.ForeColor = VAPOR_SENDFRTCLR
-        DskLblLogs.Text = VAPOR_LBLLOGFTXT
+        DskLblLogs.Text = VaporChat.VAPOR_LBLLOGFTXT
         DskLblLogs.ForeColor = VAPOR_LBLLOGFCLR
         LblLog.ForeColor = VAPOR_LBLLOGVCLR
-        DskLblUsers.Text = VAPOR_LBLUSRFTXT
+        DskLblUsers.Text = VaporChat.VAPOR_LBLUSRFTXT
         DskLblUsers.ForeColor = VAPOR_LBLUSRFCLR
         LblUsers.ForeColor = VAPOR_LBLUSRVCLR
         BtnLogIn.FlatStyle = VAPOR_BTNFLSTYLE
@@ -718,7 +710,7 @@ Public Class MainScreen
         LstUsersList.BackColor = VAPOR_USRLSTBCLR
       Case VaporChat.Themes.Hide
         CurrentTheme = VaporChat.Themes.Hide
-        Text = HIDE_MAINWINTXT
+        Text = VaporChat.HIDE_MAINWINTXT
         PnlVaporChat.BackgroundImage = HIDE_MAINBCKIMG
         PnlVaporChat.BackColor = HIDE_MAINBCKCLR
         PnlInsertPass.BackgroundImage = HIDE_MAINBCKIMG
@@ -727,7 +719,7 @@ Public Class MainScreen
         TxtInsertPass.ForeColor = HIDE_USERFRTCLR
         LstChatVapo.BackColor = HIDE_CHATBCKCLR
         LstChatVapo.ForeColor = HIDE_CHATFRTCLR
-        For i = 0 To MAXROWS
+        For i = 0 To VaporChat.MAXROWS
           LstChatVapo.Items.Item(i).BackColor = HIDE_CHATBCKCLR
           LstChatVapo.Items.Item(i).ForeColor = HIDE_CHATFRTCLR
         Next
@@ -735,10 +727,10 @@ Public Class MainScreen
         TxtUser.ForeColor = HIDE_USERFRTCLR
         TxtMsg.BackColor = HIDE_SENDBCKCLR
         TxtMsg.ForeColor = HIDE_SENDFRTCLR
-        DskLblLogs.Text = HIDE_LBLLOGFTXT
+        DskLblLogs.Text = VaporChat.HIDE_LBLLOGFTXT
         DskLblLogs.ForeColor = HIDE_LBLLOGFCLR
         LblLog.ForeColor = HIDE_LBLLOGVCLR
-        DskLblUsers.Text = HIDE_LBLUSRFTXT
+        DskLblUsers.Text = VaporChat.HIDE_LBLUSRFTXT
         DskLblUsers.ForeColor = HIDE_LBLUSRFCLR
         LblUsers.ForeColor = HIDE_LBLUSRVCLR
         BtnLogIn.FlatStyle = HIDE_BTNFLSTYLE
@@ -753,7 +745,7 @@ Public Class MainScreen
         LstUsersList.BackColor = HIDE_USRLSTBCLR
       Case VaporChat.Themes.Admin
         CurrentTheme = VaporChat.Themes.Admin
-        Text = ADMIN_MAINWINTXT
+        Text = VaporChat.ADMIN_MAINWINTXT
     End Select
 
     FormLoadFunc(Me, LstChatVapo, BtnSend, BtnLogIn, TxtMsg, TxtUser, LblLog, LblUsers, TimerCheckMsg, TimerPubBlock, TimerGUI, TimerAutoCloser)

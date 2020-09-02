@@ -258,7 +258,7 @@ Partial Class MainScreen
 		'
 		'LstUsersList
 		'
-		Me.LstUsersList.BackColor = System.Drawing.Color.MistyRose
+		Me.LstUsersList.BackColor = System.Drawing.Color.DarkSlateGray
 		Me.LstUsersList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ClmUsername, Me.ClmLastMsg})
 		Me.LstUsersList.FullRowSelect = True
 		Me.LstUsersList.GridLines = True
