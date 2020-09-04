@@ -13,6 +13,7 @@ Public Class VaporChat
 
   '--- V A P O R C H A T | Declarations ----------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
+#Const VAPORCHAT_SWVER = "1.1.0.7"
 #Const USE_SERVER = "HIVEMQ"
 
 
@@ -199,6 +200,8 @@ Public Class VaporChat
   Private subok As Boolean = True
   Private messagetopic As String = ""
   Private configstopic As String = ""
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public CurrentTheme As VaporChat.Themes
 
 
   '--- V A P O R C H A T | MQTT Service Functions ------------------------------------------------------------------------'

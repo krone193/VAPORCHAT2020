@@ -30,7 +30,6 @@
   '-----------------------------------------------------------------------------------------------------------------------'
   Private Sub StartScreen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
     lblVaporChat2020Ver.Text = My.Settings.VaporChat2020Ver
-    lblVaporChatVer.Text = My.Settings.VaporChatVer
     TxtPassword.Focus()
     CmbCloserTime.Text = My.Settings.Timeout / 1000
   End Sub
