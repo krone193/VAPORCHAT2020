@@ -51,12 +51,8 @@ Public Class MainScreen
 
   ' V A P O R G U I | Functions ------------------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
-  Private Sub VapoMainScreen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-    Dim NotifyIcon As New Icon(VaporChat.ICONPATH)
-    Notify.Icon = NotifyIcon
-    Notify.Visible = False
-    PnlUsersList.SendToBack()
-    Select Case My.Settings.LastTheme
+  Public Sub AssignVaporTheme(ByVal theme As VaporChat.Themes)
+    Select Case theme
       Case VaporChat.Themes.Vapor
         VaporChat.CurrentTheme = VaporChat.Themes.Vapor
         Text = VaporChat.VAPOR_MAINWINTXT
@@ -131,11 +127,25 @@ Public Class MainScreen
         VaporChat.CurrentTheme = VaporChat.Themes.Admin
         Text = VaporChat.ADMIN_MAINWINTXT
     End Select
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Private Sub VapoMainScreen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Dim NotifyIcon As New Icon(VaporChat.ICONPATH)
+    Notify.Icon = NotifyIcon
+    Notify.Visible = False
+    TxtPassword.Focus()
+    PnlUsersList.SendToBack()
+    PnlStartScreen.BringToFront()
+    VaporChat.CurrentTheme = VaporChat.Themes.Start
+    Size = New Size(VaporChat.STARTWIDTH, VaporChat.STARTHEIGH)
+    VaporFunc.AssignMainFormGUIFunc(Me)
+    VaporFunc.AssignStartScreenPanelGUIFunc(PnlStartScreen, BtnHide, BtnVapor, TxtPassword, CmbCloserTime, LblVaporChat2020Ver, Lblkronelab)
     VaporFunc.AssignVaporChatPanelGUIFunc(PnlVaporChat, LstChatVapo, TxtUser, TxtMsg, LblLog, LblUsers, BtnLogIn, BtnSend, BtnBackToStart)
     VaporFunc.AssignUserListPanelGUIFunc(PnlUsersList, LstUsersList, StsUsersList)
     VaporFunc.AssignPasswordPanelGUIFunc(PnlInsertPass, TxtInsertPass)
     VaporFunc.AssignAdminPanelGUIFunc(PnlAdmin, TxtAdminUser, TxtAdminCommand)
     VaporFunc.AssignVaporChatComponentsFunc(TimerCheckMsg, TimerGUI, TimerPubBlock, TimerAutoCloser)
+    VaporFunc.StartScreenLoadFunc()
     VaporFunc.FormLoadFunc()
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
@@ -237,4 +247,25 @@ Public Class MainScreen
   Private Sub StsUsersList_MouseUp(sender As Object, e As MouseEventArgs) Handles StsUsersList.MouseUp
     VaporFunc.ItemMouseUpFunc(PNLUSR_MouseIsDown)
   End Sub
+
+  Private Sub BtnHide_Click(sender As Object, e As EventArgs) Handles BtnHide.Click
+    VaporFunc.ShowHideChatFunc()
+  End Sub
+
+  Private Sub BtnVapor_Click(sender As Object, e As EventArgs) Handles BtnVapor.Click
+    VaporFunc.ShowVaporChatFunc()
+  End Sub
+
+  Private Sub TxtPassword_TextChanged(sender As Object, e As EventArgs) Handles TxtPassword.TextChanged
+
+  End Sub
+
+  Private Sub CmbCloserTime_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CmbCloserTime.SelectedIndexChanged
+    VaporFunc.UpdateCloseTimeFunc()
+  End Sub
+
+  Private Sub Lblkronelab_Click(sender As Object, e As EventArgs) Handles Lblkronelab.Click
+    VaporFunc.AccessAdminPanelFunc(e)
+  End Sub
+
 End Class

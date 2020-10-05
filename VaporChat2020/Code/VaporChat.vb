@@ -52,6 +52,9 @@ Public Class VaporChat
   Public ReadOnly NOFCLRS As UShort = 10
   Public ReadOnly ColorPool = New Color() {Color.Crimson, Color.HotPink, Color.Gold, Color.DarkOrchid, Color.Violet,
                                     Color.DodgerBlue, Color.Teal, Color.Lime, Color.DarkOrange, Color.SpringGreen}
+  ' S T A R T S C R E E N T H E M E --------------------------------------------------------------------------------------'
+  Public ReadOnly START_MAINWINTXT As String = "(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ"
+  Public ReadOnly START_MAINBCKIMG As Image = Image.FromFile("Resources/start_main.jpg")
   ' V A P O R C H A T 2 0 2 0 T H E M E ----------------------------------------------------------------------------------'
   Public ReadOnly VAPOR_MAINWINTXT As String = "(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ"
   Public ReadOnly VAPOR_MAINBCKIMG As Image = Image.FromFile("Resources/ondulvapor.jpg")
@@ -100,8 +103,6 @@ Public Class VaporChat
   Public ReadOnly HIDE_BTNBCKBCLR As Color = SystemColors.ControlLight
   Public ReadOnly HIDE_BTNBCKFCLR As Color = SystemColors.ControlText
   Public ReadOnly HIDE_USRLSTBCLR As Color = SystemColors.Window
-
-
   ' A D M I N P A N E L T H E M E ----------------------------------------------------------------------------------------'
   Public ReadOnly ADMIN_MAINWINTXT As String = "Λ░Ｄ░Ｍ░Ｉ░Ｎ░Ｐ░Λ░Ｎ░Ξ░Ｌ"
 
@@ -137,6 +138,8 @@ Public Class VaporChat
   Public Const LOGPROG02 As String = ".."
   Public Const LOGPROG03 As String = "..."
   '-----------------------------------------------------------------------------------------------------------------------'
+  Public Const STARTWIDTH As UShort = 497
+  Public Const STARTHEIGH As UShort = 393
   Public Const CHATWIDTH As UShort = 497
   Public Const CHATHEIGH As UShort = 570
   Public Const PASSWIDTH As UShort = 497
@@ -175,9 +178,10 @@ Public Class VaporChat
   '--- V A P O R C H A T | Enum ------------------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Enum Themes
-    Vapor   ' 0
-    Hide    ' 1
-    Admin   ' 2
+    Start   ' 0
+    Vapor   ' 1
+    Hide    ' 2
+    Admin   ' 3
     NofElm
   End Enum
   '-----------------------------------------------------------------------------------------------------------------------'

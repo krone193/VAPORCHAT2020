@@ -82,6 +82,14 @@ Partial Class MainScreen
 		Me.PnlInsertPass = New System.Windows.Forms.Panel()
 		Me.TxtInsertPass = New System.Windows.Forms.TextBox()
 		Me.PnlAdmin = New System.Windows.Forms.Panel()
+		Me.PnlStartScreen = New System.Windows.Forms.Panel()
+		Me.TxtPassword = New System.Windows.Forms.TextBox()
+		Me.CmbCloserTime = New System.Windows.Forms.ComboBox()
+		Me.Label3 = New System.Windows.Forms.Label()
+		Me.LblVaporChat2020Ver = New System.Windows.Forms.Label()
+		Me.Lblkronelab = New System.Windows.Forms.Label()
+		Me.BtnHide = New System.Windows.Forms.Button()
+		Me.BtnVapor = New System.Windows.Forms.Button()
 		Me.BtnAdminBackToStart = New System.Windows.Forms.Button()
 		Me.BtnAdminSend = New System.Windows.Forms.Button()
 		Me.Label2 = New System.Windows.Forms.Label()
@@ -93,6 +101,7 @@ Partial Class MainScreen
 		Me.StsUsersList.SuspendLayout()
 		Me.PnlInsertPass.SuspendLayout()
 		Me.PnlAdmin.SuspendLayout()
+		Me.PnlStartScreen.SuspendLayout()
 		Me.SuspendLayout()
 		'
 		'BtnLogIn
@@ -345,6 +354,7 @@ Partial Class MainScreen
 		'
 		Me.PnlAdmin.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(51, Byte), Integer))
 		Me.PnlAdmin.BackgroundImage = Global.VaporChat2020Application.My.Resources.Resources.ondulvapor
+		Me.PnlAdmin.Controls.Add(Me.PnlStartScreen)
 		Me.PnlAdmin.Controls.Add(Me.BtnAdminBackToStart)
 		Me.PnlAdmin.Controls.Add(Me.BtnAdminSend)
 		Me.PnlAdmin.Controls.Add(Me.Label2)
@@ -356,6 +366,106 @@ Partial Class MainScreen
 		Me.PnlAdmin.Name = "PnlAdmin"
 		Me.PnlAdmin.Size = New System.Drawing.Size(481, 531)
 		Me.PnlAdmin.TabIndex = 65
+		'
+		'PnlStartScreen
+		'
+		Me.PnlStartScreen.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(51, Byte), Integer))
+		Me.PnlStartScreen.BackgroundImage = Global.VaporChat2020Application.My.Resources.Resources.start_main
+		Me.PnlStartScreen.Controls.Add(Me.TxtPassword)
+		Me.PnlStartScreen.Controls.Add(Me.CmbCloserTime)
+		Me.PnlStartScreen.Controls.Add(Me.Label3)
+		Me.PnlStartScreen.Controls.Add(Me.LblVaporChat2020Ver)
+		Me.PnlStartScreen.Controls.Add(Me.Lblkronelab)
+		Me.PnlStartScreen.Controls.Add(Me.BtnHide)
+		Me.PnlStartScreen.Controls.Add(Me.BtnVapor)
+		Me.PnlStartScreen.Dock = System.Windows.Forms.DockStyle.Fill
+		Me.PnlStartScreen.Location = New System.Drawing.Point(0, 0)
+		Me.PnlStartScreen.Name = "PnlStartScreen"
+		Me.PnlStartScreen.Size = New System.Drawing.Size(481, 531)
+		Me.PnlStartScreen.TabIndex = 66
+		'
+		'TxtPassword
+		'
+		Me.TxtPassword.BackColor = System.Drawing.Color.Pink
+		Me.TxtPassword.BorderStyle = System.Windows.Forms.BorderStyle.None
+		Me.TxtPassword.ForeColor = System.Drawing.Color.Crimson
+		Me.TxtPassword.Location = New System.Drawing.Point(167, 70)
+		Me.TxtPassword.Name = "TxtPassword"
+		Me.TxtPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(12543)
+		Me.TxtPassword.Size = New System.Drawing.Size(141, 13)
+		Me.TxtPassword.TabIndex = 11
+		'
+		'CmbCloserTime
+		'
+		Me.CmbCloserTime.BackColor = System.Drawing.Color.PaleTurquoise
+		Me.CmbCloserTime.DropDownHeight = 100
+		Me.CmbCloserTime.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+		Me.CmbCloserTime.FlatStyle = System.Windows.Forms.FlatStyle.System
+		Me.CmbCloserTime.ForeColor = System.Drawing.Color.Indigo
+		Me.CmbCloserTime.FormattingEnabled = True
+		Me.CmbCloserTime.IntegralHeight = False
+		Me.CmbCloserTime.Items.AddRange(New Object() {"30", "35", "40", "45", "50", "55", "60"})
+		Me.CmbCloserTime.Location = New System.Drawing.Point(314, 67)
+		Me.CmbCloserTime.Name = "CmbCloserTime"
+		Me.CmbCloserTime.Size = New System.Drawing.Size(37, 21)
+		Me.CmbCloserTime.TabIndex = 17
+		'
+		'Label3
+		'
+		Me.Label3.AutoSize = True
+		Me.Label3.BackColor = System.Drawing.Color.Transparent
+		Me.Label3.Font = New System.Drawing.Font("Consolas", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+		Me.Label3.ForeColor = System.Drawing.Color.Teal
+		Me.Label3.Location = New System.Drawing.Point(193, 86)
+		Me.Label3.Name = "Label3"
+		Me.Label3.Size = New System.Drawing.Size(87, 14)
+		Me.Label3.TabIndex = 16
+		Me.Label3.Text = "パスワードを挿入"
+		'
+		'LblVaporChat2020Ver
+		'
+		Me.LblVaporChat2020Ver.AutoSize = True
+		Me.LblVaporChat2020Ver.BackColor = System.Drawing.Color.Transparent
+		Me.LblVaporChat2020Ver.Font = New System.Drawing.Font("Consolas", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+		Me.LblVaporChat2020Ver.ForeColor = System.Drawing.Color.Yellow
+		Me.LblVaporChat2020Ver.Location = New System.Drawing.Point(376, 68)
+		Me.LblVaporChat2020Ver.Name = "LblVaporChat2020Ver"
+		Me.LblVaporChat2020Ver.Size = New System.Drawing.Size(14, 15)
+		Me.LblVaporChat2020Ver.TabIndex = 15
+		Me.LblVaporChat2020Ver.Text = "-"
+		'
+		'Lblkronelab
+		'
+		Me.Lblkronelab.AutoSize = True
+		Me.Lblkronelab.BackColor = System.Drawing.Color.Transparent
+		Me.Lblkronelab.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+		Me.Lblkronelab.Location = New System.Drawing.Point(412, 330)
+		Me.Lblkronelab.Name = "Lblkronelab"
+		Me.Lblkronelab.Size = New System.Drawing.Size(53, 12)
+		Me.Lblkronelab.TabIndex = 14
+		Me.Lblkronelab.Text = "ƙ ཞ ơ ŋ ɛ Ɩ ą ც"
+		'
+		'BtnHide
+		'
+		Me.BtnHide.Location = New System.Drawing.Point(26, 13)
+		Me.BtnHide.Name = "BtnHide"
+		Me.BtnHide.Size = New System.Drawing.Size(427, 23)
+		Me.BtnHide.TabIndex = 13
+		Me.BtnHide.Text = "Ｈｉｄｅ　ｉｎ　ｐｌａｉｎ　ｓｉｇｈｔ　イネ苛ィ"
+		Me.BtnHide.UseVisualStyleBackColor = True
+		'
+		'BtnVapor
+		'
+		Me.BtnVapor.BackColor = System.Drawing.SystemColors.ActiveCaptionText
+		Me.BtnVapor.BackgroundImage = CType(resources.GetObject("BtnVapor.BackgroundImage"), System.Drawing.Image)
+		Me.BtnVapor.ForeColor = System.Drawing.Color.HotPink
+		Me.BtnVapor.ImageAlign = System.Drawing.ContentAlignment.BottomCenter
+		Me.BtnVapor.Location = New System.Drawing.Point(26, 42)
+		Me.BtnVapor.Name = "BtnVapor"
+		Me.BtnVapor.Size = New System.Drawing.Size(427, 23)
+		Me.BtnVapor.TabIndex = 12
+		Me.BtnVapor.Text = "Ｖ　Ａ　Ｐ　Ｏ　Ｒ　奥ケせふマ"
+		Me.BtnVapor.UseVisualStyleBackColor = False
 		'
 		'BtnAdminBackToStart
 		'
@@ -432,9 +542,9 @@ Partial Class MainScreen
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
 		Me.ClientSize = New System.Drawing.Size(481, 531)
-		Me.Controls.Add(Me.PnlVaporChat)
 		Me.Controls.Add(Me.PnlAdmin)
 		Me.Controls.Add(Me.PnlInsertPass)
+		Me.Controls.Add(Me.PnlVaporChat)
 		Me.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
 		Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -452,6 +562,8 @@ Partial Class MainScreen
 		Me.PnlInsertPass.PerformLayout()
 		Me.PnlAdmin.ResumeLayout(False)
 		Me.PnlAdmin.PerformLayout()
+		Me.PnlStartScreen.ResumeLayout(False)
+		Me.PnlStartScreen.PerformLayout()
 		Me.ResumeLayout(False)
 
 	End Sub
@@ -488,4 +600,12 @@ Partial Class MainScreen
 	Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
 	Friend WithEvents ClmUsername As ColumnHeader
 	Friend WithEvents ClmLastMsg As ColumnHeader
+	Friend WithEvents PnlStartScreen As Panel
+	Friend WithEvents CmbCloserTime As ComboBox
+	Friend WithEvents Label3 As Label
+	Friend WithEvents TxtPassword As TextBox
+	Friend WithEvents LblVaporChat2020Ver As Label
+	Friend WithEvents Lblkronelab As Label
+	Friend WithEvents BtnHide As Button
+	Friend WithEvents BtnVapor As Button
 End Class

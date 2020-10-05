@@ -26,7 +26,7 @@ Partial Class StartScreen
 		Me.BtnHide = New System.Windows.Forms.Button()
 		Me.BtnVapor = New System.Windows.Forms.Button()
 		Me.Lblkronelab = New System.Windows.Forms.Label()
-		Me.lblVaporChat2020Ver = New System.Windows.Forms.Label()
+		Me.LblVaporChat2020Ver = New System.Windows.Forms.Label()
 		Me.TxtPassword = New System.Windows.Forms.TextBox()
 		Me.Label1 = New System.Windows.Forms.Label()
 		Me.CmbCloserTime = New System.Windows.Forms.ComboBox()
@@ -65,17 +65,17 @@ Partial Class StartScreen
 		Me.Lblkronelab.TabIndex = 4
 		Me.Lblkronelab.Text = "ƙ ཞ ơ ŋ ɛ Ɩ ą ც"
 		'
-		'lblVaporChat2020Ver
+		'LblVaporChat2020Ver
 		'
-		Me.lblVaporChat2020Ver.AutoSize = True
-		Me.lblVaporChat2020Ver.BackColor = System.Drawing.Color.Transparent
-		Me.lblVaporChat2020Ver.Font = New System.Drawing.Font("Consolas", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-		Me.lblVaporChat2020Ver.ForeColor = System.Drawing.Color.Cyan
-		Me.lblVaporChat2020Ver.Location = New System.Drawing.Point(362, 67)
-		Me.lblVaporChat2020Ver.Name = "lblVaporChat2020Ver"
-		Me.lblVaporChat2020Ver.Size = New System.Drawing.Size(14, 15)
-		Me.lblVaporChat2020Ver.TabIndex = 5
-		Me.lblVaporChat2020Ver.Text = "-"
+		Me.LblVaporChat2020Ver.AutoSize = True
+		Me.LblVaporChat2020Ver.BackColor = System.Drawing.Color.Transparent
+		Me.LblVaporChat2020Ver.Font = New System.Drawing.Font("Consolas", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+		Me.LblVaporChat2020Ver.ForeColor = System.Drawing.Color.Cyan
+		Me.LblVaporChat2020Ver.Location = New System.Drawing.Point(362, 67)
+		Me.LblVaporChat2020Ver.Name = "LblVaporChat2020Ver"
+		Me.LblVaporChat2020Ver.Size = New System.Drawing.Size(14, 15)
+		Me.LblVaporChat2020Ver.TabIndex = 5
+		Me.LblVaporChat2020Ver.Text = "-"
 		'
 		'TxtPassword
 		'
@@ -125,7 +125,7 @@ Partial Class StartScreen
 		Me.Controls.Add(Me.CmbCloserTime)
 		Me.Controls.Add(Me.Label1)
 		Me.Controls.Add(Me.TxtPassword)
-		Me.Controls.Add(Me.lblVaporChat2020Ver)
+		Me.Controls.Add(Me.LblVaporChat2020Ver)
 		Me.Controls.Add(Me.Lblkronelab)
 		Me.Controls.Add(Me.BtnHide)
 		Me.Controls.Add(Me.BtnVapor)
@@ -142,7 +142,7 @@ Partial Class StartScreen
 	Friend WithEvents BtnHide As Button
   Friend WithEvents BtnVapor As Button
   Friend WithEvents Lblkronelab As Label
-  Friend WithEvents lblVaporChat2020Ver As Label
+  Friend WithEvents LblVaporChat2020Ver As Label
     Friend WithEvents TxtPassword As TextBox
     Friend WithEvents Label1 As Label
     Friend WithEvents CmbCloserTime As ComboBox

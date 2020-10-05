@@ -27,6 +27,16 @@
 
 
   '--- V A P O R F U N C | GUI components --------------------------------------------------------------------------------'
+  ' VaporChat form -------------------------------------------------------------------------------------------------------'
+  Private CallerForm As Form
+  ' VaporChat start screen -----------------------------------------------------------------------------------------------'
+  Private PnlStartScreen As Panel
+  Private BtnHide As Button
+  Private BtnVapor As Button
+  Private TxtPassword As TextBox
+  Private CmbCloserTime As ComboBox
+  Private LblVaporChat2020Ver As Label
+  Private Lblkronelab As Label
   ' VaporChat main panel -------------------------------------------------------------------------------------------------'
   Private PnlVaporChat As Panel
   Private LstChatVapo As ListView
@@ -161,6 +171,20 @@
 
   '--- V A P O R F U N C | Public Functions ------------------------------------------------------------------------------'
   '-----------------------------------------------------------------------------------------------------------------------'
+  Public Sub AssignMainFormGUIFunc(ByRef _form As Form)
+    CallerForm = _form
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public Sub AssignStartScreenPanelGUIFunc(ByRef _pnlstartscreen As Panel, ByRef _btnhide As Button, ByRef _btnvapor As Button, ByRef _txtpassword As TextBox, ByRef _cmbclosertime As ComboBox, ByRef _lblvaporchatver As Label, ByRef _lblkronelab As Label)
+    PnlStartScreen = _pnlstartscreen
+    BtnHide = _btnhide
+    BtnVapor = _btnvapor
+    TxtPassword = _txtpassword
+    CmbCloserTime = _cmbclosertime
+    LblVaporChat2020Ver = _lblvaporchatver
+    Lblkronelab = _lblkronelab
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub AssignVaporChatPanelGUIFunc(ByRef _pnlchat As Panel, ByRef _lstchat As ListView, ByRef _txtuser As TextBox, ByRef _txtmsg As TextBox, ByRef _lbllog As Label, ByRef _lbluser As Label, ByRef _btnlogin As Button, ByRef _btnsend As Button, ByRef _btnbacktostart As Button)
     PnlVaporChat = _pnlchat
     LstChatVapo = _lstchat
@@ -200,7 +224,6 @@
   Public Sub HideKeyGest()
     Callback.ClbVaporFunc_HideKeyGestFunc()
     HideStatus = True
-
     TimerAutoCloser.Enabled = False
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
@@ -327,7 +350,6 @@
     BannedText.Add(VaporChat.ITSMEMSG.ToLower().Replace(" ", ""))
     TxtUser.MaxLength = VaporChat.MaxUserLen()
     TxtUser.Text = My.Settings.LastUser
-    TxtUser.Focus()
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub LogInFunc()
@@ -444,22 +466,35 @@
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub LogOutFunc()
-    Callback.ClbVaporFunc_LogoutFunc()
     ClosingFunc()
     HideStatus = True
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub FormKeyDownFunc(ByRef e As KeyEventArgs)
-    Select Case e.KeyCode
-      Case VaporChat.HIDEUKEY
-        If My.Computer.Keyboard.AltKeyDown Then
-          ForcePass = True
+    Select Case VaporChat.CurrentTheme
+      Case VaporChat.Themes.Start
+        If e.KeyValue = Keys.Enter Then
+          Select Case My.Settings.LastTheme
+            Case VaporChat.Themes.Vapor
+              BtnVapor.PerformClick()
+            Case VaporChat.Themes.Hide
+              BtnHide.PerformClick()
+          End Select
         Else
-          ForcePass = False
+          TxtPassword.Focus()
         End If
-        HideKeyGest()
-      Case VaporChat.SHOWUKEY
-        ShowFormGest()
+      Case Else
+        Select Case e.KeyCode
+          Case VaporChat.HIDEUKEY
+            If My.Computer.Keyboard.AltKeyDown Then
+              ForcePass = True
+            Else
+              ForcePass = False
+            End If
+            HideKeyGest()
+          Case VaporChat.SHOWUKEY
+            ShowFormGest()
+        End Select
     End Select
     RefreshTimCloserFunc()
   End Sub
@@ -477,6 +512,10 @@
       VaporChat.Disconnect()
       Connected = False
     End If
+    UserList.Clear()
+    TxtPassword.Text = ""
+    PnlStartScreen.BringToFront()
+    CallerForm.Size = New Size(VaporChat.STARTWIDTH, VaporChat.STARTHEIGH)
   End Sub
   '-----------------------------------------------------------------------------------------------------------------------'
   Public Sub ForceSwitchOffFunc()
@@ -621,6 +660,9 @@
     If TxtInsertPass.Text = VaporChat.PASSCHAT Then
       TxtInsertPass.Text = ""
       Select Case VaporChat.CurrentTheme
+        Case VaporChat.Themes.Start
+          PnlStartScreen.BringToFront()
+          Callback.ClbVaporFunc_RestoreWindowFunc(VaporChat.STARTWIDTH, VaporChat.STARTHEIGH)
         Case VaporChat.Themes.Vapor
           PnlVaporChat.BringToFront()
           Callback.ClbVaporFunc_RestoreWindowFunc(VaporChat.CHATWIDTH, VaporChat.CHATHEIGH)
@@ -638,5 +680,58 @@
   Public Sub CloseUserListFunc()
     PnlUsersList.SendToBack()
     UsersListOn = False
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public Sub StartScreenLoadFunc()
+    VaporChat.CurrentTheme = VaporChat.Themes.Start
+    LblVaporChat2020Ver.Text = My.Settings.VaporChat2020Ver
+    TxtPassword.Focus()
+    CmbCloserTime.Text = My.Settings.Timeout / 1000
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public Sub ShowHideChatFunc()
+    If TxtPassword.Text = "" Then
+      TxtPassword.Focus()
+    ElseIf TxtPassword.Text = VaporChat.PASSCHAT Then
+      My.Settings.LastTheme = VaporChat.Themes.Hide
+      My.Settings.Save()
+      VaporChat.CurrentTheme = VaporChat.Themes.Hide
+      Callback.ClbVaporFunc_InitChatGUIFunc()
+    Else
+      CallerForm.Close()
+    End If
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public Sub ShowVaporChatFunc()
+    If TxtPassword.Text = "" Then
+      TxtPassword.Focus()
+    ElseIf TxtPassword.Text = VaporChat.PASSCHAT Then
+      My.Settings.LastTheme = VaporChat.Themes.Vapor
+      My.Settings.Save()
+      VaporChat.CurrentTheme = VaporChat.Themes.Vapor
+      Callback.ClbVaporFunc_InitChatGUIFunc()
+    Else
+      CallerForm.Close()
+    End If
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public Sub AccessAdminPanelFunc(e As EventArgs)
+    If My.Computer.Keyboard.CtrlKeyDown And
+      My.Computer.Keyboard.ShiftKeyDown And
+      My.Computer.Keyboard.AltKeyDown And
+      My.Computer.Keyboard.CapsLock Then
+      Dim password As String = InputBox("You shall insert a passcode:")
+      If password = VaporChat.ADMINPASSW Then
+        My.Settings.LastTheme = VaporChat.Themes.Admin
+        My.Settings.Save()
+        VaporChat.CurrentTheme = VaporChat.Themes.Admin
+        Callback.ClbVaporFunc_InitAdminGUIFunc()
+      End If
+    End If
+  End Sub
+  '-----------------------------------------------------------------------------------------------------------------------'
+  Public Sub UpdateCloseTimeFunc()
+    My.Settings.Timeout = CmbCloserTime.Text * 1000
+    My.Settings.Save()
   End Sub
 End Class
