@@ -236,8 +236,8 @@ Public Class MainScreen
 		VaporFunc.CloseUserListFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub StsUsersList_MouseMove(sender As Object, e As MouseEventArgs)
-
+	Private Sub StsUsersList_MouseMove(sender As Object, e As MouseEventArgs) Handles StsUsersList.MouseMove
+		VaporFunc.MoveItemFunc(PnlUsersList, PNLUSR_MouseIsDown, PNLUSR_MouseIsDownLoc, e)
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Private Sub StsUsersList_MouseUp(sender As Object, e As MouseEventArgs) Handles StsUsersList.MouseUp
