@@ -1,13 +1,23 @@
 ﻿Public Class InterfaceVaporFuncGUI
+
 	' V A P O R G U I | Callback functions ---------------------------------------------------------------------------------'
+	'-----------------------------------------------------------------------------------------------------------------------'
+	Public Sub ClbVaporFunc_InitChatGUIFunc()
+		MainScreen.Size = New Size(VaporChat.CHATWIDTH, VaporChat.CHATHEIGH)
+		MainScreen.AssignVaporTheme(My.Settings.LastTheme)
+	End Sub
+	'-----------------------------------------------------------------------------------------------------------------------'
+	Public Sub ClbVaporFunc_InitAdminGUIFunc()
+		MainScreen.Size = New Size(VaporChat.ADMNWIDTH, VaporChat.ADMNHEIGH)
+		MainScreen.AssignVaporTheme(My.Settings.LastTheme)
+	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub ClbVaporFunc_RestoreWindowFunc(ByVal width As Integer, ByVal height As Integer)
 		MainScreen.Size = New Size(width, height)
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub ClbVaporFunc_LogoutFunc()
-		StartScreen.Show()
-		MainScreen.Close()
+		MainScreen.Size = New Size(VaporChat.STARTWIDTH, VaporChat.STARTHEIGH)
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub ClbVaporFunc_HideKeyGestFunc()
