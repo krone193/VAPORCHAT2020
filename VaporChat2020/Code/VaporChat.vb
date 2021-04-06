@@ -9,7 +9,6 @@ Imports MQTTnet.LowLevelClient
 Public Class VaporChat
 	'--- V A P O R C H A T | Implementation --------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
-	'Implements IMqttApplicationMessageReceivedHandler
 	Private ReadOnly Factory As New MqttFactory
 	Private WithEvents MqttClient As MqttClient
 
@@ -112,8 +111,10 @@ Public Class VaporChat
 
 	'--- V A P O R C H A T | Public Constants ------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
+#If LIMVIEW Then
 	Public Const LIMVIEW As Boolean = False
 	Public Const MAXROWS As UShort = 30
+#End If
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Const PASSCHAT As String = "paint"
 	Public Const SEPTCHAR As String = "ヿーニ"
@@ -327,11 +328,11 @@ Public Class VaporChat
 
 	'--- V A P O R C H A T | Public Functions ------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Function Connect(ByVal user As String) As Boolean
+	Public Function Connect(ByVal user As String, ByVal lobby As String) As Boolean
 		Dim timeout As Date = Date.Now
 		timeout = timeout.AddSeconds(10)
 		messagetopic = MQTTROOT & My.Settings.Lobby
-		configstopic = MQTTROOT & MQTTCONF & My.Settings.Lobby
+		configstopic = MQTTROOT & MQTTCONF & lobby
 		message.Clear()
 		config.Clear()
 		MQTTConnectToServer(user, MQTTHOST, MQTTUSER, MQTTPASS, MQTTPORT)

@@ -40,11 +40,11 @@
 	' VaporChat main panel -------------------------------------------------------------------------------------------------'
 	Private PnlVaporChat As Panel
 	Private LstChatVapo As ListView
+	Private TxtLobby As TextBox
 	Private TxtUser As TextBox
 	Private TxtMsg As TextBox
 	Private LblLog As Label
 	Private LblUsers As Label
-	Private BtnLogIn As Button
 	Private BtnSend As Button
 	Private BtnBackToStart As Button
 	' VaporChat users list -------------------------------------------------------------------------------------------------'
@@ -73,7 +73,9 @@
 	Private SwitchText As String
 	Private SwitchOn As Boolean = False
 	Private SwitchIndex As Short = -1
+#If LIMVIEW Then
 	Private NofMessages As UShort = 0
+#End If
 	Private AsyncOp As Boolean = False
 	Private MessageRxOn As Boolean = False
 	Private DotIndex As UShort = 0
@@ -176,24 +178,24 @@
 		CallerForm = _form
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Sub AssignStartScreenPanelGUIFunc(ByRef _pnlstartscreen As Panel, ByRef _btnhide As Button, ByRef _btnvapor As Button, ByRef _txtpassword As TextBox, ByRef _cmbclosertime As ComboBox, ByRef _lblvaporchatver As Label, ByRef _lblkronelab As Label)
+	Public Sub AssignStartScreenPanelGUIFunc(ByRef _pnlstartscreen As Panel, ByRef _btnhide As Button, ByRef _btnvapor As Button, ByRef _txtlobby As TextBox, ByRef _txtuser As TextBox, ByRef _txtpassword As TextBox, ByRef _cmbclosertime As ComboBox, ByRef _lblvaporchatver As Label, ByRef _lblkronelab As Label)
 		PnlStartScreen = _pnlstartscreen
 		BtnHide = _btnhide
 		BtnVapor = _btnvapor
+		TxtLobby = _txtlobby
+		TxtUser = _txtuser
 		TxtPassword = _txtpassword
 		CmbCloserTime = _cmbclosertime
 		LblVaporChat2020Ver = _lblvaporchatver
 		Lblkronelab = _lblkronelab
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Sub AssignVaporChatPanelGUIFunc(ByRef _pnlchat As Panel, ByRef _lstchat As ListView, ByRef _txtuser As TextBox, ByRef _txtmsg As TextBox, ByRef _lbllog As Label, ByRef _lbluser As Label, ByRef _btnlogin As Button, ByRef _btnsend As Button, ByRef _btnbacktostart As Button)
+	Public Sub AssignVaporChatPanelGUIFunc(ByRef _pnlchat As Panel, ByRef _lstchat As ListView, ByRef _txtmsg As TextBox, ByRef _lbllog As Label, ByRef _lbluser As Label, ByRef _btnsend As Button, ByRef _btnbacktostart As Button)
 		PnlVaporChat = _pnlchat
 		LstChatVapo = _lstchat
-		TxtUser = _txtuser
 		TxtMsg = _txtmsg
 		LblLog = _lbllog
 		LblUsers = _lbluser
-		BtnLogIn = _btnlogin
 		BtnSend = _btnsend
 		BtnBackToStart = _btnbacktostart
 	End Sub
@@ -240,7 +242,9 @@
 		Dim name As String = ""
 		Dim message As String = ""
 		Dim index As Short
+#If LIMITVIEW Then
 		Dim copieditems As ListViewItem
+#End If
 		VaporChat.GetMessageUserAndText(name, message)
 		If message = VaporChat.LEAVEVAP And name = My.Settings.LastUser Then
 			Exit Sub
@@ -266,20 +270,20 @@
 			' Protect a message if date is displayed
 			ForceSwitchOffFunc()
 			' Copy items in list view
-			If VaporChat.LIMVIEW = True Then
-				For i As UShort = 0 To VaporChat.MAXROWS - 1
-					copieditems = LstChatVapo.Items(i + 1).Clone
-					LstChatVapo.Items(i) = copieditems
-				Next
-				' Add item to ListView
-				LstChatVapo.Items(VaporChat.MAXROWS) = item
-				If NofMessages < VaporChat.MAXROWS Then
-					NofMessages += 1
-				End If
-			Else
-				LstChatVapo.Items.Insert(LstChatVapo.Items.Count, item)
-				LstChatVapo.Items(LstChatVapo.Items.Count - 1).EnsureVisible()
+#If LIMITVIEW Then
+			For i As UShort = 0 To VaporChat.MAXROWS - 1
+			copieditems = LstChatVapo.Items(i + 1).Clone
+			LstChatVapo.Items(i) = copieditems
+			Next
+			' Add item to ListView
+			LstChatVapo.Items(VaporChat.MAXROWS) = item
+			If NofMessages < VaporChat.MAXROWS Then
+			NofMessages += 1
 			End If
+#Else
+			LstChatVapo.Items.Insert(LstChatVapo.Items.Count, item)
+			LstChatVapo.Items(LstChatVapo.Items.Count - 1).EnsureVisible()
+#End If
 			' Notify if minimized
 			If HideStatus = True Then
 				Callback.ClbVaporFunc_NotifyIconUnreadFunc()
@@ -317,7 +321,7 @@
 					My.Settings.Lobby = strdata(1)
 					My.Settings.Save()
 					VaporChat.Disconnect()
-					VaporChat.Connect(My.Settings.LastUser)
+					VaporChat.Connect(My.Settings.LastUser, My.Settings.Lobby)
 			End Select
 		End If
 	End Sub
@@ -344,7 +348,9 @@
 		UserList.Clear()
 		TaskBarHid = False
 		Connected = False
+#If LIMVIEW Then
 		NofMessages = 0
+#End If
 		BannedText.Add(VaporChat.SEPTCHAR.ToLower().Replace(" ", ""))
 		BannedText.Add(VaporChat.JOINVAPO.ToLower().Replace(" ", ""))
 		BannedText.Add(VaporChat.LEAVEVAP.ToLower().Replace(" ", ""))
@@ -355,41 +361,35 @@
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub LogInFunc()
-		If BtnLogIn.Text = VaporChat.LOGINBTXT Then
-			My.Settings.LastUser = TxtUser.Text
-			My.Settings.Save()
-			BtnLogIn.Text = VaporChat.LOGOUBTXT
-			TxtUser.Enabled = False
-			TxtMsg.MaxLength = VaporChat.MaxMessageLen()
-			If VaporChat.Connect(My.Settings.LastUser) Then
-				AsyncOp = True
-				Connected = True
-				Select Case VaporChat.CurrentTheme
-					Case VaporChat.Themes.Vapor
-						VaporChat.SendMessage(My.Settings.LastUser, VaporChat.JOINVAPO)
-					Case VaporChat.Themes.Hide
-						VaporChat.SendMessage(My.Settings.LastUser, VaporChat.JOINHIDE)
-				End Select
-				If SearchNameInList(My.Settings.LastUser) < 0 Then
-					AddUserToList(My.Settings.LastUser)
-				End If
-				LblLog.Text = VaporChat.LOGNOERR
-				TimerCheckMsg.Enabled = True
-				BtnSend.Enabled = True
-				Select Case VaporChat.CurrentTheme
-					Case VaporChat.Themes.Vapor
-						TxtMsg.ForeColor = UserList(0).Color
-					Case VaporChat.Themes.Hide
-				End Select
-				ClearTextBox(TxtMsg)
-			Else
-				LblLog.Text = VaporChat.LOGERROR
+		My.Settings.Lobby = TxtLobby.Text
+		My.Settings.LastUser = TxtUser.Text
+		My.Settings.Save()
+		TxtMsg.MaxLength = VaporChat.MaxMessageLen()
+		If VaporChat.Connect(My.Settings.LastUser, My.Settings.Lobby) Then
+			AsyncOp = True
+			Connected = True
+			Select Case VaporChat.CurrentTheme
+				Case VaporChat.Themes.Vapor
+					VaporChat.SendMessage(My.Settings.LastUser, VaporChat.JOINVAPO)
+				Case VaporChat.Themes.Hide
+					VaporChat.SendMessage(My.Settings.LastUser, VaporChat.JOINHIDE)
+			End Select
+			If SearchNameInList(My.Settings.LastUser) < 0 Then
+				AddUserToList(My.Settings.LastUser)
 			End If
-			RefreshTimCloserFunc()
+			LblLog.Text = VaporChat.LOGNOERR
+			TimerCheckMsg.Enabled = True
+			BtnSend.Enabled = True
+			Select Case VaporChat.CurrentTheme
+				Case VaporChat.Themes.Vapor
+					TxtMsg.ForeColor = UserList(0).Color
+				Case VaporChat.Themes.Hide
+			End Select
+			ClearTextBox(TxtMsg)
 		Else
-			BtnLogIn.Text = VaporChat.LOGINBTXT
-			LogOutFunc()
+			LblLog.Text = VaporChat.LOGERROR
 		End If
+		RefreshTimCloserFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub SendMsgFunc()
@@ -428,7 +428,7 @@
 	Public Sub SendCmdFunc()
 		If TxtAdminCommand.Text <> "" Then
 			If TxtAdminUser.Text <> "" Then
-				If VaporChat.Connect(VaporChat.ADMINUNAME) Then
+				If VaporChat.Connect(VaporChat.ADMINUNAME, My.Settings.Lobby) Then
 					VaporChat.SendConfig(TxtAdminUser.Text, TxtAdminCommand.Text)
 					TxtAdminCommand.Text = ""
 					TxtAdminUser.Text = ""
@@ -461,9 +461,6 @@
 	Public Sub UserBoxKeyDownFunc(ByRef e As KeyEventArgs)
 		Select Case e.KeyCode
 			Case VaporChat.SENDUKEY
-				If BtnLogIn.Enabled Then
-					BtnLogIn.PerformClick()
-				End If
 		End Select
 		RefreshTimCloserFunc()
 	End Sub
@@ -488,7 +485,7 @@
 							BtnHide.PerformClick()
 					End Select
 				Else
-					TxtPassword.Focus()
+
 				End If
 			Case Else
 				Select Case e.KeyCode
@@ -522,7 +519,6 @@
 		UserList.Clear()
 		LstChatVapo.Items.Clear()
 		TxtPassword.Text = ""
-		BtnLogIn.Text = VaporChat.LOGINBTXT
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub ForceSwitchOffFunc()
@@ -558,7 +554,6 @@
 			If VaporChat.GetSubState() = False Then
 				If VaporChat.GetSubOngoing() = False Then
 					LblLog.Text = VaporChat.LOGERROR
-					BtnLogIn.Text = VaporChat.LOGINBTXT
 				End If
 			End If
 			If VaporChat.GetPubState() = False Then
@@ -603,7 +598,7 @@
 		If e.Button = MouseButtons.Left And My.Computer.Keyboard.CtrlKeyDown Then
 			Select Case objLst.Name
 				Case LstChatVapo.Name
-					If VaporChat.LIMVIEW = False Then
+#If LIMVIEW Then
 						If objLst.SelectedIndices(0) < LstChatVapo.Items.Count Then
 							If objLst.Items(objLst.SelectedIndices(0)).SubItems.Count > 0 Then
 								If objLst.Items(objLst.SelectedIndices(0)).SubItems(1).Text <> "" Then
@@ -612,16 +607,16 @@
 								End If
 							End If
 						End If
-					Else
-						If objLst.SelectedIndices(0) > VaporChat.MAXROWS - NofMessages Then
-							If objLst.Items(objLst.SelectedIndices(0)).SubItems.Count > 0 Then
-								If objLst.Items(objLst.SelectedIndices(0)).SubItems(1).Text <> "" Then
-									Clipboard.Clear()
-									Clipboard.SetText(objLst.Items(objLst.SelectedIndices(0)).SubItems(1).Text)
-								End If
+#Else
+					If objLst.SelectedIndices(0) < LstChatVapo.Items.Count Then
+						If objLst.Items(objLst.SelectedIndices(0)).SubItems.Count > 0 Then
+							If objLst.Items(objLst.SelectedIndices(0)).SubItems(1).Text <> "" Then
+								Clipboard.Clear()
+								Clipboard.SetText(objLst.Items(objLst.SelectedIndices(0)).SubItems(1).Text)
 							End If
 						End If
 					End If
+#End If
 				Case LstUsersList.Name
 					If objLst.Items(objLst.SelectedIndices(0)).SubItems.Count > 0 Then
 						If objLst.Items(objLst.SelectedIndices(0)).SubItems(0).Text <> "" Then
@@ -640,31 +635,16 @@
 			Select Case objLst.Name
 				Case LstChatVapo.Name
 					If MessageRxOn = False Then
-						If VaporChat.LIMVIEW = False Then
-							If objLst.SelectedIndices(0) < LstChatVapo.Items.Count Then
-								If SwitchOn = False Then
-									SwitchIndex = objLst.SelectedIndices(0)
-									SwitchText = objLst.Items(SwitchIndex).SubItems(1).Text
-									objLst.Items(SwitchIndex).SubItems(1).Text = objLst.Items(SwitchIndex).SubItems(2).Text
-									SwitchOn = True
-								Else
-									objLst.Items(SwitchIndex).SubItems(1).Text = SwitchText
-									SwitchOn = False
-									SwitchIndex = -1
-								End If
-							End If
-						Else
-							If objLst.SelectedIndices(0) > VaporChat.MAXROWS - NofMessages Then
-								If SwitchOn = False Then
-									SwitchIndex = objLst.SelectedIndices(0)
-									SwitchText = objLst.Items(SwitchIndex).SubItems(1).Text
-									objLst.Items(SwitchIndex).SubItems(1).Text = objLst.Items(SwitchIndex).SubItems(2).Text
-									SwitchOn = True
-								Else
-									objLst.Items(SwitchIndex).SubItems(1).Text = SwitchText
-									SwitchOn = False
-									SwitchIndex = -1
-								End If
+						If objLst.SelectedIndices(0) < LstChatVapo.Items.Count Then
+							If SwitchOn = False Then
+								SwitchIndex = objLst.SelectedIndices(0)
+								SwitchText = objLst.Items(SwitchIndex).SubItems(1).Text
+								objLst.Items(SwitchIndex).SubItems(1).Text = objLst.Items(SwitchIndex).SubItems(2).Text
+								SwitchOn = True
+							Else
+								objLst.Items(SwitchIndex).SubItems(1).Text = SwitchText
+								SwitchOn = False
+								SwitchIndex = -1
 							End If
 						End If
 					End If
@@ -721,6 +701,8 @@
 		LblVaporChat2020Ver.Text = My.Settings.VaporChat2020Ver
 		TxtPassword.Focus()
 		CmbCloserTime.Text = My.Settings.Timeout / 1000
+		TxtUser.Text = My.Settings.LastUser
+		TxtLobby.Text = My.Settings.Lobby
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub ShowHideChatFunc()
@@ -732,6 +714,7 @@
 			VaporChat.CurrentTheme = VaporChat.Themes.Hide
 			PnlVaporChat.BringToFront()
 			Callback.ClbVaporFunc_InitChatGUIFunc()
+			LogInFunc()
 		Else
 			CallerForm.Close()
 		End If
@@ -746,6 +729,7 @@
 			VaporChat.CurrentTheme = VaporChat.Themes.Vapor
 			PnlVaporChat.BringToFront()
 			Callback.ClbVaporFunc_InitChatGUIFunc()
+			LogInFunc()
 		Else
 			CallerForm.Close()
 		End If

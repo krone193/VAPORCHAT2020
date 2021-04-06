@@ -64,17 +64,15 @@ Public Class MainScreen
 				TxtInsertPass.ForeColor = VaporChat.VAPOR_USERFRTCLR
 				LstChatVapo.BackColor = VaporChat.VAPOR_CHATBCKCLR
 				LstChatVapo.ForeColor = VaporChat.VAPOR_CHATFRTCLR
-				If VaporChat.LIMVIEW = True Then
-					For i = 0 To VaporChat.MAXROWS
-						Dim LstItem As New ListViewItem With {
+#If LIMVIEW Then
+				For i = 0 To VaporChat.MAXROWS
+					Dim LstItem As New ListViewItem With {
 						.BackColor = VaporChat.VAPOR_CHATBCKCLR,
 						.ForeColor = VaporChat.VAPOR_CHATFRTCLR
 						}
-						LstChatVapo.Items.Insert(i, LstItem)
-					Next
-				End If
-				TxtLobby.BackColor = VaporChat.VAPOR_USERBCKCLR
-				TxtLobby.ForeColor = VaporChat.VAPOR_USERFRTCLR
+					LstChatVapo.Items.Insert(i, LstItem)
+				Next
+#End If
 				TxtMsg.BackColor = VaporChat.VAPOR_SENDBCKCLR
 				TxtMsg.ForeColor = VaporChat.VAPOR_SENDFRTCLR
 				DskLblLogs.Text = VaporChat.VAPOR_LBLLOGFTXT
@@ -83,9 +81,6 @@ Public Class MainScreen
 				DskLblUsers.Text = VaporChat.VAPOR_LBLUSRFTXT
 				DskLblUsers.ForeColor = VaporChat.VAPOR_LBLUSRFCLR
 				LblUsers.ForeColor = VaporChat.VAPOR_LBLUSRVCLR
-				BtnLogIn.FlatStyle = VaporChat.VAPOR_BTNFLSTYLE
-				BtnLogIn.BackColor = VaporChat.VAPOR_BTNLOGBCLR
-				BtnLogIn.ForeColor = VaporChat.VAPOR_BTNLOGFCLR
 				BtnSend.FlatStyle = VaporChat.VAPOR_BTNFLSTYLE
 				BtnSend.BackColor = VaporChat.VAPOR_BTNSNDBCLR
 				BtnSend.ForeColor = VaporChat.VAPOR_BTNSNDFCLR
@@ -104,17 +99,15 @@ Public Class MainScreen
 				TxtInsertPass.ForeColor = VaporChat.HIDE_USERFRTCLR
 				LstChatVapo.BackColor = VaporChat.HIDE_CHATBCKCLR
 				LstChatVapo.ForeColor = VaporChat.HIDE_CHATFRTCLR
-				If VaporChat.LIMVIEW = True Then
-					For i = 0 To VaporChat.MAXROWS
-						Dim LstItem As New ListViewItem With {
+#If LIMVIEW Then
+				For i = 0 To VaporChat.MAXROWS
+					Dim LstItem As New ListViewItem With {
 						.BackColor = VaporChat.HIDE_CHATBCKCLR,
 						.ForeColor = VaporChat.HIDE_CHATFRTCLR
 						}
-						LstChatVapo.Items.Insert(i, LstItem)
-					Next
-				End If
-				TxtLobby.BackColor = VaporChat.HIDE_USERBCKCLR
-				TxtLobby.ForeColor = VaporChat.HIDE_USERFRTCLR
+					LstChatVapo.Items.Insert(i, LstItem)
+				Next
+#End If
 				TxtMsg.BackColor = VaporChat.HIDE_SENDBCKCLR
 				TxtMsg.ForeColor = VaporChat.HIDE_SENDFRTCLR
 				DskLblLogs.Text = VaporChat.HIDE_LBLLOGFTXT
@@ -123,9 +116,6 @@ Public Class MainScreen
 				DskLblUsers.Text = VaporChat.HIDE_LBLUSRFTXT
 				DskLblUsers.ForeColor = VaporChat.HIDE_LBLUSRFCLR
 				LblUsers.ForeColor = VaporChat.HIDE_LBLUSRVCLR
-				BtnLogIn.FlatStyle = VaporChat.HIDE_BTNFLSTYLE
-				BtnLogIn.BackColor = VaporChat.HIDE_BTNLOGBCLR
-				BtnLogIn.ForeColor = VaporChat.HIDE_BTNLOGFCLR
 				BtnSend.FlatStyle = VaporChat.HIDE_BTNFLSTYLE
 				BtnSend.BackColor = VaporChat.HIDE_BTNSNDBCLR
 				BtnSend.ForeColor = VaporChat.HIDE_BTNSNDFCLR
@@ -144,13 +134,13 @@ Public Class MainScreen
 		Notify.Icon = NotifyIcon
 		Notify.Visible = False
 		PnlUsersList.SendToBack()
-		'PnlStartScreen.BringToFront()
+		PnlStartScreen.BringToFront()
 		VaporChat.CurrentTheme = VaporChat.Themes.Start
 		Size = New Size(VaporChat.STARTWIDTH, VaporChat.STARTHEIGH)
 		Text = VaporChat.START_MAINWINTXT
 		VaporFunc.AssignMainFormGUIFunc(Me)
-		VaporFunc.AssignStartScreenPanelGUIFunc(PnlStartScreen, BtnHide, BtnVapor, TxtPassword, CmbCloserTime, LblVaporChat2020Ver, Lblkronelab)
-		VaporFunc.AssignVaporChatPanelGUIFunc(PnlVaporChat, LstChatVapo, TxtLobby, TxtMsg, LblLog, LblUsers, BtnLogIn, BtnSend, BtnBackToStart)
+		VaporFunc.AssignStartScreenPanelGUIFunc(PnlStartScreen, BtnHide, BtnVapor, TxtLobby, TxtUser, TxtPassword, CmbCloserTime, LblVaporChat2020Ver, Lblkronelab)
+		VaporFunc.AssignVaporChatPanelGUIFunc(PnlVaporChat, LstChatVapo, TxtMsg, LblLog, LblUsers, BtnSend, BtnBackToStart)
 		VaporFunc.AssignUserListPanelGUIFunc(PnlUsersList, LstUsersList, StsUsersList)
 		VaporFunc.AssignPasswordPanelGUIFunc(PnlInsertPass, TxtInsertPass)
 		VaporFunc.AssignAdminPanelGUIFunc(PnlAdmin, TxtAdminUser, TxtAdminCommand)
@@ -163,11 +153,7 @@ Public Class MainScreen
 		VaporFunc.NotifyDoubleClickFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub CmdLogIn_Click(sender As Object, e As EventArgs) 
-		VaporFunc.LogInFunc()
-	End Sub
-	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub CmdSendMsg_Click(sender As Object, e As EventArgs) 
+	Private Sub CmdSendMsg_Click(sender As Object, e As EventArgs) Handles BtnSend.Click
 		VaporFunc.SendMsgFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
@@ -175,29 +161,29 @@ Public Class MainScreen
 		VaporFunc.TimerChkMsgFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub TxtMsg_KeyDown(sender As Object, e As KeyEventArgs) 
+	Private Sub TxtMsg_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtMsg.KeyDown
 		VaporFunc.MsgBoxKeyDownFunc(e)
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub TxtUser_KeyDown(sender As Object, e As KeyEventArgs) 
+	Private Sub TxtUser_KeyDown(sender As Object, e As KeyEventArgs) Handles TxtUser.KeyDown
 		VaporFunc.UserBoxKeyDownFunc(e)
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub VapoMainScreenvb_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+	Private Sub VapoMainScreenvb_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
 		VaporFunc.FormKeyDownFunc(e)
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub VapoMainScreenvb_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+	Private Sub VapoMainScreenvb_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
 		If Me.WindowState = FormWindowState.Minimized Then
 			VaporFunc.MinimizeFormFunc(False)
 		End If
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub VapoMainScreenvb_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+	Private Sub VapoMainScreenvb_Closing(sender As Object, e As CancelEventArgs) Handles MyBase.Closing
 		VaporFunc.ClosingFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub TxtChat_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) 
+	Private Sub TxtChat_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) Handles LstChatVapo.ItemSelectionChanged
 		VaporFunc.ForceSwitchOffFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
@@ -205,7 +191,7 @@ Public Class MainScreen
 		VaporFunc.UpdateGUIFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub LblNofUsers_Click(sender As Object, e As EventArgs) 
+	Private Sub LblNofUsers_Click(sender As Object, e As EventArgs) Handles LblUsers.Click
 		VaporFunc.ShowUserListFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
@@ -213,16 +199,16 @@ Public Class MainScreen
 		VaporFunc.PubBlockTickFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub LstChatVapo_MouseClick(sender As Object, e As MouseEventArgs) 
+	Private Sub LstChatVapo_MouseClick(sender As Object, e As MouseEventArgs) Handles LstChatVapo.MouseClick
 		VaporFunc.CopyItemFunc(LstChatVapo, e)
 		VaporFunc.ShowDateFunc(LstChatVapo, e)
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub LstUsersList_MouseClick(sender As Object, e As MouseEventArgs) 
+	Private Sub LstUsersList_MouseClick(sender As Object, e As MouseEventArgs) Handles LstUsersList.MouseClick
 		VaporFunc.CopyItemFunc(LstUsersList, e)
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub VaporMainScreen_LostFocus(sender As Object, e As EventArgs) Handles Me.LostFocus
+	Private Sub VaporMainScreen_LostFocus(sender As Object, e As EventArgs) Handles MyBase.LostFocus
 		VaporFunc.ForceSwitchOffFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
@@ -242,19 +228,19 @@ Public Class MainScreen
 		VaporFunc.LogOutFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub BtnBackToStart_Click(sender As Object, e As EventArgs) 
+	Private Sub BtnBackToStart_Click(sender As Object, e As EventArgs) Handles BtnBackToStart.Click
 		VaporFunc.LogOutFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub BtnCloseUsersList_Click(sender As Object, e As EventArgs) 
+	Private Sub BtnCloseUsersList_Click(sender As Object, e As EventArgs) Handles BtnCloseUsersList.Click
 		VaporFunc.CloseUserListFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Private Sub StsUsersList_MouseMove(sender As Object, e As MouseEventArgs)
-		VaporFunc.MoveItemFunc(PnlUsersList, PNLUSR_MouseIsDown, PNLUSR_MouseIsDownLoc, e)
+
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub StsUsersList_MouseUp(sender As Object, e As MouseEventArgs) 
+	Private Sub StsUsersList_MouseUp(sender As Object, e As MouseEventArgs) Handles StsUsersList.MouseUp
 		VaporFunc.ItemMouseUpFunc(PNLUSR_MouseIsDown)
 	End Sub
 
@@ -264,10 +250,6 @@ Public Class MainScreen
 
 	Private Sub BtnVapor_Click(sender As Object, e As EventArgs) Handles BtnVapor.Click
 		VaporFunc.ShowVaporChatFunc()
-	End Sub
-
-	Private Sub TxtPassword_TextChanged(sender As Object, e As EventArgs) Handles TxtPassword.TextChanged
-
 	End Sub
 
 	Private Sub CmbCloserTime_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CmbCloserTime.SelectedIndexChanged

@@ -29,11 +29,30 @@ Partial Class MainScreen
 		Me.TimerPubBlock = New System.Windows.Forms.Timer(Me.components)
 		Me.TimerAutoCloser = New System.Windows.Forms.Timer(Me.components)
 		Me.PnlVaporChat = New System.Windows.Forms.Panel()
+		Me.PnlUsersList = New System.Windows.Forms.Panel()
+		Me.LstUsersList = New System.Windows.Forms.ListView()
+		Me.ClmUsername = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+		Me.ClmLastMsg = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+		Me.BtnCloseUsersList = New System.Windows.Forms.Button()
+		Me.StsUsersList = New System.Windows.Forms.StatusStrip()
+		Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+		Me.BtnBackToStart = New System.Windows.Forms.Button()
+		Me.LblUsers = New System.Windows.Forms.Label()
+		Me.DskLblUsers = New System.Windows.Forms.Label()
+		Me.LstChatVapo = New System.Windows.Forms.ListView()
+		Me.clmUser = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+		Me.clmMessage = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+		Me.LblLog = New System.Windows.Forms.Label()
+		Me.BtnSend = New System.Windows.Forms.Button()
+		Me.TxtMsg = New System.Windows.Forms.TextBox()
+		Me.DskLblLogs = New System.Windows.Forms.Label()
 		Me.TabElfa = New System.Windows.Forms.TabPage()
 		Me.TabNew = New System.Windows.Forms.TabPage()
 		Me.PnlInsertPass = New System.Windows.Forms.Panel()
 		Me.TxtInsertPass = New System.Windows.Forms.TextBox()
 		Me.PnlStartScreen = New System.Windows.Forms.Panel()
+		Me.TxtUser = New System.Windows.Forms.TextBox()
+		Me.TxtLobby = New System.Windows.Forms.TextBox()
 		Me.TxtPassword = New System.Windows.Forms.TextBox()
 		Me.CmbCloserTime = New System.Windows.Forms.ComboBox()
 		Me.Label3 = New System.Windows.Forms.Label()
@@ -49,8 +68,9 @@ Partial Class MainScreen
 		Me.Label1 = New System.Windows.Forms.Label()
 		Me.TxtAdminUser = New System.Windows.Forms.TextBox()
 		Me.TabDel = New System.Windows.Forms.TabPage()
-		Me.TxtLobby = New System.Windows.Forms.TextBox()
-		Me.TxtUser = New System.Windows.Forms.TextBox()
+		Me.PnlVaporChat.SuspendLayout()
+		Me.PnlUsersList.SuspendLayout()
+		Me.StsUsersList.SuspendLayout()
 		Me.PnlInsertPass.SuspendLayout()
 		Me.PnlStartScreen.SuspendLayout()
 		Me.PnlAdmin.SuspendLayout()
@@ -78,10 +98,189 @@ Partial Class MainScreen
 		Me.PnlVaporChat.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
 		Me.PnlVaporChat.BackColor = System.Drawing.SystemColors.Control
 		Me.PnlVaporChat.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.PnlVaporChat.Controls.Add(Me.PnlUsersList)
+		Me.PnlVaporChat.Controls.Add(Me.BtnBackToStart)
+		Me.PnlVaporChat.Controls.Add(Me.LblUsers)
+		Me.PnlVaporChat.Controls.Add(Me.DskLblUsers)
+		Me.PnlVaporChat.Controls.Add(Me.LstChatVapo)
+		Me.PnlVaporChat.Controls.Add(Me.LblLog)
+		Me.PnlVaporChat.Controls.Add(Me.BtnSend)
+		Me.PnlVaporChat.Controls.Add(Me.TxtMsg)
+		Me.PnlVaporChat.Controls.Add(Me.DskLblLogs)
 		Me.PnlVaporChat.Location = New System.Drawing.Point(0, 0)
 		Me.PnlVaporChat.Name = "PnlVaporChat"
-		Me.PnlVaporChat.Size = New System.Drawing.Size(492, 522)
+		Me.PnlVaporChat.Size = New System.Drawing.Size(496, 522)
 		Me.PnlVaporChat.TabIndex = 63
+		'
+		'PnlUsersList
+		'
+		Me.PnlUsersList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+		Me.PnlUsersList.Controls.Add(Me.LstUsersList)
+		Me.PnlUsersList.Controls.Add(Me.BtnCloseUsersList)
+		Me.PnlUsersList.Controls.Add(Me.StsUsersList)
+		Me.PnlUsersList.Location = New System.Drawing.Point(94, 115)
+		Me.PnlUsersList.Name = "PnlUsersList"
+		Me.PnlUsersList.Size = New System.Drawing.Size(310, 241)
+		Me.PnlUsersList.TabIndex = 73
+		'
+		'LstUsersList
+		'
+		Me.LstUsersList.BackColor = System.Drawing.Color.DarkSlateGray
+		Me.LstUsersList.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ClmUsername, Me.ClmLastMsg})
+		Me.LstUsersList.FullRowSelect = True
+		Me.LstUsersList.GridLines = True
+		Me.LstUsersList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
+		Me.LstUsersList.HideSelection = False
+		Me.LstUsersList.Location = New System.Drawing.Point(3, 25)
+		Me.LstUsersList.MultiSelect = False
+		Me.LstUsersList.Name = "LstUsersList"
+		Me.LstUsersList.Scrollable = False
+		Me.LstUsersList.Size = New System.Drawing.Size(302, 211)
+		Me.LstUsersList.TabIndex = 66
+		Me.LstUsersList.UseCompatibleStateImageBehavior = False
+		Me.LstUsersList.View = System.Windows.Forms.View.List
+		'
+		'ClmUsername
+		'
+		Me.ClmUsername.Text = "Username"
+		Me.ClmUsername.Width = 151
+		'
+		'ClmLastMsg
+		'
+		Me.ClmLastMsg.Text = "Last message"
+		'
+		'BtnCloseUsersList
+		'
+		Me.BtnCloseUsersList.BackColor = System.Drawing.Color.FromArgb(CType(CType(225, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(50, Byte), Integer))
+		Me.BtnCloseUsersList.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray
+		Me.BtnCloseUsersList.ForeColor = System.Drawing.Color.White
+		Me.BtnCloseUsersList.Location = New System.Drawing.Point(287, 3)
+		Me.BtnCloseUsersList.Name = "BtnCloseUsersList"
+		Me.BtnCloseUsersList.Size = New System.Drawing.Size(18, 18)
+		Me.BtnCloseUsersList.TabIndex = 64
+		Me.BtnCloseUsersList.Text = "X"
+		Me.BtnCloseUsersList.UseVisualStyleBackColor = False
+		'
+		'StsUsersList
+		'
+		Me.StsUsersList.Dock = System.Windows.Forms.DockStyle.Top
+		Me.StsUsersList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
+		Me.StsUsersList.Location = New System.Drawing.Point(0, 0)
+		Me.StsUsersList.Name = "StsUsersList"
+		Me.StsUsersList.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
+		Me.StsUsersList.Size = New System.Drawing.Size(308, 22)
+		Me.StsUsersList.TabIndex = 65
+		Me.StsUsersList.Text = "Users list"
+		'
+		'ToolStripStatusLabel1
+		'
+		Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
+		Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(53, 17)
+		Me.ToolStripStatusLabel1.Text = "Users list"
+		'
+		'BtnBackToStart
+		'
+		Me.BtnBackToStart.BackColor = System.Drawing.Color.Orange
+		Me.BtnBackToStart.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray
+		Me.BtnBackToStart.ForeColor = System.Drawing.Color.CadetBlue
+		Me.BtnBackToStart.Location = New System.Drawing.Point(4, 496)
+		Me.BtnBackToStart.Name = "BtnBackToStart"
+		Me.BtnBackToStart.Size = New System.Drawing.Size(25, 20)
+		Me.BtnBackToStart.TabIndex = 72
+		Me.BtnBackToStart.Text = "<"
+		Me.BtnBackToStart.UseVisualStyleBackColor = False
+		'
+		'LblUsers
+		'
+		Me.LblUsers.AutoSize = True
+		Me.LblUsers.BackColor = System.Drawing.Color.Transparent
+		Me.LblUsers.ForeColor = System.Drawing.Color.Lime
+		Me.LblUsers.Location = New System.Drawing.Point(117, 5)
+		Me.LblUsers.Name = "LblUsers"
+		Me.LblUsers.Size = New System.Drawing.Size(19, 13)
+		Me.LblUsers.TabIndex = 71
+		Me.LblUsers.Text = "00"
+		'
+		'DskLblUsers
+		'
+		Me.DskLblUsers.AutoSize = True
+		Me.DskLblUsers.BackColor = System.Drawing.Color.Transparent
+		Me.DskLblUsers.ForeColor = System.Drawing.Color.Chartreuse
+		Me.DskLblUsers.Location = New System.Drawing.Point(4, 5)
+		Me.DskLblUsers.Name = "DskLblUsers"
+		Me.DskLblUsers.Size = New System.Drawing.Size(113, 13)
+		Me.DskLblUsers.TabIndex = 70
+		Me.DskLblUsers.Text = "Logged users 俺鉛プ"
+		'
+		'LstChatVapo
+		'
+		Me.LstChatVapo.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(51, Byte), Integer))
+		Me.LstChatVapo.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.clmUser, Me.clmMessage})
+		Me.LstChatVapo.ForeColor = System.Drawing.Color.Gold
+		Me.LstChatVapo.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+		Me.LstChatVapo.HideSelection = False
+		Me.LstChatVapo.Location = New System.Drawing.Point(4, 21)
+		Me.LstChatVapo.MultiSelect = False
+		Me.LstChatVapo.Name = "LstChatVapo"
+		Me.LstChatVapo.Scrollable = False
+		Me.LstChatVapo.Size = New System.Drawing.Size(485, 469)
+		Me.LstChatVapo.TabIndex = 65
+		Me.LstChatVapo.UseCompatibleStateImageBehavior = False
+		Me.LstChatVapo.View = System.Windows.Forms.View.Details
+		'
+		'clmUser
+		'
+		Me.clmUser.Text = "User"
+		Me.clmUser.Width = 70
+		'
+		'clmMessage
+		'
+		Me.clmMessage.Text = "Message"
+		Me.clmMessage.Width = 400
+		'
+		'LblLog
+		'
+		Me.LblLog.AutoSize = True
+		Me.LblLog.BackColor = System.Drawing.Color.Transparent
+		Me.LblLog.ForeColor = System.Drawing.Color.Pink
+		Me.LblLog.Location = New System.Drawing.Point(253, 5)
+		Me.LblLog.Name = "LblLog"
+		Me.LblLog.Size = New System.Drawing.Size(13, 13)
+		Me.LblLog.TabIndex = 69
+		Me.LblLog.Text = "/"
+		'
+		'BtnSend
+		'
+		Me.BtnSend.BackColor = System.Drawing.Color.Crimson
+		Me.BtnSend.Enabled = False
+		Me.BtnSend.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray
+		Me.BtnSend.ForeColor = System.Drawing.Color.Gold
+		Me.BtnSend.Location = New System.Drawing.Point(433, 496)
+		Me.BtnSend.Name = "BtnSend"
+		Me.BtnSend.Size = New System.Drawing.Size(55, 20)
+		Me.BtnSend.TabIndex = 66
+		Me.BtnSend.Text = "Send"
+		Me.BtnSend.UseVisualStyleBackColor = False
+		'
+		'TxtMsg
+		'
+		Me.TxtMsg.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(51, Byte), Integer))
+		Me.TxtMsg.ForeColor = System.Drawing.Color.DarkOrchid
+		Me.TxtMsg.Location = New System.Drawing.Point(35, 496)
+		Me.TxtMsg.Name = "TxtMsg"
+		Me.TxtMsg.Size = New System.Drawing.Size(392, 20)
+		Me.TxtMsg.TabIndex = 67
+		'
+		'DskLblLogs
+		'
+		Me.DskLblLogs.AutoSize = True
+		Me.DskLblLogs.BackColor = System.Drawing.Color.Transparent
+		Me.DskLblLogs.ForeColor = System.Drawing.Color.HotPink
+		Me.DskLblLogs.Location = New System.Drawing.Point(187, 5)
+		Me.DskLblLogs.Name = "DskLblLogs"
+		Me.DskLblLogs.Size = New System.Drawing.Size(60, 13)
+		Me.DskLblLogs.TabIndex = 68
+		Me.DskLblLogs.Text = "Logs をノだ"
 		'
 		'TabElfa
 		'
@@ -104,16 +303,16 @@ Partial Class MainScreen
 		Me.PnlInsertPass.Controls.Add(Me.TxtInsertPass)
 		Me.PnlInsertPass.Location = New System.Drawing.Point(0, 0)
 		Me.PnlInsertPass.Name = "PnlInsertPass"
-		Me.PnlInsertPass.Size = New System.Drawing.Size(492, 74)
+		Me.PnlInsertPass.Size = New System.Drawing.Size(496, 74)
 		Me.PnlInsertPass.TabIndex = 64
 		'
 		'TxtInsertPass
 		'
 		Me.TxtInsertPass.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-		Me.TxtInsertPass.Location = New System.Drawing.Point(11, 13)
+		Me.TxtInsertPass.Location = New System.Drawing.Point(117, 13)
 		Me.TxtInsertPass.Name = "TxtInsertPass"
 		Me.TxtInsertPass.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-		Me.TxtInsertPass.Size = New System.Drawing.Size(470, 20)
+		Me.TxtInsertPass.Size = New System.Drawing.Size(251, 20)
 		Me.TxtInsertPass.TabIndex = 0
 		'
 		'PnlStartScreen
@@ -134,19 +333,42 @@ Partial Class MainScreen
 		Me.PnlStartScreen.Controls.Add(Me.BtnVapor)
 		Me.PnlStartScreen.Location = New System.Drawing.Point(0, 0)
 		Me.PnlStartScreen.Name = "PnlStartScreen"
-		Me.PnlStartScreen.Size = New System.Drawing.Size(492, 522)
+		Me.PnlStartScreen.Size = New System.Drawing.Size(496, 522)
 		Me.PnlStartScreen.TabIndex = 66
+		'
+		'TxtUser
+		'
+		Me.TxtUser.BackColor = System.Drawing.Color.MediumTurquoise
+		Me.TxtUser.BorderStyle = System.Windows.Forms.BorderStyle.None
+		Me.TxtUser.ForeColor = System.Drawing.Color.Yellow
+		Me.TxtUser.Location = New System.Drawing.Point(172, 87)
+		Me.TxtUser.Name = "TxtUser"
+		Me.TxtUser.Size = New System.Drawing.Size(141, 13)
+		Me.TxtUser.TabIndex = 19
+		Me.TxtUser.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+		'
+		'TxtLobby
+		'
+		Me.TxtLobby.BackColor = System.Drawing.Color.Pink
+		Me.TxtLobby.BorderStyle = System.Windows.Forms.BorderStyle.None
+		Me.TxtLobby.ForeColor = System.Drawing.Color.Crimson
+		Me.TxtLobby.Location = New System.Drawing.Point(172, 73)
+		Me.TxtLobby.Name = "TxtLobby"
+		Me.TxtLobby.Size = New System.Drawing.Size(141, 13)
+		Me.TxtLobby.TabIndex = 18
+		Me.TxtLobby.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		'
 		'TxtPassword
 		'
 		Me.TxtPassword.BackColor = System.Drawing.Color.Gold
 		Me.TxtPassword.BorderStyle = System.Windows.Forms.BorderStyle.None
-		Me.TxtPassword.ForeColor = System.Drawing.Color.Crimson
-		Me.TxtPassword.Location = New System.Drawing.Point(172, 99)
+		Me.TxtPassword.ForeColor = System.Drawing.Color.SteelBlue
+		Me.TxtPassword.Location = New System.Drawing.Point(172, 101)
 		Me.TxtPassword.Name = "TxtPassword"
 		Me.TxtPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(12543)
 		Me.TxtPassword.Size = New System.Drawing.Size(141, 13)
 		Me.TxtPassword.TabIndex = 1
+		Me.TxtPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		'
 		'CmbCloserTime
 		'
@@ -158,9 +380,9 @@ Partial Class MainScreen
 		Me.CmbCloserTime.FormattingEnabled = True
 		Me.CmbCloserTime.IntegralHeight = False
 		Me.CmbCloserTime.Items.AddRange(New Object() {"30", "35", "40", "45", "50", "55", "60"})
-		Me.CmbCloserTime.Location = New System.Drawing.Point(319, 67)
+		Me.CmbCloserTime.Location = New System.Drawing.Point(201, 134)
 		Me.CmbCloserTime.Name = "CmbCloserTime"
-		Me.CmbCloserTime.Size = New System.Drawing.Size(37, 21)
+		Me.CmbCloserTime.Size = New System.Drawing.Size(84, 21)
 		Me.CmbCloserTime.TabIndex = 17
 		'
 		'Label3
@@ -169,7 +391,7 @@ Partial Class MainScreen
 		Me.Label3.BackColor = System.Drawing.Color.Transparent
 		Me.Label3.Font = New System.Drawing.Font("Consolas", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.Label3.ForeColor = System.Drawing.Color.Teal
-		Me.Label3.Location = New System.Drawing.Point(198, 115)
+		Me.Label3.Location = New System.Drawing.Point(198, 117)
 		Me.Label3.Name = "Label3"
 		Me.Label3.Size = New System.Drawing.Size(87, 14)
 		Me.Label3.TabIndex = 16
@@ -237,7 +459,7 @@ Partial Class MainScreen
 		Me.PnlAdmin.Controls.Add(Me.TxtAdminUser)
 		Me.PnlAdmin.Location = New System.Drawing.Point(0, 0)
 		Me.PnlAdmin.Name = "PnlAdmin"
-		Me.PnlAdmin.Size = New System.Drawing.Size(492, 94)
+		Me.PnlAdmin.Size = New System.Drawing.Size(496, 94)
 		Me.PnlAdmin.TabIndex = 65
 		'
 		'BtnAdminBackToStart
@@ -320,38 +542,16 @@ Partial Class MainScreen
 		Me.TabDel.Text = "-"
 		Me.TabDel.UseVisualStyleBackColor = True
 		'
-		'TxtLobby
-		'
-		Me.TxtLobby.BackColor = System.Drawing.Color.Pink
-		Me.TxtLobby.BorderStyle = System.Windows.Forms.BorderStyle.None
-		Me.TxtLobby.ForeColor = System.Drawing.Color.Crimson
-		Me.TxtLobby.Location = New System.Drawing.Point(172, 71)
-		Me.TxtLobby.Name = "TxtLobby"
-		Me.TxtLobby.PasswordChar = Global.Microsoft.VisualBasic.ChrW(12543)
-		Me.TxtLobby.Size = New System.Drawing.Size(141, 13)
-		Me.TxtLobby.TabIndex = 18
-		'
-		'TxtUser
-		'
-		Me.TxtUser.BackColor = System.Drawing.Color.PowderBlue
-		Me.TxtUser.BorderStyle = System.Windows.Forms.BorderStyle.None
-		Me.TxtUser.ForeColor = System.Drawing.Color.Yellow
-		Me.TxtUser.Location = New System.Drawing.Point(172, 85)
-		Me.TxtUser.Name = "TxtUser"
-		Me.TxtUser.PasswordChar = Global.Microsoft.VisualBasic.ChrW(12543)
-		Me.TxtUser.Size = New System.Drawing.Size(141, 13)
-		Me.TxtUser.TabIndex = 19
-		'
 		'MainScreen
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
 		Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
 		Me.ClientSize = New System.Drawing.Size(494, 521)
-		Me.Controls.Add(Me.PnlVaporChat)
-		Me.Controls.Add(Me.PnlAdmin)
 		Me.Controls.Add(Me.PnlStartScreen)
+		Me.Controls.Add(Me.PnlAdmin)
 		Me.Controls.Add(Me.PnlInsertPass)
+		Me.Controls.Add(Me.PnlVaporChat)
 		Me.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
 		Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
 		Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -362,6 +562,12 @@ Partial Class MainScreen
 		Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
 		Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
 		Me.Text = "Dummy text"
+		Me.PnlVaporChat.ResumeLayout(False)
+		Me.PnlVaporChat.PerformLayout()
+		Me.PnlUsersList.ResumeLayout(False)
+		Me.PnlUsersList.PerformLayout()
+		Me.StsUsersList.ResumeLayout(False)
+		Me.StsUsersList.PerformLayout()
 		Me.PnlInsertPass.ResumeLayout(False)
 		Me.PnlInsertPass.PerformLayout()
 		Me.PnlStartScreen.ResumeLayout(False)
@@ -395,8 +601,24 @@ Partial Class MainScreen
 	Friend WithEvents BtnVapor As Button
 	Friend WithEvents TabElfa As TabPage
 	Friend WithEvents TabNew As TabPage
-	Friend WithEvents VaporChatControl1 As VaporChatControl
 	Friend WithEvents TabDel As TabPage
 	Friend WithEvents TxtUser As TextBox
 	Friend WithEvents TxtLobby As TextBox
+    Friend WithEvents PnlUsersList As Panel
+    Friend WithEvents LstUsersList As ListView
+    Friend WithEvents ClmUsername As ColumnHeader
+    Friend WithEvents ClmLastMsg As ColumnHeader
+    Friend WithEvents BtnCloseUsersList As Button
+    Friend WithEvents StsUsersList As StatusStrip
+    Friend WithEvents ToolStripStatusLabel1 As ToolStripStatusLabel
+    Friend WithEvents BtnBackToStart As Button
+    Friend WithEvents LblUsers As Label
+    Friend WithEvents DskLblUsers As Label
+    Friend WithEvents LstChatVapo As ListView
+    Friend WithEvents clmUser As ColumnHeader
+    Friend WithEvents clmMessage As ColumnHeader
+    Friend WithEvents LblLog As Label
+    Friend WithEvents BtnSend As Button
+    Friend WithEvents TxtMsg As TextBox
+    Friend WithEvents DskLblLogs As Label
 End Class
