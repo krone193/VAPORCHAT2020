@@ -222,7 +222,6 @@ Partial Class MainScreen
         Me.LstChatVapo.Location = New System.Drawing.Point(4, 21)
         Me.LstChatVapo.MultiSelect = False
         Me.LstChatVapo.Name = "LstChatVapo"
-        Me.LstChatVapo.Scrollable = False
         Me.LstChatVapo.Size = New System.Drawing.Size(485, 469)
         Me.LstChatVapo.TabIndex = 65
         Me.LstChatVapo.UseCompatibleStateImageBehavior = False
@@ -231,12 +230,12 @@ Partial Class MainScreen
         'clmUser
         '
         Me.clmUser.Text = "User"
-        Me.clmUser.Width = 70
+        Me.clmUser.Width = 67
         '
         'clmMessage
         '
         Me.clmMessage.Text = "Message"
-        Me.clmMessage.Width = 400
+        Me.clmMessage.Width = 396
         '
         'LblLog
         '
@@ -255,7 +254,7 @@ Partial Class MainScreen
         Me.BtnSend.Enabled = False
         Me.BtnSend.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray
         Me.BtnSend.ForeColor = System.Drawing.Color.Gold
-        Me.BtnSend.Location = New System.Drawing.Point(433, 496)
+        Me.BtnSend.Location = New System.Drawing.Point(434, 496)
         Me.BtnSend.Name = "BtnSend"
         Me.BtnSend.Size = New System.Drawing.Size(55, 20)
         Me.BtnSend.TabIndex = 66
@@ -268,7 +267,7 @@ Partial Class MainScreen
         Me.TxtMsg.ForeColor = System.Drawing.Color.DarkOrchid
         Me.TxtMsg.Location = New System.Drawing.Point(35, 496)
         Me.TxtMsg.Name = "TxtMsg"
-        Me.TxtMsg.Size = New System.Drawing.Size(392, 20)
+        Me.TxtMsg.Size = New System.Drawing.Size(393, 20)
         Me.TxtMsg.TabIndex = 67
         '
         'DskLblLogs
@@ -548,10 +547,10 @@ Partial Class MainScreen
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(494, 521)
+        Me.Controls.Add(Me.PnlVaporChat)
         Me.Controls.Add(Me.PnlStartScreen)
         Me.Controls.Add(Me.PnlAdmin)
         Me.Controls.Add(Me.PnlInsertPass)
-        Me.Controls.Add(Me.PnlVaporChat)
         Me.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)

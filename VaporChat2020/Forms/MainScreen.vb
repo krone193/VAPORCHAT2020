@@ -183,7 +183,7 @@ Public Class MainScreen
 		VaporFunc.ClosingFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Sub TxtChat_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) Handles LstChatVapo.ItemSelectionChanged
+	Private Sub LstChatVapo_ItemSelectionChanged(sender As Object, e As ListViewItemSelectionChangedEventArgs) Handles LstChatVapo.ItemSelectionChanged
 		VaporFunc.ForceSwitchOffFunc()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
