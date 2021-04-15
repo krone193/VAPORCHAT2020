@@ -449,7 +449,6 @@ Partial Class MainScreen
         '
         Me.PnlAdmin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.PnlAdmin.BackColor = System.Drawing.Color.FromArgb(CType(CType(40, Byte), Integer), CType(CType(31, Byte), Integer), CType(CType(51, Byte), Integer))
-        Me.PnlAdmin.BackgroundImage = Global.VaporChat2020Application.My.Resources.Resources.ondulvapor
         Me.PnlAdmin.Controls.Add(Me.BtnAdminBackToStart)
         Me.PnlAdmin.Controls.Add(Me.BtnAdminSend)
         Me.PnlAdmin.Controls.Add(Me.Label2)
@@ -547,10 +546,10 @@ Partial Class MainScreen
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(494, 521)
-        Me.Controls.Add(Me.PnlVaporChat)
         Me.Controls.Add(Me.PnlStartScreen)
         Me.Controls.Add(Me.PnlAdmin)
         Me.Controls.Add(Me.PnlInsertPass)
+        Me.Controls.Add(Me.PnlVaporChat)
         Me.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)

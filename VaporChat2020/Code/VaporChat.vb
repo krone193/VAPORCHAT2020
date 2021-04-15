@@ -15,7 +15,7 @@ Public Class VaporChat
 
 	'--- V A P O R C H A T | Declarations ----------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
-#Const VAPORCHAT_SWVER = "1.2.0.0"
+#Const VAPORCHAT_SWVER = "1.2.1.0"
 #Const USE_SERVER = "MOSQUITTO"
 
 
@@ -26,6 +26,7 @@ Public Class VaporChat
 	' MQTT -----------------------------------------------------------------------------------------------------------------'
 	Private Const MQTTROOT As String = "kronelab/vaporchat/"
 	Private Const MQTTCONF As String = "conf/"
+	Private Const TIMPINGS As UShort = 30
 #If USE_SERVER = "HIVEMQ" Then
   Private Const MQTTHOST As String = "broker.hivemq.com"
   Private Const MQTTUSER As String = ""
@@ -34,9 +35,9 @@ Public Class VaporChat
 	Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.AtMostOnce
 #ElseIf USE_SERVER = "MOSQUITTO" Then
 	Private Const MQTTHOST As String = "test.mosquitto.org"
-  Private Const MQTTUSER As String = ""
-  Private Const MQTTPASS As String = ""
-  Private Const MQTTPORT As UShort = 1883
+	Private Const MQTTUSER As String = ""
+	Private Const MQTTPASS As String = ""
+	Private Const MQTTPORT As UShort = 1883
 	Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.AtLeastOnce
 #ElseIf USE_SERVER = "CLOUDMQTT" Then
   Private Const MQTTHOST As String = "m24.cloudmqtt.com"
@@ -56,10 +57,10 @@ Public Class VaporChat
 																		Color.DodgerBlue, Color.Teal, Color.Lime, Color.DarkOrange, Color.SpringGreen}
 	' S T A R T S C R E E N T H E M E --------------------------------------------------------------------------------------'
 	Public ReadOnly START_MAINWINTXT As String = "(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ"
-	Public ReadOnly START_MAINBCKIMG As Image = Image.FromFile("Resources/start_main.jpg")
+	Public ReadOnly START_MAINBCKIMG As Image = Image.FromFile("Resources/Backgrounds/start_main.jpg")
 	' V A P O R C H A T 2 0 2 0 T H E M E ----------------------------------------------------------------------------------'
 	Public ReadOnly VAPOR_MAINWINTXT As String = "(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ"
-	Public ReadOnly VAPOR_MAINBCKIMG As Image = Image.FromFile("Resources/ondulvapor.jpg")
+	Public ReadOnly VAPOR_MAINBCKIMG As Image = Image.FromFile("Resources/Backgrounds/ondulvapor.jpg")
 	Public ReadOnly VAPOR_MAINBCKCLR As Color = Color.FromArgb(40, 31, 51)
 	Public ReadOnly VAPOR_CHATBCKCLR As Color = Color.FromArgb(40, 31, 51)
 	Public ReadOnly VAPOR_CHATFRTCLR As Color = Color.Gold
@@ -128,11 +129,12 @@ Public Class VaporChat
 	Public Const FUNNYBOI As String = "oh Rob, u funny boi"
 	Public Const COMERROR As String = "please log in"
 	Public Const LOGERROR As String = "connection error, please log again"
-	Public Const LOGNOERR As String = "connected"
+	Public Const LOGNOERR As String = "online"
 	Public Const SENDISOK As String = "message forwarded"
 	Public Const SENDISKO As String = "message not forwarded"
-	Public Const ICONPATH As String = "Resources/logo.ico"
-	Public Const ICONNMSG As String = "Resources/logonewmsg.ico"
+	Public Const DISCONNE As String = "offline"
+	Public Const ICONPATH As String = "Resources/Ico/logo.ico"
+	Public Const ICONNMSG As String = "Resources/Ico/logonewmsg.ico"
 	Public Const SENDUKEY As Keys = Keys.Enter
 	Public Const HIDEUKEY As Keys = Keys.F1
 	Public Const SHOWUKEY As Keys = Keys.F2
@@ -165,6 +167,7 @@ Public Class VaporChat
 	Public Const ADMINLOBBY As String = "/lobby"
 	'-----------------------------------------------------------------------------------------------------------------------' 
 	Public Const TOKIDRIFT As String = "/tokidrift"
+	Public Const VAPOCHESS As String = "/vaporchess"
 
 
 	'--- V A P O R C H A T | Struct ----------------------------------------------------------------------------------------'
@@ -209,6 +212,7 @@ Public Class VaporChat
 	Private subok As Boolean = True
 	Private messagetopic As String = ""
 	Private configstopic As String = ""
+	Private activetopics As New List(Of String)
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public CurrentTheme As VaporChat.Themes
 
@@ -257,7 +261,7 @@ Public Class VaporChat
 		End If
 		messageBuilder.WithTcpServer(uri, CInt(port))
 		messageBuilder.WithCleanSession(False)
-		messageBuilder.WithKeepAlivePeriod(TimeSpan.FromSeconds(60))
+		messageBuilder.WithKeepAlivePeriod(TimeSpan.FromSeconds(TIMPINGS))
 		messageBuilder.WithWillMessage(lastwill)
 		conongoing = True
 		Try
@@ -270,7 +274,11 @@ Public Class VaporChat
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Private Async Sub MQTTDisconnectFromServer()
+		For Each topic As String In activetopics
+			Await MqttClient.UnsubscribeAsync(topic)
+		Next
 		Await MqttClient.DisconnectAsync()
+		activetopics.Clear()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Private Async Sub MQTTSubscribe(ByVal topic As String, qos As Protocol.MqttQualityOfServiceLevel)
@@ -279,6 +287,7 @@ Public Class VaporChat
 			.QualityOfServiceLevel = qos
 		}
 		subongoing = True
+		activetopics.Add(topic)
 		Try
 			Await MqttClient.SubscribeAsync(mqttTopicFilter)
 		Catch ex As Exception
@@ -436,5 +445,12 @@ Public Class VaporChat
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Function GetSubOngoing() As Boolean
 		Return subongoing
+	End Function
+	'-----------------------------------------------------------------------------------------------------------------------'
+	Public Function IsOnline() As Boolean
+		If MqttClient IsNot Nothing Then
+			Return MqttClient.IsConnected
+		End If
+		Return False
 	End Function
 End Class

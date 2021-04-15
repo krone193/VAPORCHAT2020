@@ -7,7 +7,7 @@
 
 	'--- V A P O R F U N C | Declarations ----------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
-#Const VAPORFUNC_SWVER = "1.1.0.0"
+#Const VAPORFUNC_SWVER = "1.1.1.0"
 #Const SHOW_ITSME_MESSAGE = False
 
 
@@ -68,7 +68,6 @@
 	'--- V A P O R F U N C | Variables -------------------------------------------------------------------------------------'
 	' Private --------------------------------------------------------------------------------------------------------------'
 	Private HideStatus As Boolean = False
-	Private Connected As Boolean = False
 	Private TaskBarHid As Boolean = False
 	Private SwitchText As String
 	Private SwitchOn As Boolean = False
@@ -347,7 +346,6 @@
 		' Init
 		UserList.Clear()
 		TaskBarHid = False
-		Connected = False
 #If LIMVIEW Then
 		NofMessages = 0
 #End If
@@ -367,7 +365,6 @@
 		TxtMsg.MaxLength = VaporChat.MaxMessageLen()
 		If VaporChat.Connect(My.Settings.LastUser, My.Settings.Lobby) Then
 			AsyncOp = True
-			Connected = True
 			Select Case VaporChat.CurrentTheme
 				Case VaporChat.Themes.Vapor
 					VaporChat.SendMessage(My.Settings.LastUser, VaporChat.JOINVAPO)
@@ -400,13 +397,16 @@
 			If BtnSend.Enabled = True Then
 				BtnSend.Enabled = False
 				TimerPubBlock.Enabled = True
-				If Connected = True Then
+				If VaporChat.IsOnline() = True Then
 					AsyncOp = True
 					If BannedText.Contains(TxtMsg.Text.ToLower().Replace(" ", "")) Then
 						LblLog.Text = VaporChat.FUNNYBOI
 						ClearTextBox(TxtMsg)
 					ElseIf TxtMsg.Text = VaporChat.TOKIDRIFT Then
 						ClearTextBox(TxtMsg)
+					ElseIf TxtMsg.Text = VaporChat.VAPOCHESS Then
+						ClearTextBox(TxtMsg)
+						Chess.Show()
 					Else
 						If VaporChat.SendMessage(My.Settings.LastUser, TxtMsg.Text) Then
 							LblLog.Text = VaporChat.SENDISOK
@@ -416,7 +416,7 @@
 						End If
 					End If
 				Else
-					LblLog.Text = VaporChat.COMERROR
+					VaporChat.Connect(My.Settings.LastUser, My.Settings.Lobby)
 				End If
 			End If
 		Else
@@ -509,12 +509,11 @@
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub ClosingFunc()
-		If Connected = True Then
+		If VaporChat.IsOnline() Then
 			If VaporChat.CurrentTheme <> VaporChat.Themes.Admin Then
 				VaporChat.SendMessage(My.Settings.LastUser, VaporChat.LEAVEVAP)
 			End If
 			VaporChat.Disconnect()
-			Connected = False
 		End If
 		UserList.Clear()
 		LstChatVapo.Items.Clear()
@@ -551,6 +550,9 @@
 				End If
 			End If
 		Else
+			If VaporChat.IsOnline() = False Then
+				LblLog.Text = VaporChat.DISCONNE
+			End If
 			If VaporChat.GetSubState() = False Then
 				If VaporChat.GetSubOngoing() = False Then
 					LblLog.Text = VaporChat.LOGERROR
