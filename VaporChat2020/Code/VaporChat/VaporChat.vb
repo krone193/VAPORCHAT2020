@@ -212,7 +212,7 @@ Public Class VaporChat
 	Private subok As Boolean = True
 	Private messagetopic As String = ""
 	Private configstopic As String = ""
-	Private activetopics As New List(Of String)
+	Private ReadOnly activetopics As New List(Of String)
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public CurrentTheme As VaporChat.Themes
 

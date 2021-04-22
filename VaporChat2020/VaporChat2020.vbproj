@@ -121,6 +121,8 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\VaporChess\ChessClasses.vb" />
+    <Compile Include="Code\VaporChess\VaporChessFunc.vb" />
     <Compile Include="Forms\Chess.Designer.vb">
       <DependentUpon>Chess.vb</DependentUpon>
     </Compile>
@@ -129,10 +131,10 @@
     </Compile>
     <Compile Include="Code\ApplicationEvents.vb" />
     <Compile Include="Code\PrjInterfaces\InterfaceVaporFuncGUI.vb" />
-    <Compile Include="Code\VaporFunc.vb" />
+    <Compile Include="Code\VaporChat\VaporFunc.vb" />
     <Compile Include="Code\Settings.vb" />
-    <Compile Include="Code\Simple3Des.vb" />
-    <Compile Include="Code\VaporChat.vb" />
+    <Compile Include="Code\Cryptography\Simple3Des.vb" />
+    <Compile Include="Code\VaporChat\VaporChat.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

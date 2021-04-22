@@ -1,27 +1,27 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Chess
-	Inherits System.Windows.Forms.Form
+    Inherits System.Windows.Forms.Form
 
-	'Form esegue l'override del metodo Dispose per pulire l'elenco dei componenti.
-	<System.Diagnostics.DebuggerNonUserCode()> _
-	Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-		Try
-			If disposing AndAlso components IsNot Nothing Then
-				components.Dispose()
-			End If
-		Finally
-			MyBase.Dispose(disposing)
-		End Try
-	End Sub
+    'Form esegue l'override del metodo Dispose per pulire l'elenco dei componenti.
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
 
-	'Richiesto da Progettazione Windows Form
-	Private components As System.ComponentModel.IContainer
+    'Richiesto da Progettazione Windows Form
+    Private components As System.ComponentModel.IContainer
 
-	'NOTA: la procedura che segue è richiesta da Progettazione Windows Form
-	'Può essere modificata in Progettazione Windows Form.  
-	'Non modificarla mediante l'editor del codice.
-	<System.Diagnostics.DebuggerStepThrough()> _
-	Private Sub InitializeComponent()
+    'NOTA: la procedura che segue è richiesta da Progettazione Windows Form
+    'Può essere modificata in Progettazione Windows Form.  
+    'Non modificarla mediante l'editor del codice.
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Chess))
         Me.a1 = New System.Windows.Forms.Panel()
         Me.Panel18 = New System.Windows.Forms.Panel()
@@ -137,9 +137,15 @@ Partial Class Chess
         Me.LblR2 = New System.Windows.Forms.Label()
         Me.LblR1 = New System.Windows.Forms.Label()
         Me.PnlFullBoard = New System.Windows.Forms.Panel()
-        Me.LblDebug1 = New System.Windows.Forms.Label()
-        Me.LblDebug2 = New System.Windows.Forms.Label()
-        Me.ChbplayAsBlack = New System.Windows.Forms.CheckBox()
+        Me.ListView1 = New System.Windows.Forms.ListView()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.ChbPlayAsBlack = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.LblLockUpY = New System.Windows.Forms.Label()
+        Me.LblLockUpX = New System.Windows.Forms.Label()
+        Me.LblLockDownY = New System.Windows.Forms.Label()
+        Me.LblLockDownX = New System.Windows.Forms.Label()
         Me.a1.SuspendLayout()
         Me.a3.SuspendLayout()
         Me.a5.SuspendLayout()
@@ -1364,42 +1370,99 @@ Partial Class Chess
         Me.PnlFullBoard.Size = New System.Drawing.Size(458, 455)
         Me.PnlFullBoard.TabIndex = 56
         '
-        'LblDebug1
+        'ListView1
         '
-        Me.LblDebug1.AutoSize = True
-        Me.LblDebug1.Location = New System.Drawing.Point(484, 118)
-        Me.LblDebug1.Name = "LblDebug1"
-        Me.LblDebug1.Size = New System.Drawing.Size(28, 14)
-        Me.LblDebug1.TabIndex = 57
-        Me.LblDebug1.Text = "  -"
+        Me.ListView1.HideSelection = False
+        Me.ListView1.Location = New System.Drawing.Point(476, 84)
+        Me.ListView1.Name = "ListView1"
+        Me.ListView1.Size = New System.Drawing.Size(142, 294)
+        Me.ListView1.TabIndex = 60
+        Me.ListView1.UseCompatibleStateImageBehavior = False
         '
-        'LblDebug2
+        'TextBox1
         '
-        Me.LblDebug2.AutoSize = True
-        Me.LblDebug2.Location = New System.Drawing.Point(484, 141)
-        Me.LblDebug2.Name = "LblDebug2"
-        Me.LblDebug2.Size = New System.Drawing.Size(28, 14)
-        Me.LblDebug2.TabIndex = 58
-        Me.LblDebug2.Text = "  -"
+        Me.TextBox1.Location = New System.Drawing.Point(476, 379)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(142, 22)
+        Me.TextBox1.TabIndex = 61
         '
-        'ChbplayAsBlack
+        'ChbPlayAsBlack
         '
-        Me.ChbplayAsBlack.AutoSize = True
-        Me.ChbplayAsBlack.Location = New System.Drawing.Point(475, 175)
-        Me.ChbplayAsBlack.Name = "ChbplayAsBlack"
-        Me.ChbplayAsBlack.Size = New System.Drawing.Size(61, 18)
-        Me.ChbplayAsBlack.TabIndex = 59
-        Me.ChbplayAsBlack.Text = "Black"
-        Me.ChbplayAsBlack.UseVisualStyleBackColor = True
+        Me.ChbPlayAsBlack.Location = New System.Drawing.Point(476, 55)
+        Me.ChbPlayAsBlack.Name = "ChbPlayAsBlack"
+        Me.ChbPlayAsBlack.Size = New System.Drawing.Size(142, 23)
+        Me.ChbPlayAsBlack.TabIndex = 62
+        Me.ChbPlayAsBlack.Text = "Play as black"
+        Me.ChbPlayAsBlack.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(477, 13)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(56, 14)
+        Me.Label1.TabIndex = 63
+        Me.Label1.Text = "LockUp:"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(477, 34)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(70, 14)
+        Me.Label2.TabIndex = 64
+        Me.Label2.Text = "LockDown:"
+        '
+        'LblLockUpY
+        '
+        Me.LblLockUpY.AutoSize = True
+        Me.LblLockUpY.Location = New System.Drawing.Point(587, 13)
+        Me.LblLockUpY.Name = "LblLockUpY"
+        Me.LblLockUpY.Size = New System.Drawing.Size(14, 14)
+        Me.LblLockUpY.TabIndex = 66
+        Me.LblLockUpY.Text = "-"
+        '
+        'LblLockUpX
+        '
+        Me.LblLockUpX.AutoSize = True
+        Me.LblLockUpX.Location = New System.Drawing.Point(553, 13)
+        Me.LblLockUpX.Name = "LblLockUpX"
+        Me.LblLockUpX.Size = New System.Drawing.Size(14, 14)
+        Me.LblLockUpX.TabIndex = 65
+        Me.LblLockUpX.Text = "-"
+        '
+        'LblLockDownY
+        '
+        Me.LblLockDownY.AutoSize = True
+        Me.LblLockDownY.Location = New System.Drawing.Point(587, 34)
+        Me.LblLockDownY.Name = "LblLockDownY"
+        Me.LblLockDownY.Size = New System.Drawing.Size(14, 14)
+        Me.LblLockDownY.TabIndex = 68
+        Me.LblLockDownY.Text = "-"
+        '
+        'LblLockDownX
+        '
+        Me.LblLockDownX.AutoSize = True
+        Me.LblLockDownX.Location = New System.Drawing.Point(553, 34)
+        Me.LblLockDownX.Name = "LblLockDownX"
+        Me.LblLockDownX.Size = New System.Drawing.Size(14, 14)
+        Me.LblLockDownX.TabIndex = 67
+        Me.LblLockDownX.Text = "-"
         '
         'Chess
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 14.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(542, 477)
-        Me.Controls.Add(Me.ChbplayAsBlack)
-        Me.Controls.Add(Me.LblDebug2)
-        Me.Controls.Add(Me.LblDebug1)
+        Me.ClientSize = New System.Drawing.Size(626, 477)
+        Me.Controls.Add(Me.LblLockDownY)
+        Me.Controls.Add(Me.LblLockDownX)
+        Me.Controls.Add(Me.LblLockUpY)
+        Me.Controls.Add(Me.LblLockUpX)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.ChbPlayAsBlack)
+        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.ListView1)
         Me.Controls.Add(Me.PnlFullBoard)
         Me.Font = New System.Drawing.Font("Consolas", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -1531,7 +1594,13 @@ Partial Class Chess
     Friend WithEvents LblR2 As Label
     Friend WithEvents LblR1 As Label
     Friend WithEvents PnlFullBoard As Panel
-    Friend WithEvents LblDebug1 As Label
-    Friend WithEvents LblDebug2 As Label
-    Friend WithEvents ChbplayAsBlack As CheckBox
+    Friend WithEvents ListView1 As ListView
+    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents ChbPlayAsBlack As Button
+    Friend WithEvents Label1 As Label
+    Friend WithEvents Label2 As Label
+    Friend WithEvents LblLockUpY As Label
+    Friend WithEvents LblLockUpX As Label
+    Friend WithEvents LblLockDownY As Label
+    Friend WithEvents LblLockDownX As Label
 End Class
