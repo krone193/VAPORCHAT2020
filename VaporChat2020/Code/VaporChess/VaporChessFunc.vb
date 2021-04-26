@@ -420,7 +420,7 @@
 					Dim Y = piece.Items(indexer).Row + move.Y
 					If Y < ChessBoard.RW.rows And Y >= 0 And X >= 0 And X < ChessBoard.CL.columns Then
 						If IfPresentGetPiece(piece, board(X, Y), juice) Then
-							If (X <= LockUp.X And Y <= LockUp.Y) And (X >= LockDown.X And Y >= LockDown.Y) Then
+							If (X = piece.Items(indexer).Column Or Y = piece.Items(indexer).Row) And (X <= LockUp.X And Y <= LockUp.Y) And (X >= LockDown.X And Y >= LockDown.Y) Then
 								If Juicer(piece, board(piece.Items(indexer).Column + move.X, piece.Items(indexer).Row + move.Y), indexer, juice) Then
 									moveset.Add(board(piece.Items(indexer).Column + move.X, piece.Items(indexer).Row + move.Y))
 								End If
@@ -440,23 +440,27 @@
 								End If
 							End If
 						Else
-							If (X <= LockUp.X And Y <= LockUp.Y) And (X >= LockDown.X And Y >= LockDown.Y) Then
+							If (X = piece.Items(indexer).Column Or Y = piece.Items(indexer).Row) And (X <= LockUp.X And Y <= LockUp.Y) And (X >= LockDown.X And Y >= LockDown.Y) Then
 								moveset.Add(board(X, Y))
 							End If
 						End If
 					End If
 				Next
-				Chess.LblLockUpX.Text = LockUp.X.ToString()
-				Chess.LblLockUpY.Text = LockUp.Y.ToString()
-				Chess.LblLockDownX.Text = LockDown.X.ToString()
-				Chess.LblLockDownY.Text = LockDown.Y.ToString()
 
 			Case ChessPieces.Types.Bishop
-				Dim LockUp As New Point With {
+				Dim LockUpRx As New Point With {
 					.X = ChessBoard.CL.columns,
 					.Y = ChessBoard.RW.rows
 				}
-				Dim LockDown As New Point With {
+				Dim LockDownRx As New Point With {
+					.X = ChessBoard.CL.columns,
+					.Y = 0
+				}
+				Dim LockUpSx As New Point With {
+					.X = 0,
+					.Y = ChessBoard.RW.rows
+				}
+				Dim LockDownSx As New Point With {
 					.X = 0,
 					.Y = 0
 				}
@@ -465,11 +469,85 @@
 					Dim Y = piece.Items(indexer).Row + move.Y
 					If Y < ChessBoard.RW.rows And Y >= 0 And X >= 0 And X < ChessBoard.CL.columns Then
 						If IfPresentGetPiece(piece, board(X, Y), juice) Then
-							If (X <= LockUp.X And Y <= LockUp.Y) And (X >= LockDown.X And Y >= LockDown.Y) Then
+							If (X > piece.Items(indexer).Column And Y > piece.Items(indexer).Row) And (X <= LockUpRx.X And Y <= LockUpRx.Y) Or
+								(X < piece.Items(indexer).Column And Y > piece.Items(indexer).Row) And (X >= LockUpSx.X And Y <= LockUpSx.Y) Or
+								(X > piece.Items(indexer).Column And Y < piece.Items(indexer).Row) And (X <= LockDownRx.X And Y >= LockDownRx.Y) Or
+								(X < piece.Items(indexer).Column And Y < piece.Items(indexer).Row) And (X >= LockDownSx.X And Y >= LockDownSx.Y) Then
 								If Juicer(piece, board(piece.Items(indexer).Column + move.X, piece.Items(indexer).Row + move.Y), indexer, juice) Then
 									moveset.Add(board(piece.Items(indexer).Column + move.X, piece.Items(indexer).Row + move.Y))
 								End If
 							End If
+							' Limite ALTO-DX
+							If (LockUpRx.X = ChessBoard.CL.columns And LockUpRx.Y = ChessBoard.RW.rows) And (X > piece.Items(indexer).Column And Y > piece.Items(indexer).Row) Then
+								LockUpRx.X = X
+								LockUpRx.Y = Y
+							End If
+							' Limite ALTO-SX
+							If (LockUpSx.X = 0 And LockUpSx.Y = ChessBoard.RW.rows) And (X < piece.Items(indexer).Column And Y > piece.Items(indexer).Row) Then
+								LockUpSx.X = X
+								LockUpSx.Y = Y
+							End If
+							' Limite BASSO-DX
+							If (LockDownRx.X = ChessBoard.CL.columns And LockDownRx.Y = 0) And (X > piece.Items(indexer).Column And Y < piece.Items(indexer).Row) Then
+								LockDownRx.X = X
+								LockDownRx.Y = Y
+							End If
+							' Limite BASSO-SX
+							If (LockDownSx.X = 0 And LockDownSx.Y = 0) And (X < piece.Items(indexer).Column And Y < piece.Items(indexer).Row) Then
+								LockDownSx.X = X
+								LockDownSx.Y = Y
+							End If
+						Else
+							If (X > piece.Items(indexer).Column And Y > piece.Items(indexer).Row) And (X <= LockUpRx.X And Y <= LockUpRx.Y) Or
+								(X < piece.Items(indexer).Column And Y > piece.Items(indexer).Row) And (X >= LockUpSx.X And Y <= LockUpSx.Y) Or
+								(X > piece.Items(indexer).Column And Y < piece.Items(indexer).Row) And (X <= LockDownRx.X And Y >= LockDownRx.Y) Or
+								(X < piece.Items(indexer).Column And Y < piece.Items(indexer).Row) And (X >= LockDownSx.X And Y >= LockDownSx.Y) Then
+								moveset.Add(board(X, Y))
+							End If
+						End If
+					End If
+				Next
+
+			Case ChessPieces.Types.Queen
+				Dim LockUp As New Point With {
+					.X = ChessBoard.CL.columns,
+					.Y = ChessBoard.RW.rows
+				}
+				Dim LockDown As New Point With {
+					.X = 0,
+					.Y = 0
+				}
+				Dim LockUpRx As New Point With {
+					.X = ChessBoard.CL.columns,
+					.Y = ChessBoard.RW.rows
+				}
+				Dim LockDownRx As New Point With {
+					.X = ChessBoard.CL.columns,
+					.Y = 0
+				}
+				Dim LockUpSx As New Point With {
+					.X = 0,
+					.Y = ChessBoard.RW.rows
+				}
+				Dim LockDownSx As New Point With {
+					.X = 0,
+					.Y = 0
+				}
+				For Each move As Point In ChessPieces.QueenMoves
+					Dim X = piece.Items(indexer).Column + move.X
+					Dim Y = piece.Items(indexer).Row + move.Y
+					If Y < ChessBoard.RW.rows And Y >= 0 And X >= 0 And X < ChessBoard.CL.columns Then
+						If IfPresentGetPiece(piece, board(X, Y), juice) Then
+							If (X <= LockUp.X And Y <= LockUp.Y) And (X >= LockDown.X And Y >= LockDown.Y) Or
+								(X > piece.Items(indexer).Column And Y > piece.Items(indexer).Row) And (X <= LockUpRx.X And Y <= LockUpRx.Y) Or
+								(X < piece.Items(indexer).Column And Y > piece.Items(indexer).Row) And (X >= LockUpSx.X And Y <= LockUpSx.Y) Or
+								(X > piece.Items(indexer).Column And Y < piece.Items(indexer).Row) And (X <= LockDownRx.X And Y >= LockDownRx.Y) Or
+								(X < piece.Items(indexer).Column And Y < piece.Items(indexer).Row) And (X >= LockDownSx.X And Y >= LockDownSx.Y) Then
+								If Juicer(piece, board(piece.Items(indexer).Column + move.X, piece.Items(indexer).Row + move.Y), indexer, juice) Then
+									moveset.Add(board(piece.Items(indexer).Column + move.X, piece.Items(indexer).Row + move.Y))
+								End If
+							End If
+							' Limite VERTICALE
 							If X = piece.Items(indexer).Column Then
 								If LockUp.Y = ChessBoard.RW.rows And Y > piece.Items(indexer).Row Then
 									LockUp.Y = Y
@@ -477,6 +555,7 @@
 									LockDown.Y = Y
 								End If
 							End If
+							' Limite ORIZZONTALE
 							If Y = piece.Items(indexer).Row Then
 								If LockUp.X = ChessBoard.CL.columns And X > piece.Items(indexer).Column Then
 									LockUp.X = X
@@ -484,58 +563,36 @@
 									LockDown.X = X
 								End If
 							End If
+							' Limite ALTO-DX
+							If (LockUpRx.X = ChessBoard.CL.columns And LockUpRx.Y = ChessBoard.RW.rows) And (X > piece.Items(indexer).Column And Y > piece.Items(indexer).Row) Then
+								LockUpRx.X = X
+								LockUpRx.Y = Y
+							End If
+							' Limite ALTO-SX
+							If (LockUpSx.X = 0 And LockUpSx.Y = ChessBoard.RW.rows) And (X < piece.Items(indexer).Column And Y > piece.Items(indexer).Row) Then
+								LockUpSx.X = X
+								LockUpSx.Y = Y
+							End If
+							' Limite BASSO-DX
+							If (LockDownRx.X = ChessBoard.CL.columns And LockDownRx.Y = 0) And (X > piece.Items(indexer).Column And Y < piece.Items(indexer).Row) Then
+								LockDownRx.X = X
+								LockDownRx.Y = Y
+							End If
+							' Limite BASSO-SX
+							If (LockDownSx.X = 0 And LockDownSx.Y = 0) And (X < piece.Items(indexer).Column And Y < piece.Items(indexer).Row) Then
+								LockDownSx.X = X
+								LockDownSx.Y = Y
+							End If
 						Else
-							If (X <= LockUp.X And Y <= LockUp.Y) And (X >= LockDown.X And Y >= LockDown.Y) Then
+							If ((X = piece.Items(indexer).Column Or Y = piece.Items(indexer).Row) And (X <= LockUp.X And Y <= LockUp.Y) And (X >= LockDown.X And Y >= LockDown.Y)) Or
+								(X > piece.Items(indexer).Column And Y > piece.Items(indexer).Row) And (X <= LockUpRx.X And Y <= LockUpRx.Y) Or
+								(X < piece.Items(indexer).Column And Y > piece.Items(indexer).Row) And (X >= LockUpSx.X And Y <= LockUpSx.Y) Or
+								(X > piece.Items(indexer).Column And Y < piece.Items(indexer).Row) And (X <= LockDownRx.X And Y >= LockDownRx.Y) Or
+								(X < piece.Items(indexer).Column And Y < piece.Items(indexer).Row) And (X >= LockDownSx.X And Y >= LockDownSx.Y) Then
 								moveset.Add(board(X, Y))
 							End If
 						End If
 					End If
-				Next
-				Chess.LblLockUpX.Text = LockUp.X.ToString()
-				Chess.LblLockUpY.Text = LockUp.Y.ToString()
-				Chess.LblLockDownX.Text = LockDown.X.ToString()
-				Chess.LblLockDownY.Text = LockDown.Y.ToString()
-
-			Case ChessPieces.Types.Queen
-				Dim y As Short = piece.Items(indexer).Column + 1
-				Dim i As Short = piece.Items(indexer).Row + 1
-				While y <= ChessBoard.CL.columns - 1 And i <= ChessBoard.RW.rows - 1
-					moveset.Add(board(y, i))
-					y += 1
-					i += 1
-				End While
-				y = piece.Items(indexer).Column - 1
-				i = piece.Items(indexer).Row - 1
-				While y >= 0 And i >= 0
-					moveset.Add(board(y, i))
-					y -= 1
-					i -= 1
-				End While
-				y = piece.Items(indexer).Column + 1
-				i = piece.Items(indexer).Row - 1
-				While y <= ChessBoard.CL.columns - 1 And i >= 0
-					moveset.Add(board(y, i))
-					y += 1
-					i -= 1
-				End While
-				y = piece.Items(indexer).Column - 1
-				i = piece.Items(indexer).Row + 1
-				While y >= 0 And i <= ChessBoard.RW.rows - 1
-					moveset.Add(board(y, i))
-					y -= 1
-					i += 1
-				End While
-				For i = piece.Items(indexer).Row To ChessBoard.RW.rows - 2
-					moveset.Add(board(piece.Items(indexer).Column, i + 1))
-				Next
-				For i = piece.Items(indexer).Column To ChessBoard.CL.columns - 2
-					moveset.Add(board(i + 1, piece.Items(indexer).Row))
-				Next
-				For i = piece.Items(indexer).Row - 1 To 0 Step -1
-					moveset.Add(board(piece.Items(indexer).Column, i))
-				Next
-				For i = piece.Items(indexer).Column - 1 To 0 Step -1
-					moveset.Add(board(i, piece.Items(indexer).Row))
 				Next
 
 		End Select

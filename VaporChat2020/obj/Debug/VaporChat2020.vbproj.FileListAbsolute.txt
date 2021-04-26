@@ -107,6 +107,11 @@ C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020
 C:\Users\fcasadeilelli\.dotnet\TelemetryStorageService\.trace\repo\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020.pdb
 H:\.TRASH\.local\.data\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020.vbprojAssemblyReference.cache
 H:\.TRASH\.local\.data\11052020\VAPORCHAT2020\VaporChat2020\bin\Debug\Resources\start_main.jpg
+D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020Application.Chess.resources
+D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020Application.Resources.resources
+D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020Application.MainScreen.resources
+D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020.vbproj.GenerateResource.cache
+D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020.vbproj.CoreCompileInputs.cache
 D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\bin\Debug\Resources\Chess\bBishop.png
 D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\bin\Debug\Resources\Chess\bKing.png
 D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\bin\Debug\Resources\Chess\bKnight.png
@@ -128,12 +133,7 @@ D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\bin\Debug\VaporChat2
 D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\bin\Debug\VaporChat2020.pdb
 D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\bin\Debug\VaporChat2020.xml
 D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\bin\Debug\MQTTnet.dll
-D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020Application.Resources.resources
-D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020Application.MainScreen.resources
-D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020.vbproj.GenerateResource.cache
-D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020.vbproj.CoreCompileInputs.cache
 D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020.vbproj.CopyComplete
 D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020.exe
 D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020.xml
 D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020.pdb
-D:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Debug\VaporChat2020Application.Chess.resources
