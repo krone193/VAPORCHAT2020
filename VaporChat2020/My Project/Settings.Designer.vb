@@ -68,7 +68,7 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("2.1.0.0")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("3.0.0.0")>  _
         Public ReadOnly Property VaporChat2020Ver() As String
             Get
                 Return CType(Me("VaporChat2020Ver"),String)
@@ -122,7 +122,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("30000")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("60000")>  _
         Public Property Timeout() As ULong
             Get
                 Return CType(Me("Timeout"),ULong)

@@ -68,6 +68,7 @@ Partial Class MainScreen
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TxtAdminUser = New System.Windows.Forms.TextBox()
         Me.TabDel = New System.Windows.Forms.TabPage()
+        Me.ProgressOps = New System.ComponentModel.BackgroundWorker()
         Me.PnlVaporChat.SuspendLayout()
         Me.PnlUsersList.SuspendLayout()
         Me.StsUsersList.SuspendLayout()
@@ -378,7 +379,7 @@ Partial Class MainScreen
         Me.CmbCloserTime.ForeColor = System.Drawing.Color.Indigo
         Me.CmbCloserTime.FormattingEnabled = True
         Me.CmbCloserTime.IntegralHeight = False
-        Me.CmbCloserTime.Items.AddRange(New Object() {"30", "35", "40", "45", "50", "55", "60"})
+        Me.CmbCloserTime.Items.AddRange(New Object() {"30", "40", "50", "60", "70", "80", "90", "100"})
         Me.CmbCloserTime.Location = New System.Drawing.Point(201, 134)
         Me.CmbCloserTime.Name = "CmbCloserTime"
         Me.CmbCloserTime.Size = New System.Drawing.Size(79, 21)
@@ -540,6 +541,11 @@ Partial Class MainScreen
         Me.TabDel.Text = "-"
         Me.TabDel.UseVisualStyleBackColor = True
         '
+        'ProgressOps
+        '
+        Me.ProgressOps.WorkerReportsProgress = True
+        Me.ProgressOps.WorkerSupportsCancellation = True
+        '
         'MainScreen
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -551,13 +557,14 @@ Partial Class MainScreen
         Me.Controls.Add(Me.PnlInsertPass)
         Me.Controls.Add(Me.PnlVaporChat)
         Me.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.IsMdiContainer = True
         Me.KeyPreview = True
+        Me.MaximizeBox = False
         Me.Name = "MainScreen"
         Me.ShowInTaskbar = False
-        Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
+        Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.Text = "Dummy text"
         Me.PnlVaporChat.ResumeLayout(False)
@@ -619,4 +626,5 @@ Partial Class MainScreen
     Friend WithEvents BtnSend As Button
     Friend WithEvents TxtMsg As TextBox
     Friend WithEvents DskLblLogs As Label
+    Friend WithEvents ProgressOps As System.ComponentModel.BackgroundWorker
 End Class

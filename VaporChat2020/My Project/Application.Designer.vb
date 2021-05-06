@@ -32,7 +32,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.VaporChat2020Application.Chess
+            Me.MainForm = Global.VaporChat2020Application.MainScreen
         End Sub
     End Class
 End Namespace

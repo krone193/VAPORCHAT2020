@@ -7,15 +7,17 @@
 
 	'--- V A P O R F U N C | Declarations ----------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
-#Const VAPORFUNC_SWVER = "1.1.1.0"
+#Const VAPORFUNC_SWVER = "2.0.0.0"
 #Const SHOW_ITSME_MESSAGE = False
 
 
 	'--- V A P O R F U N C | ReadOnly --------------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
 	ReadOnly CONNSEC As UShort = 5
-	Public ReadOnly UserList As New List(Of User)
+	ReadOnly ShowResuInterval As UShort = 1500      ' in milliseconds
+	ReadOnly ProgAnimInterval As UShort = 300       ' in milliseconds
 	ReadOnly BannedText As New List(Of String)
+	Public ReadOnly UserList As New List(Of User)
 
 
 	'--- V A P O R F U N C | Struct ----------------------------------------------------------------------------------------'
@@ -29,6 +31,8 @@
 	'--- V A P O R F U N C | GUI components --------------------------------------------------------------------------------'
 	' VaporChat form -------------------------------------------------------------------------------------------------------'
 	Private CallerForm As Form
+	' VaporChat show progress thread ---------------------------------------------------------------------------------------'
+	Private ProgressOp As ComponentModel.BackgroundWorker
 	' VaporChat start screen -----------------------------------------------------------------------------------------------'
 	Private PnlStartScreen As Panel
 	Private BtnHide As Button
@@ -72,12 +76,12 @@
 	Private SwitchText As String
 	Private SwitchOn As Boolean = False
 	Private SwitchIndex As Short = -1
+	Private MessageRxOn As Boolean = False
+	Private ProgressIndex As UShort = 0
+	Private LastResuTime As Date = Date.Now()
 #If LIMVIEW Then
 	Private NofMessages As UShort = 0
 #End If
-	Private AsyncOp As Boolean = False
-	Private MessageRxOn As Boolean = False
-	Private DotIndex As UShort = 0
 	' Public ---------------------------------------------------------------------------------------------------------------'
 	Public ForcePass As Boolean = False
 	Public UsersListOn As Boolean = False
@@ -173,8 +177,9 @@
 
 	'--- V A P O R F U N C | Public Functions ------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Sub AssignMainFormGUIFunc(ByRef _form As Form)
+	Public Sub AssignMainFormGUIFunc(ByRef _form As Form, ByRef _progress As ComponentModel.BackgroundWorker)
 		CallerForm = _form
+		ProgressOp = _progress
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub AssignStartScreenPanelGUIFunc(ByRef _pnlstartscreen As Panel, ByRef _btnhide As Button, ByRef _btnvapor As Button, ByRef _txtlobby As TextBox, ByRef _txtuser As TextBox, ByRef _txtpassword As TextBox, ByRef _cmbclosertime As ComboBox, ByRef _lblvaporchatver As Label, ByRef _lblkronelab As Label)
@@ -245,7 +250,7 @@
 		Dim copieditems As ListViewItem
 #End If
 		VaporChat.GetMessageUserAndText(name, message)
-		If message = VaporChat.LEAVEVAP And name = My.Settings.LastUser Then
+		If message = VaporChat.LEAVEVAP(VaporChat.CurrentTheme) And name = My.Settings.LastUser Then
 			Exit Sub
 		End If
 		Dim item As New ListViewItem(New String() {name, message, strdata})
@@ -254,14 +259,15 @@
 			AddUserToList(name)
 			index = SearchNameInList(name)
 		End If
-		Select Case message
-			Case VaporChat.JOINVAPO
-				If VaporChat.CurrentTheme = VaporChat.Themes.Hide Then
-					message = VaporChat.JOINHIDE
-				End If
-			Case VaporChat.ITSMEMSG
-				show = False
-		End Select
+		If VaporChat.JOINVAPO.Contains(message) And VaporChat.CurrentTheme = VaporChat.Themes.Hide Then
+			If message <> VaporChat.JOINVAPO(VaporChat.CurrentTheme) Then
+				message = VaporChat.JOINVAPO(VaporChat.CurrentTheme)
+			End If
+		ElseIf VaporChat.LEAVEVAP.Contains(message) And name = My.Settings.LastUser Then
+			show = False
+		ElseIf message = VaporChat.ITSMEMSG Then
+			show = False
+		End If
 		MessageRxOn = True
 		If show = True Then
 			' Color assign to new item
@@ -276,7 +282,7 @@
 			Next
 			' Add item to ListView
 			LstChatVapo.Items(VaporChat.MAXROWS) = item
-			If NofMessages < VaporChat.MAXROWS Then
+			If NofMessages <VaporChat.MAXROWS Then
 			NofMessages += 1
 			End If
 #Else
@@ -290,14 +296,11 @@
 		End If
 		' Check message type for Users management
 		If name <> My.Settings.LastUser Then
-			Select Case message
-				Case VaporChat.LEAVEVAP
-					RemoveUserFromList(name)
-				Case VaporChat.JOINHIDE
-					VaporChat.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
-				Case VaporChat.JOINVAPO
-					VaporChat.SendMessage(My.Settings.LastUser, VaporChat.ITSMEMSG)
-			End Select
+			If VaporChat.JOINVAPO.Contains(message) Then
+				VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, VaporChat.ITSMEMSG)
+			ElseIf VaporChat.LEAVEVAP.Contains(message) Then
+				RemoveUserFromList(name)
+			End If
 		End If
 		MessageRxOn = False
 	End Sub
@@ -350,9 +353,16 @@
 		NofMessages = 0
 #End If
 		BannedText.Add(VaporChat.SEPTCHAR.ToLower().Replace(" ", ""))
-		BannedText.Add(VaporChat.JOINVAPO.ToLower().Replace(" ", ""))
-		BannedText.Add(VaporChat.LEAVEVAP.ToLower().Replace(" ", ""))
-		BannedText.Add(VaporChat.JOINHIDE.ToLower().Replace(" ", ""))
+		For Each phrase As String In VaporChat.JOINVAPO
+			If phrase <> Nothing Then
+				BannedText.Add(phrase.Replace(" ", ""))
+			End If
+		Next
+		For Each phrase As String In VaporChat.LEAVEVAP
+			If phrase <> Nothing Then
+				BannedText.Add(phrase.Replace(" ", ""))
+			End If
+		Next
 		BannedText.Add(VaporChat.ITSMEMSG.ToLower().Replace(" ", ""))
 		TxtUser.MaxLength = VaporChat.MaxUserLen()
 		TxtUser.Text = My.Settings.LastUser
@@ -364,13 +374,7 @@
 		My.Settings.Save()
 		TxtMsg.MaxLength = VaporChat.MaxMessageLen()
 		If VaporChat.Connect(My.Settings.LastUser, My.Settings.Lobby) Then
-			AsyncOp = True
-			Select Case VaporChat.CurrentTheme
-				Case VaporChat.Themes.Vapor
-					VaporChat.SendMessage(My.Settings.LastUser, VaporChat.JOINVAPO)
-				Case VaporChat.Themes.Hide
-					VaporChat.SendMessage(My.Settings.LastUser, VaporChat.JOINHIDE)
-			End Select
+			VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, VaporChat.JOINVAPO(VaporChat.CurrentTheme))
 			If SearchNameInList(My.Settings.LastUser) < 0 Then
 				AddUserToList(My.Settings.LastUser)
 			End If
@@ -384,7 +388,7 @@
 			End Select
 			ClearTextBox(TxtMsg)
 		Else
-			LblLog.Text = VaporChat.LOGERROR
+			LblLog.Text = VaporChat.LOGERROR(VaporChat.CurrentTheme)
 		End If
 		RefreshTimCloserFunc()
 	End Sub
@@ -398,7 +402,6 @@
 				BtnSend.Enabled = False
 				TimerPubBlock.Enabled = True
 				If VaporChat.IsOnline() = True Then
-					AsyncOp = True
 					If BannedText.Contains(TxtMsg.Text.ToLower().Replace(" ", "")) Then
 						LblLog.Text = VaporChat.FUNNYBOI
 						ClearTextBox(TxtMsg)
@@ -408,11 +411,11 @@
 						ClearTextBox(TxtMsg)
 						Chess.Show()
 					Else
-						If VaporChat.SendMessage(My.Settings.LastUser, TxtMsg.Text) Then
-							LblLog.Text = VaporChat.SENDISOK
+						If VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, TxtMsg.Text) Then
+							LblLog.Text = VaporChat.SENDISOK(VaporChat.CurrentTheme)
 							ClearTextBox(TxtMsg)
 						Else
-							LblLog.Text = VaporChat.LOGERROR
+							LblLog.Text = VaporChat.SENDISKO(VaporChat.CurrentTheme)
 						End If
 					End If
 				Else
@@ -510,8 +513,8 @@
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub ClosingFunc()
 		If VaporChat.IsOnline() Then
-			If VaporChat.CurrentTheme <> VaporChat.Themes.Admin Then
-				VaporChat.SendMessage(My.Settings.LastUser, VaporChat.LEAVEVAP)
+			If VaporChat.CurrentTheme <> VaporChat.Themes.Admin Or VaporChat.CurrentTheme <> VaporChat.Themes.Start Then
+				VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, VaporChat.LEAVEVAP(VaporChat.CurrentTheme))
 			End If
 			VaporChat.Disconnect()
 		End If
@@ -527,56 +530,51 @@
 		End If
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
+	Public Sub ShowOpProgressFunc()
+		While BtnSend.Enabled = False
+			If LblLog.Text <> VaporChat.SENDISOK(VaporChat.CurrentTheme) And LblLog.Text <> VaporChat.SENDISKO(VaporChat.CurrentTheme) Then
+				Select Case ProgressIndex
+					Case 0
+						LblLog.Text = VaporChat.LOGPROG01(VaporChat.CurrentTheme)
+						ProgressIndex += 1
+					Case 1
+						LblLog.Text = VaporChat.LOGPROG02(VaporChat.CurrentTheme)
+						ProgressIndex += 1
+					Case 2
+						LblLog.Text = VaporChat.LOGPROG03(VaporChat.CurrentTheme)
+						ProgressIndex += 1
+					Case 3
+						LblLog.Text = VaporChat.LOGPROG04(VaporChat.CurrentTheme)
+						ProgressIndex = 0
+					Case Else
+						ProgressIndex = 0
+				End Select
+				LastResuTime = Date.Now
+				Threading.Thread.Sleep(ProgAnimInterval)
+			End If
+		End While
+	End Sub
+	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub UpdateGUIFunc()
 		LblUsers.Text = UserList.Count.ToString()
-		If AsyncOp Then
-			If VaporChat.GetSubOngoing() Or VaporChat.GetPubOngoing() Or VaporChat.GetConOngoing() Then
-				Select Case DotIndex
-					Case 0
-						LblLog.Text = VaporChat.LOGPROG01
-						DotIndex += 1
-					Case 1
-						LblLog.Text = VaporChat.LOGPROG02
-						DotIndex += 1
-					Case 2
-						LblLog.Text = VaporChat.LOGPROG03
-						DotIndex = 0
-				End Select
-			Else
-				AsyncOp = False
-				DotIndex = 0
-				If LblLog.Text <> VaporChat.FUNNYBOI Then
-					LblLog.Text = VaporChat.LOGNOERR
-				End If
-			End If
-		Else
+		If Date.Now() > LastResuTime + TimeSpan.FromMilliseconds(ShowResuInterval) Then
 			If VaporChat.IsOnline() = False Then
 				LblLog.Text = VaporChat.DISCONNE
-			End If
-			If VaporChat.GetSubState() = False Then
-				If VaporChat.GetSubOngoing() = False Then
-					LblLog.Text = VaporChat.LOGERROR
-				End If
-			End If
-			If VaporChat.GetPubState() = False Then
-				If VaporChat.GetSubOngoing() = False And VaporChat.GetPubOngoing() = False Then
-					If LblLog.Text <> VaporChat.LOGERROR Then
-						LblLog.Text = VaporChat.SENDISKO
-						BtnSend.Enabled = True
-					End If
-				End If
+			Else
+				LblLog.Text = VaporChat.LOGNOERR
 			End If
 		End If
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub ShowUserListFunc()
 		UsersListOn = True
-		Select Case VaporChat.CurrentTheme
-			Case VaporChat.Themes.Vapor
-				StsUsersList.Text = VaporChat.USRBOXVP
-			Case VaporChat.Themes.Hide
-				StsUsersList.Text = VaporChat.USRBOXHI
-		End Select
+		StsUsersList.Text = VaporChat.USRBOXVP(VaporChat.CurrentTheme)
+		'Select Case VaporChat.CurrentTheme
+		'	Case VaporChat.Themes.Vapor
+		'		StsUsersList.Text = VaporChat.USRBOXVP
+		'	Case VaporChat.Themes.Hide
+		'		StsUsersList.Text = VaporChat.USRBOXHI
+		'End Select
 		PnlUsersList.BringToFront()
 		LstUsersList.Clear()
 		For Each user As User In UserList
@@ -584,7 +582,7 @@
 				Dim item As New ListViewItem(New String() {user.Name}) With {.ForeColor = user.Color}
 				LstUsersList.Items.Add(item)
 			Else
-				Dim item As New ListViewItem(New String() {user.Name}) With {.ForeColor = VaporChat.HIDE_CHATFRTCLR}
+				Dim item As New ListViewItem(New String() {user.Name}) With {.ForeColor = VaporChat.VAPOR_CHATFRTCLR(VaporChat.CurrentTheme)}
 				LstUsersList.Items.Add(item)
 			End If
 		Next

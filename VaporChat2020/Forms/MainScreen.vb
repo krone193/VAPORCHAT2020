@@ -52,81 +52,42 @@ Public Class MainScreen
 	' V A P O R G U I | Functions ------------------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub AssignVaporTheme(ByVal theme As VaporChat.Themes)
-		Select Case theme
-			Case VaporChat.Themes.Vapor
-				VaporChat.CurrentTheme = VaporChat.Themes.Vapor
-				Text = VaporChat.VAPOR_MAINWINTXT
-				PnlVaporChat.BackgroundImage = VaporChat.VAPOR_MAINBCKIMG
-				PnlVaporChat.BackColor = VaporChat.VAPOR_MAINBCKCLR
-				PnlInsertPass.BackgroundImage = VaporChat.VAPOR_MAINBCKIMG
-				PnlInsertPass.BackColor = VaporChat.VAPOR_MAINBCKCLR
-				TxtInsertPass.BackColor = VaporChat.VAPOR_USERBCKCLR
-				TxtInsertPass.ForeColor = VaporChat.VAPOR_USERFRTCLR
-				LstChatVapo.BackColor = VaporChat.VAPOR_CHATBCKCLR
-				LstChatVapo.ForeColor = VaporChat.VAPOR_CHATFRTCLR
+		If theme = VaporChat.Themes.Vapor Or theme = VaporChat.Themes.Hide Or theme = VaporChat.Themes.Admin Then
+			VaporChat.CurrentTheme = theme
+			Text = VaporChat.VAPOR_MAINWINTXT(VaporChat.CurrentTheme)
+			PnlVaporChat.BackgroundImage = VaporChat.VAPOR_MAINBCKIMG(VaporChat.CurrentTheme)
+			PnlInsertPass.BackgroundImage = VaporChat.VAPOR_MAINBCKIMG(VaporChat.CurrentTheme)
+			PnlVaporChat.BackColor = VaporChat.VAPOR_MAINBCKCLR(VaporChat.CurrentTheme)
+			PnlInsertPass.BackColor = VaporChat.VAPOR_MAINBCKCLR(VaporChat.CurrentTheme)
+			TxtInsertPass.BackColor = VaporChat.VAPOR_USERBCKCLR(VaporChat.CurrentTheme)
+			TxtInsertPass.ForeColor = VaporChat.VAPOR_USERFRTCLR(VaporChat.CurrentTheme)
+			LstChatVapo.BackColor = VaporChat.VAPOR_CHATBCKCLR(VaporChat.CurrentTheme)
+			LstChatVapo.ForeColor = VaporChat.VAPOR_CHATFRTCLR(VaporChat.CurrentTheme)
+			TxtMsg.BackColor = VaporChat.VAPOR_SENDBCKCLR(VaporChat.CurrentTheme)
+			TxtMsg.ForeColor = VaporChat.VAPOR_SENDFRTCLR(VaporChat.CurrentTheme)
+			DskLblLogs.Text = VaporChat.VAPOR_LBLLOGFTXT(VaporChat.CurrentTheme)
+			DskLblLogs.ForeColor = VaporChat.VAPOR_LBLLOGFCLR(VaporChat.CurrentTheme)
+			LblLog.ForeColor = VaporChat.VAPOR_LBLLOGVCLR(VaporChat.CurrentTheme)
+			DskLblUsers.Text = VaporChat.VAPOR_LBLUSRFTXT(VaporChat.CurrentTheme)
+			DskLblUsers.ForeColor = VaporChat.VAPOR_LBLUSRFCLR(VaporChat.CurrentTheme)
+			LblUsers.ForeColor = VaporChat.VAPOR_LBLUSRVCLR(VaporChat.CurrentTheme)
+			BtnSend.FlatStyle = VaporChat.VAPOR_BTNFLSTYLE(VaporChat.CurrentTheme)
+			BtnSend.BackColor = VaporChat.VAPOR_BTNSNDBCLR(VaporChat.CurrentTheme)
+			BtnSend.ForeColor = VaporChat.VAPOR_BTNSNDFCLR(VaporChat.CurrentTheme)
+			BtnBackToStart.FlatStyle = VaporChat.VAPOR_BTNFLSTYLE(VaporChat.CurrentTheme)
+			BtnBackToStart.BackColor = VaporChat.VAPOR_BTNBCKBCLR(VaporChat.CurrentTheme)
+			BtnBackToStart.ForeColor = VaporChat.VAPOR_BTNBCKFCLR(VaporChat.CurrentTheme)
+			LstUsersList.BackColor = VaporChat.VAPOR_USRLSTBCLR(VaporChat.CurrentTheme)
 #If LIMVIEW Then
 				For i = 0 To VaporChat.MAXROWS
 					Dim LstItem As New ListViewItem With {
-						.BackColor = VaporChat.VAPOR_CHATBCKCLR,
-						.ForeColor = VaporChat.VAPOR_CHATFRTCLR
+						.BackColor = VaporChat.VAPOR_CHATBCKCLR(VaporChat.CurrentTheme),
+						.ForeColor = VaporChat.VAPOR_CHATFRTCLR(VaporChat.CurrentTheme)
 						}
 					LstChatVapo.Items.Insert(i, LstItem)
 				Next
 #End If
-				TxtMsg.BackColor = VaporChat.VAPOR_SENDBCKCLR
-				TxtMsg.ForeColor = VaporChat.VAPOR_SENDFRTCLR
-				DskLblLogs.Text = VaporChat.VAPOR_LBLLOGFTXT
-				DskLblLogs.ForeColor = VaporChat.VAPOR_LBLLOGFCLR
-				LblLog.ForeColor = VaporChat.VAPOR_LBLLOGVCLR
-				DskLblUsers.Text = VaporChat.VAPOR_LBLUSRFTXT
-				DskLblUsers.ForeColor = VaporChat.VAPOR_LBLUSRFCLR
-				LblUsers.ForeColor = VaporChat.VAPOR_LBLUSRVCLR
-				BtnSend.FlatStyle = VaporChat.VAPOR_BTNFLSTYLE
-				BtnSend.BackColor = VaporChat.VAPOR_BTNSNDBCLR
-				BtnSend.ForeColor = VaporChat.VAPOR_BTNSNDFCLR
-				BtnBackToStart.FlatStyle = VaporChat.VAPOR_BTNFLSTYLE
-				BtnBackToStart.BackColor = VaporChat.VAPOR_BTNBCKBCLR
-				BtnBackToStart.ForeColor = VaporChat.VAPOR_BTNBCKFCLR
-				LstUsersList.BackColor = VaporChat.VAPOR_USRLSTBCLR
-			Case VaporChat.Themes.Hide
-				VaporChat.CurrentTheme = VaporChat.Themes.Hide
-				Text = VaporChat.HIDE_MAINWINTXT
-				PnlVaporChat.BackgroundImage = VaporChat.HIDE_MAINBCKIMG
-				PnlVaporChat.BackColor = VaporChat.HIDE_MAINBCKCLR
-				PnlInsertPass.BackgroundImage = VaporChat.HIDE_MAINBCKIMG
-				PnlInsertPass.BackColor = VaporChat.HIDE_MAINBCKCLR
-				TxtInsertPass.BackColor = VaporChat.HIDE_USERBCKCLR
-				TxtInsertPass.ForeColor = VaporChat.HIDE_USERFRTCLR
-				LstChatVapo.BackColor = VaporChat.HIDE_CHATBCKCLR
-				LstChatVapo.ForeColor = VaporChat.HIDE_CHATFRTCLR
-#If LIMVIEW Then
-				For i = 0 To VaporChat.MAXROWS
-					Dim LstItem As New ListViewItem With {
-						.BackColor = VaporChat.HIDE_CHATBCKCLR,
-						.ForeColor = VaporChat.HIDE_CHATFRTCLR
-						}
-					LstChatVapo.Items.Insert(i, LstItem)
-				Next
-#End If
-				TxtMsg.BackColor = VaporChat.HIDE_SENDBCKCLR
-				TxtMsg.ForeColor = VaporChat.HIDE_SENDFRTCLR
-				DskLblLogs.Text = VaporChat.HIDE_LBLLOGFTXT
-				DskLblLogs.ForeColor = VaporChat.HIDE_LBLLOGFCLR
-				LblLog.ForeColor = VaporChat.HIDE_LBLLOGVCLR
-				DskLblUsers.Text = VaporChat.HIDE_LBLUSRFTXT
-				DskLblUsers.ForeColor = VaporChat.HIDE_LBLUSRFCLR
-				LblUsers.ForeColor = VaporChat.HIDE_LBLUSRVCLR
-				BtnSend.FlatStyle = VaporChat.HIDE_BTNFLSTYLE
-				BtnSend.BackColor = VaporChat.HIDE_BTNSNDBCLR
-				BtnSend.ForeColor = VaporChat.HIDE_BTNSNDFCLR
-				BtnBackToStart.FlatStyle = VaporChat.HIDE_BTNFLSTYLE
-				BtnBackToStart.BackColor = VaporChat.HIDE_BTNBCKBCLR
-				BtnBackToStart.ForeColor = VaporChat.HIDE_BTNBCKFCLR
-				LstUsersList.BackColor = VaporChat.HIDE_USRLSTBCLR
-			Case VaporChat.Themes.Admin
-				VaporChat.CurrentTheme = VaporChat.Themes.Admin
-				Text = VaporChat.ADMIN_MAINWINTXT
-		End Select
+		End If
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Private Sub VapoMainScreen_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -137,8 +98,8 @@ Public Class MainScreen
 		PnlStartScreen.BringToFront()
 		VaporChat.CurrentTheme = VaporChat.Themes.Start
 		Size = New Size(VaporChat.STARTWIDTH, VaporChat.STARTHEIGH)
-		Text = VaporChat.START_MAINWINTXT
-		VaporFunc.AssignMainFormGUIFunc(Me)
+		Text = VaporChat.VAPOR_MAINWINTXT(VaporChat.CurrentTheme)
+		VaporFunc.AssignMainFormGUIFunc(Me, ProgressOps)
 		VaporFunc.AssignStartScreenPanelGUIFunc(PnlStartScreen, BtnHide, BtnVapor, TxtLobby, TxtUser, TxtPassword, CmbCloserTime, LblVaporChat2020Ver, Lblkronelab)
 		VaporFunc.AssignVaporChatPanelGUIFunc(PnlVaporChat, LstChatVapo, TxtMsg, LblLog, LblUsers, BtnSend, BtnBackToStart)
 		VaporFunc.AssignUserListPanelGUIFunc(PnlUsersList, LstUsersList, StsUsersList)
@@ -260,4 +221,7 @@ Public Class MainScreen
 		VaporFunc.AccessAdminPanelFunc(e)
 	End Sub
 
+	Private Sub ProgressOps_DoWork(sender As Object, e As DoWorkEventArgs) Handles ProgressOps.DoWork
+		VaporFunc.ShowOpProgressFunc()
+	End Sub
 End Class

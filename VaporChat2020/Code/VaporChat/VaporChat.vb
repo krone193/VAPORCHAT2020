@@ -3,7 +3,8 @@ Imports MQTTnet.Client
 Imports MQTTnet.Client.Options
 Imports MQTTnet.Client.Disconnecting
 Imports MQTTnet.Client.Connecting
-Imports MQTTnet.LowLevelClient
+Imports MQTTnet.Client.Subscribing
+Imports MQTTnet.Client.Publishing
 
 
 Public Class VaporChat
@@ -15,7 +16,7 @@ Public Class VaporChat
 
 	'--- V A P O R C H A T | Declarations ----------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
-#Const VAPORCHAT_SWVER = "1.2.1.0"
+#Const VAPORCHAT_SWVER = "3.0.0.0"
 #Const USE_SERVER = "MOSQUITTO"
 
 
@@ -26,7 +27,9 @@ Public Class VaporChat
 	' MQTT -----------------------------------------------------------------------------------------------------------------'
 	Private Const MQTTROOT As String = "kronelab/vaporchat/"
 	Private Const MQTTCONF As String = "conf/"
-	Private Const TIMPINGS As UShort = 30
+	Private Const TIMPINGS As UShort = 60
+	Private Const TSESSION As ULong = 604800
+	Private Const TMESSAGE As ULong = 604800
 #If USE_SERVER = "HIVEMQ" Then
   Private Const MQTTHOST As String = "broker.hivemq.com"
   Private Const MQTTUSER As String = ""
@@ -40,7 +43,7 @@ Public Class VaporChat
 	Private Const MQTTPORT As UShort = 1883
 	Private Const MQTTQOFS As Protocol.MqttQualityOfServiceLevel = Protocol.MqttQualityOfServiceLevel.AtLeastOnce
 #ElseIf USE_SERVER = "CLOUDMQTT" Then
-  Private Const MQTTHOST As String = "m24.cloudmqtt.com"
+	Private Const MQTTHOST As String = "m24.cloudmqtt.com"
   Private Const MQTTUSER As String = "lyomijtv"
   Private Const MQTTPASS As String = "HsCyFqrM3ghT"
   Private Const MQTTPORT As UShort = 12734
@@ -55,59 +58,48 @@ Public Class VaporChat
 	Public ReadOnly NOFCLRS As UShort = 10
 	Public ReadOnly ColorPool = New Color() {Color.Crimson, Color.HotPink, Color.Gold, Color.DarkOrchid, Color.Violet,
 																		Color.DodgerBlue, Color.Teal, Color.Lime, Color.DarkOrange, Color.SpringGreen}
-	' S T A R T S C R E E N T H E M E --------------------------------------------------------------------------------------'
-	Public ReadOnly START_MAINWINTXT As String = "(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ"
-	Public ReadOnly START_MAINBCKIMG As Image = Image.FromFile("Resources/Backgrounds/start_main.jpg")
-	' V A P O R C H A T 2 0 2 0 T H E M E ----------------------------------------------------------------------------------'
-	Public ReadOnly VAPOR_MAINWINTXT As String = "(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ"
-	Public ReadOnly VAPOR_MAINBCKIMG As Image = Image.FromFile("Resources/Backgrounds/ondulvapor.jpg")
-	Public ReadOnly VAPOR_MAINBCKCLR As Color = Color.FromArgb(40, 31, 51)
-	Public ReadOnly VAPOR_CHATBCKCLR As Color = Color.FromArgb(40, 31, 51)
-	Public ReadOnly VAPOR_CHATFRTCLR As Color = Color.Gold
-	Public ReadOnly VAPOR_USERBCKCLR As Color = Color.FromArgb(40, 31, 51)
-	Public ReadOnly VAPOR_USERFRTCLR As Color = SystemColors.Highlight
-	Public ReadOnly VAPOR_SENDBCKCLR As Color = Color.FromArgb(40, 31, 51)
-	Public ReadOnly VAPOR_SENDFRTCLR As Color = Color.DarkOrchid
-	Public ReadOnly VAPOR_LBLLOGFTXT As String = "Logs をノだ"
-	Public ReadOnly VAPOR_LBLLOGFCLR As Color = Color.HotPink
-	Public ReadOnly VAPOR_LBLLOGVCLR As Color = Color.Pink
-	Public ReadOnly VAPOR_LBLUSRFTXT As String = "Logged users 俺鉛プ"
-	Public ReadOnly VAPOR_LBLUSRFCLR As Color = Color.Chartreuse
-	Public ReadOnly VAPOR_LBLUSRVCLR As Color = Color.Lime
-	Public ReadOnly VAPOR_BTNFLSTYLE As FlatStyle = FlatStyle.Standard
-	Public ReadOnly VAPOR_BTNLOGBCLR As Color = Color.Orchid
-	Public ReadOnly VAPOR_BTNLOGFCLR As Color = Color.Aquamarine
-	Public ReadOnly VAPOR_BTNSNDBCLR As Color = Color.Crimson
-	Public ReadOnly VAPOR_BTNSNDFCLR As Color = Color.Gold
-	Public ReadOnly VAPOR_BTNBCKBCLR As Color = Color.DarkOrange
-	Public ReadOnly VAPOR_BTNBCKFCLR As Color = Color.CadetBlue
-	Public ReadOnly VAPOR_USRLSTBCLR As Color = Color.DarkSlateGray
-	' H I D E C H A T 2 0 2 0 T H E M E ------------------------------------------------------------------------------------'
-	Public ReadOnly HIDE_MAINWINTXT As String = "IOT demo service"
-	Public ReadOnly HIDE_MAINBCKIMG As Image
-	Public ReadOnly HIDE_MAINBCKCLR As Color = SystemColors.Control
-	Public ReadOnly HIDE_CHATBCKCLR As Color = SystemColors.ControlLightLight
-	Public ReadOnly HIDE_CHATFRTCLR As Color = SystemColors.WindowText
-	Public ReadOnly HIDE_USERBCKCLR As Color = SystemColors.Control
-	Public ReadOnly HIDE_USERFRTCLR As Color = SystemColors.WindowText
-	Public ReadOnly HIDE_SENDBCKCLR As Color = SystemColors.Control
-	Public ReadOnly HIDE_SENDFRTCLR As Color = SystemColors.WindowText
-	Public ReadOnly HIDE_LBLLOGFTXT As String = "Logs"
-	Public ReadOnly HIDE_LBLLOGFCLR As Color = SystemColors.WindowText
-	Public ReadOnly HIDE_LBLLOGVCLR As Color = SystemColors.WindowText
-	Public ReadOnly HIDE_LBLUSRFTXT As String = "Logged users"
-	Public ReadOnly HIDE_LBLUSRFCLR As Color = SystemColors.WindowText
-	Public ReadOnly HIDE_LBLUSRVCLR As Color = SystemColors.WindowText
-	Public ReadOnly HIDE_BTNFLSTYLE As FlatStyle = FlatStyle.System
-	Public ReadOnly HIDE_BTNLOGBCLR As Color = SystemColors.ControlLight
-	Public ReadOnly HIDE_BTNLOGFCLR As Color = SystemColors.ControlText
-	Public ReadOnly HIDE_BTNSNDBCLR As Color = SystemColors.ControlLight
-	Public ReadOnly HIDE_BTNSNDFCLR As Color = SystemColors.ControlText
-	Public ReadOnly HIDE_BTNBCKBCLR As Color = SystemColors.ControlLight
-	Public ReadOnly HIDE_BTNBCKFCLR As Color = SystemColors.ControlText
-	Public ReadOnly HIDE_USRLSTBCLR As Color = SystemColors.Window
-	' A D M I N P A N E L T H E M E ----------------------------------------------------------------------------------------'
-	Public ReadOnly ADMIN_MAINWINTXT As String = "Λ░Ｄ░Ｍ░Ｉ░Ｎ░Ｐ░Λ░Ｎ░Ξ░Ｌ"
+	' V A P O R C H A T 2 0 2 0 T H E M E S --------------------------------------------------------------------------------'
+	'-----------------------------------------------------------------------------------------------------------------------'
+	Public ReadOnly VAPOR_MAINWINTXT() As String = {
+		"(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ",
+		"(っ◔◡◔)っ 【 ﻿Ｖ　Ａ　Ｐ　Ｏ　Ｒ　Ｃ　Ｈ　Ａ　Ｔ 】 (っ◔◡◔)っ",
+		"IOT demo service",
+		"Λ░Ｄ░Ｍ░Ｉ░Ｎ░Ｐ░Λ░Ｎ░Ξ░Ｌ"
+	}
+	Public ReadOnly VAPOR_MAINBCKIMG() As Image = {Image.FromFile("Resources/Backgrounds/start_main.jpg"), Image.FromFile("Resources/Backgrounds/ondulvapor.jpg"), Nothing, Nothing}
+	Public ReadOnly VAPOR_MAINBCKCLR() As Color = {Nothing, Color.FromArgb(40, 31, 51), SystemColors.Control, Nothing}
+	Public ReadOnly VAPOR_CHATBCKCLR() As Color = {Nothing, Color.FromArgb(40, 31, 51), SystemColors.ControlLightLight, Nothing}
+	Public ReadOnly VAPOR_CHATFRTCLR() As Color = {Nothing, Color.Gold, SystemColors.WindowText, Nothing}
+	Public ReadOnly VAPOR_USERBCKCLR() As Color = {Nothing, Color.FromArgb(40, 31, 51), SystemColors.Control, Nothing}
+	Public ReadOnly VAPOR_USERFRTCLR() As Color = {Nothing, SystemColors.Highlight, SystemColors.WindowText, Nothing}
+	Public ReadOnly VAPOR_SENDBCKCLR() As Color = {Nothing, Color.FromArgb(40, 31, 51), SystemColors.Control, Nothing}
+	Public ReadOnly VAPOR_SENDFRTCLR() As Color = {Nothing, Color.DarkOrchid, SystemColors.WindowText, Nothing}
+	Public ReadOnly VAPOR_LBLLOGFTXT() As String = {Nothing, "Logs をノだ", "Logs", Nothing}
+	Public ReadOnly VAPOR_LBLLOGFCLR() As Color = {Nothing, Color.HotPink, SystemColors.WindowText, Nothing}
+	Public ReadOnly VAPOR_LBLLOGVCLR() As Color = {Nothing, Color.Pink, SystemColors.WindowText, Nothing}
+	Public ReadOnly VAPOR_LBLUSRFTXT() As String = {Nothing, "Logged users 俺鉛プ", "Logged users", Nothing}
+	Public ReadOnly VAPOR_LBLUSRFCLR() As Color = {Nothing, Color.Chartreuse, SystemColors.WindowText, Nothing}
+	Public ReadOnly VAPOR_LBLUSRVCLR() As Color = {Nothing, Color.Lime, SystemColors.WindowText, Nothing}
+	Public ReadOnly VAPOR_BTNFLSTYLE() As FlatStyle = {Nothing, FlatStyle.Standard, FlatStyle.System, Nothing}
+	Public ReadOnly VAPOR_BTNLOGBCLR() As Color = {Nothing, Color.Orchid, SystemColors.ControlLight, Nothing}
+	Public ReadOnly VAPOR_BTNLOGFCLR() As Color = {Nothing, Color.Aquamarine, SystemColors.ControlText, Nothing}
+	Public ReadOnly VAPOR_BTNSNDBCLR() As Color = {Nothing, Color.Crimson, SystemColors.ControlLight, Nothing}
+	Public ReadOnly VAPOR_BTNSNDFCLR() As Color = {Nothing, Color.Gold, SystemColors.ControlText, Nothing}
+	Public ReadOnly VAPOR_BTNBCKBCLR() As Color = {Nothing, Color.DarkOrange, SystemColors.ControlLight, Nothing}
+	Public ReadOnly VAPOR_BTNBCKFCLR() As Color = {Nothing, Color.CadetBlue, SystemColors.ControlText, Nothing}
+	Public ReadOnly VAPOR_USRLSTBCLR() As Color = {Nothing, Color.DarkSlateGray, SystemColors.Window, Nothing}
+	' V A P O R C H A T 2 0 2 0 P H R A S E S ------------------------------------------------------------------------------'
+	'-----------------------------------------------------------------------------------------------------------------------'
+	Public ReadOnly USRBOXVP() As String = {Nothing, "【﻿Ｃｏｎｎｅｃｔｅｄ　ｕｓｅｒｓ】", "Connected users", Nothing}
+	Public ReadOnly JOINVAPO() As String = {Nothing, "(っ◔◡◔)っ ♥ Joins the chat ♥", "Joins the chat", Nothing}
+	Public ReadOnly LEAVEVAP() As String = {Nothing, "see you space T A S S O N I ...", "see you space T A S S O N I ...", Nothing}
+	Public ReadOnly LOGERROR() As String = {Nothing, "(っ◡.◡)っ e r r o r", "error", Nothing}
+	Public ReadOnly SENDISOK() As String = {Nothing, "(っ◠◡◠)っ d o n e", "done", Nothing}
+	Public ReadOnly SENDISKO() As String = {Nothing, "(っ◡.◡)っ e r r o r", "error", Nothing}
+	Public ReadOnly LOGPROG01() As String = {Nothing, "(っ◑◡◑)っ p e n d i n g", ".", Nothing}
+	Public ReadOnly LOGPROG02() As String = {Nothing, "(っ◒◡◒)っ p e n d i n g", "..", Nothing}
+	Public ReadOnly LOGPROG03() As String = {Nothing, "(っ◐◡◐)っ p e n d i n g", "...", Nothing}
+	Public ReadOnly LOGPROG04() As String = {Nothing, "(っ◓◡◓)っ p e n d i n g", "....", Nothing}
 
 
 	'--- V A P O R C H A T | Public Constants ------------------------------------------------------------------------------'
@@ -120,30 +112,16 @@ Public Class VaporChat
 	Public Const PASSCHAT As String = "paint"
 	Public Const SEPTCHAR As String = "ヿーニ"
 	Public Const ITSMEMSG As String = "し゛ゐ"
-	Public Const USRBOXVP As String = "【﻿Ｃｏｎｎｅｃｔｅｄ　ｕｓｅｒｓ】"
-	Public Const USRBOXHI As String = "Connected users"
-	Public Const JOINVAPO As String = "(っ◔◡◔)っ ♥ Joins the chat ♥"
-	Public Const LEAVEVAP As String = "see you space T A S S O N I ..."
-	Public Const JOINHIDE As String = "Joins the chat"
 	Public Const BLOCKEDU As String = "ops, seems like you're a nasty boi"
 	Public Const FUNNYBOI As String = "oh Rob, u funny boi"
 	Public Const COMERROR As String = "please log in"
-	Public Const LOGERROR As String = "connection error, please log again"
 	Public Const LOGNOERR As String = "online"
-	Public Const SENDISOK As String = "message forwarded"
-	Public Const SENDISKO As String = "message not forwarded"
 	Public Const DISCONNE As String = "offline"
 	Public Const ICONPATH As String = "Resources/Ico/logo.ico"
 	Public Const ICONNMSG As String = "Resources/Ico/logonewmsg.ico"
 	Public Const SENDUKEY As Keys = Keys.Enter
 	Public Const HIDEUKEY As Keys = Keys.F1
 	Public Const SHOWUKEY As Keys = Keys.F2
-	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Const LOGINBTXT As String = "Log in"
-	Public Const LOGOUBTXT As String = "Log out"
-	Public Const LOGPROG01 As String = "."
-	Public Const LOGPROG02 As String = ".."
-	Public Const LOGPROG03 As String = "..."
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Const STARTWIDTH As UShort = 510
 	Public Const STARTHEIGH As UShort = 400
@@ -204,17 +182,10 @@ Public Class VaporChat
 	'-----------------------------------------------------------------------------------------------------------------------'
 	ReadOnly message As New Queue(Of MessageStruct)
 	ReadOnly config As New Queue(Of ConfigStruct)
-	Private conongoing As Boolean = False
-	Private conok As Boolean = True
-	Private pubongoing As Boolean = False
-	Private pubok As Boolean = True
-	Private subongoing As Boolean = False
-	Private subok As Boolean = True
 	Private messagetopic As String = ""
 	Private configstopic As String = ""
-	Private ReadOnly activetopics As New List(Of String)
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Public CurrentTheme As VaporChat.Themes
+	Public CurrentTheme As Themes
 
 
 	'--- V A P O R C H A T | MQTT Service Functions ------------------------------------------------------------------------'
@@ -240,73 +211,95 @@ Public Class VaporChat
 				config.Enqueue(recv)
 		End Select
 	End Sub
-
-	Private Sub HandleDisconnection()
+	'-----------------------------------------------------------------------------------------------------------------------'
+	Private Sub HandleConnection(eventArgs As MqttClientConnectedEventArgs)
 
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Async Sub MQTTConnectToServer(id As String, uri As String, user As String, pwd As String, port As String)
+	Private Sub HandleDisconnection(eventArgs As MqttClientDisconnectedEventArgs)
+
+	End Sub
+	'-----------------------------------------------------------------------------------------------------------------------'
+	Private Function MQTTConnectToServer(id As String, uri As String, user As String, pwd As String, port As String) As Boolean
+		Dim result As MqttClientAuthenticateResult
+		Dim cancel As New Threading.CancellationTokenSource
 		Dim messageBuilder As New MqttClientOptionsBuilder
 		Dim lastwill As New MqttApplicationMessage
 		MqttClient = Factory.CreateMqttClient()
 		MqttClient.UseApplicationMessageReceivedHandler(AddressOf HandleReceivedMessages)
+		MqttClient.UseConnectedHandler(AddressOf HandleConnection)
 		MqttClient.UseDisconnectedHandler(AddressOf HandleDisconnection)
-		lastwill.Topic = messagetopic
-		lastwill.Payload = Text.Encoding.ASCII.GetBytes(LEAVEVAP)
-		lastwill.QualityOfServiceLevel = MQTTQOFS
-		lastwill.Retain = False
+		messageBuilder.WithProtocolVersion(Formatter.MqttProtocolVersion.V500)
 		messageBuilder.WithClientId(id)
-		If user <> "" And pwd <> "" Then
-			messageBuilder.WithCredentials(user, pwd)
-		End If
 		messageBuilder.WithTcpServer(uri, CInt(port))
 		messageBuilder.WithCleanSession(False)
 		messageBuilder.WithKeepAlivePeriod(TimeSpan.FromSeconds(TIMPINGS))
-		messageBuilder.WithWillMessage(lastwill)
-		conongoing = True
+		messageBuilder.WithCommunicationTimeout(TimeSpan.FromSeconds(120))
+		messageBuilder.WithSessionExpiryInterval(TSESSION)
+		If user <> "" And pwd <> "" Then
+			messageBuilder.WithCredentials(user, pwd)
+		End If
 		Try
-			Await MqttClient.ConnectAsync(messageBuilder.Build())
-		Catch ex As Exception
-			conok = False
-		Finally
-			conongoing = False
+			result = MqttClient.ConnectAsync(messageBuilder.Build(), cancel.Token).Result
+		Catch
+			cancel.Cancel()
+			Return False
 		End Try
-	End Sub
+		If result.ResultCode = MqttClientConnectResultCode.Success Then
+			Return True
+		End If
+		Return False
+	End Function
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Private Async Sub MQTTDisconnectFromServer()
-		For Each topic As String In activetopics
-			Await MqttClient.UnsubscribeAsync(topic)
-		Next
 		Await MqttClient.DisconnectAsync()
-		activetopics.Clear()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Async Sub MQTTSubscribe(ByVal topic As String, qos As Protocol.MqttQualityOfServiceLevel)
-		Dim mqttTopicFilter As New MqttTopicFilter With {
-			.Topic = topic,
-			.QualityOfServiceLevel = qos
-		}
-		subongoing = True
-		activetopics.Add(topic)
-		Try
-			Await MqttClient.SubscribeAsync(mqttTopicFilter)
-		Catch ex As Exception
-			subok = False
-		Finally
-			subongoing = False
-		End Try
-	End Sub
+	Private Function MQTTSubscribe(ByVal topic As String, qos As Protocol.MqttQualityOfServiceLevel) As Boolean
+		Dim result As MqttClientSubscribeResult
+		Dim mqttTopicFilter As New MqttTopicFilterBuilder
+		mqttTopicFilter.WithTopic(topic)
+		mqttTopicFilter.WithQualityOfServiceLevel(qos)
+		If MqttClient.IsConnected Then
+			result = MqttClient.SubscribeAsync(mqttTopicFilter.Build()).Result
+			Select Case qos
+				Case Protocol.MqttQualityOfServiceLevel.AtMostOnce
+					If result.Items(0).ResultCode = MqttClientSubscribeResultCode.GrantedQoS0 Then
+						Return True
+					End If
+				Case Protocol.MqttQualityOfServiceLevel.AtLeastOnce
+					If result.Items(0).ResultCode = MqttClientSubscribeResultCode.GrantedQoS1 Then
+						Return True
+					End If
+				Case Protocol.MqttQualityOfServiceLevel.ExactlyOnce
+					If result.Items(0).ResultCode = MqttClientSubscribeResultCode.GrantedQoS2 Then
+						Return True
+					End If
+			End Select
+		End If
+		Return False
+	End Function
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Private Async Sub MQTTPublish(topic As String, payload As String, retainFlag As Boolean, qos As Protocol.MqttQualityOfServiceLevel)
-		pubongoing = True
+	Private Function MQTTPublish(topic As String, payload As String, retainFlag As Boolean, qos As Protocol.MqttQualityOfServiceLevel) As Boolean
+		Dim result As New MqttClientPublishResult
+		Dim cancel As New Threading.CancellationTokenSource
+		Dim publish As New MqttApplicationMessageBuilder
+		publish.WithMessageExpiryInterval(TMESSAGE)
+		publish.WithQualityOfServiceLevel(qos)
+		publish.WithTopic(topic)
+		publish.WithPayload(payload)
+		publish.WithRetainFlag(retainFlag)
 		Try
-			Await MqttClient.PublishAsync(topic, payload, qos, retainFlag)
-		Catch ex As Exception
-			pubok = False
-		Finally
-			pubongoing = False
+			result = MqttClient.PublishAsync(publish.Build(), cancel.Token).Result
+		Catch
+			cancel.Cancel()
+			Return False
 		End Try
-	End Sub
+		If result.ReasonCode = MqttClientPublishReasonCode.Success Then
+			Return True
+		End If
+		Return False
+	End Function
 
 
 	'--- V A P O R C H A T | Private Functions -----------------------------------------------------------------------------'
@@ -338,20 +331,23 @@ Public Class VaporChat
 	'--- V A P O R C H A T | Public Functions ------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Function Connect(ByVal user As String, ByVal lobby As String) As Boolean
-		Dim timeout As Date = Date.Now
-		timeout = timeout.AddSeconds(10)
-		messagetopic = MQTTROOT & My.Settings.Lobby
-		configstopic = MQTTROOT & MQTTCONF & lobby
+		Dim cryptMessageTopic As String
+		Dim cryptConfigsTopic As String
 		message.Clear()
 		config.Clear()
-		MQTTConnectToServer(user, MQTTHOST, MQTTUSER, MQTTPASS, MQTTPORT)
-		While Not MqttClient.IsConnected
-			If Date.Now >= timeout Then
-				Return False
-			End If
-		End While
-		MQTTSubscribe(Encrypt(messagetopic, True), MQTTQOFS)
-		MQTTSubscribe(Encrypt(configstopic, True), MQTTQOFS)
+		messagetopic = MQTTROOT & My.Settings.Lobby
+		configstopic = MQTTROOT & MQTTCONF & lobby
+		cryptMessageTopic = Encrypt(messagetopic, True)
+		cryptConfigsTopic = Encrypt(configstopic, True)
+		If MQTTConnectToServer(user, MQTTHOST, MQTTUSER, MQTTPASS, MQTTPORT) = False Then
+			Return False
+		End If
+		If MQTTSubscribe(cryptMessageTopic, MQTTQOFS) = False Then
+			Return False
+		End If
+		If MQTTSubscribe(cryptConfigsTopic, MQTTQOFS) = False Then
+			Return False
+		End If
 		Return True
 	End Function
 	'-----------------------------------------------------------------------------------------------------------------------'
@@ -359,14 +355,16 @@ Public Class VaporChat
 		MQTTDisconnectFromServer()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Function SendMessage(ByVal user As String, ByVal text As String) As Boolean
-		MQTTPublish(Encrypt(messagetopic, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
-		Return True
+	Public Function SendMessage(ByRef progresser As ComponentModel.BackgroundWorker, ByVal user As String, ByVal text As String) As Boolean
+		Dim res As Boolean
+		progresser.RunWorkerAsync()
+		res = MQTTPublish(Encrypt(messagetopic, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
+		progresser.Dispose()
+		Return res
 	End Function
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Function SendConfig(ByVal user As String, ByVal text As String) As Boolean
-		MQTTPublish(Encrypt(configstopic, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
-		Return True
+		Return MQTTPublish(Encrypt(configstopic, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
 	End Function
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Function CheckMessageRecv() As Boolean
@@ -409,42 +407,6 @@ Public Class VaporChat
 				Return 2
 		End Select
 		Return -1
-	End Function
-	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Function GetConState() As Boolean
-		If conok <> True Then
-			conok = True
-			Return False
-		End If
-		Return conok
-	End Function
-	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Function GetPubState() As Boolean
-		If pubok <> True Then
-			pubok = True
-			Return False
-		End If
-		Return pubok
-	End Function
-	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Function GetSubState() As Boolean
-		If subok <> True Then
-			subok = True
-			Return False
-		End If
-		Return subok
-	End Function
-	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Function GetConOngoing() As Boolean
-		Return subongoing
-	End Function
-	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Function GetPubOngoing() As Boolean
-		Return pubongoing
-	End Function
-	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Function GetSubOngoing() As Boolean
-		Return subongoing
 	End Function
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Function IsOnline() As Boolean
