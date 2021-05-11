@@ -16,7 +16,7 @@ Public Class VaporChat
 
 	'--- V A P O R C H A T | Declarations ----------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
-#Const VAPORCHAT_SWVER = "3.0.0.0"
+#Const VAPORCHAT_SWVER = "3.0.1.0"
 #Const USE_SERVER = "MOSQUITTO"
 
 
@@ -146,6 +146,8 @@ Public Class VaporChat
 	'-----------------------------------------------------------------------------------------------------------------------' 
 	Public Const TOKIDRIFT As String = "/tokidrift"
 	Public Const VAPOCHESS As String = "/vaporchess"
+	'-----------------------------------------------------------------------------------------------------------------------' 
+	Public Const TOKIPATH As String = "..\T̵̞̜̲̻͛̓̏̇͑͐D̵̫̘̣̮̦̖͙͈̜͛͝\TokiDrift.exe"
 
 
 	'--- V A P O R C H A T | Struct ----------------------------------------------------------------------------------------'
@@ -357,9 +359,13 @@ Public Class VaporChat
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Function SendMessage(ByRef progresser As ComponentModel.BackgroundWorker, ByVal user As String, ByVal text As String) As Boolean
 		Dim res As Boolean
-		progresser.RunWorkerAsync()
-		res = MQTTPublish(Encrypt(messagetopic, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
-		progresser.Dispose()
+		If progresser.IsBusy = False Then
+			progresser.RunWorkerAsync()
+			res = MQTTPublish(Encrypt(messagetopic, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
+			progresser.Dispose()
+		Else
+			res = MQTTPublish(Encrypt(messagetopic, True), Encrypt(user & SEPTCHAR & text, False), False, MQTTQOFS)
+		End If
 		Return res
 	End Function
 	'-----------------------------------------------------------------------------------------------------------------------'

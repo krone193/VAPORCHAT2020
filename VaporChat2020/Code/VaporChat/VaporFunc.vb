@@ -7,7 +7,7 @@
 
 	'--- V A P O R F U N C | Declarations ----------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
-#Const VAPORFUNC_SWVER = "2.0.0.0"
+#Const VAPORFUNC_SWVER = "2.0.1.0"
 #Const SHOW_ITSME_MESSAGE = False
 
 
@@ -15,6 +15,7 @@
 	'-----------------------------------------------------------------------------------------------------------------------'
 	ReadOnly CONNSEC As UShort = 5
 	ReadOnly ShowResuInterval As UShort = 1500      ' in milliseconds
+	ReadOnly AutoPubInterval As UShort = 500        ' in milliseconds
 	ReadOnly ProgAnimInterval As UShort = 300       ' in milliseconds
 	ReadOnly BannedText As New List(Of String)
 	Public ReadOnly UserList As New List(Of User)
@@ -79,6 +80,8 @@
 	Private MessageRxOn As Boolean = False
 	Private ProgressIndex As UShort = 0
 	Private LastResuTime As Date = Date.Now()
+	Private LastReicTime As Date = Date.Now()
+	Private SendItsMeMsg As Boolean = False
 #If LIMVIEW Then
 	Private NofMessages As UShort = 0
 #End If
@@ -297,7 +300,8 @@
 		' Check message type for Users management
 		If name <> My.Settings.LastUser Then
 			If VaporChat.JOINVAPO.Contains(message) Then
-				VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, VaporChat.ITSMEMSG)
+				LastReicTime = Date.Now()
+				SendItsMeMsg = True
 			ElseIf VaporChat.LEAVEVAP.Contains(message) Then
 				RemoveUserFromList(name)
 			End If
@@ -395,35 +399,41 @@
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub SendMsgFunc()
 		If TxtMsg.Text = VaporChat.TOKIDRIFT Then
-			ClearTextBox(TxtMsg)
-		End If
-		If My.Settings.Muted = False Then
-			If BtnSend.Enabled = True Then
-				BtnSend.Enabled = False
-				TimerPubBlock.Enabled = True
-				If VaporChat.IsOnline() = True Then
-					If BannedText.Contains(TxtMsg.Text.ToLower().Replace(" ", "")) Then
-						LblLog.Text = VaporChat.FUNNYBOI
-						ClearTextBox(TxtMsg)
-					ElseIf TxtMsg.Text = VaporChat.TOKIDRIFT Then
-						ClearTextBox(TxtMsg)
-					ElseIf TxtMsg.Text = VaporChat.VAPOCHESS Then
-						ClearTextBox(TxtMsg)
-						Chess.Show()
-					Else
-						If VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, TxtMsg.Text) Then
-							LblLog.Text = VaporChat.SENDISOK(VaporChat.CurrentTheme)
-							ClearTextBox(TxtMsg)
-						Else
-							LblLog.Text = VaporChat.SENDISKO(VaporChat.CurrentTheme)
-						End If
-					End If
-				Else
-					VaporChat.Connect(My.Settings.LastUser, My.Settings.Lobby)
-				End If
+			Dim pHelp As New ProcessStartInfo
+			Dim pPath As String = IO.Path.GetFullPath(VaporChat.TOKIPATH)
+			If IO.File.Exists(pPath) = True Then
+				pHelp.FileName = pPath
+				pHelp.Arguments = My.Settings.LastUser
+				pHelp.UseShellExecute = False
+				pHelp.WindowStyle = ProcessWindowStyle.Normal
+				Dim proc As Process = Process.Start(pHelp)
 			End If
-		Else
-			LblLog.Text = VaporChat.BLOCKEDU
+			ClearTextBox(TxtMsg)
+			ElseIf My.Settings.Muted = False Then
+				If BtnSend.Enabled = True Then
+					BtnSend.Enabled = False
+					TimerPubBlock.Enabled = True
+					If VaporChat.IsOnline() = True Then
+						If BannedText.Contains(TxtMsg.Text.ToLower().Replace(" ", "")) Then
+							LblLog.Text = VaporChat.FUNNYBOI
+							ClearTextBox(TxtMsg)
+						ElseIf TxtMsg.Text = VaporChat.VAPOCHESS Then
+							ClearTextBox(TxtMsg)
+							Chess.Show()
+						Else
+							If VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, TxtMsg.Text) Then
+								LblLog.Text = VaporChat.SENDISOK(VaporChat.CurrentTheme)
+								ClearTextBox(TxtMsg)
+							Else
+								LblLog.Text = VaporChat.SENDISKO(VaporChat.CurrentTheme)
+							End If
+						End If
+					Else
+						VaporChat.Connect(My.Settings.LastUser, My.Settings.Lobby)
+					End If
+				End If
+			Else
+				LblLog.Text = VaporChat.BLOCKEDU
 		End If
 		RefreshTimCloserFunc()
 	End Sub
@@ -564,17 +574,17 @@
 				LblLog.Text = VaporChat.LOGNOERR
 			End If
 		End If
+		If Date.Now() > LastReicTime + TimeSpan.FromMilliseconds(AutoPubInterval) Then
+			If SendItsMeMsg = True Then
+				SendItsMeMsg = False
+				VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, VaporChat.ITSMEMSG)
+			End If
+		End If
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub ShowUserListFunc()
 		UsersListOn = True
 		StsUsersList.Text = VaporChat.USRBOXVP(VaporChat.CurrentTheme)
-		'Select Case VaporChat.CurrentTheme
-		'	Case VaporChat.Themes.Vapor
-		'		StsUsersList.Text = VaporChat.USRBOXVP
-		'	Case VaporChat.Themes.Hide
-		'		StsUsersList.Text = VaporChat.USRBOXHI
-		'End Select
 		PnlUsersList.BringToFront()
 		LstUsersList.Clear()
 		For Each user As User In UserList
