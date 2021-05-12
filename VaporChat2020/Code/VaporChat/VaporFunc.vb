@@ -409,31 +409,31 @@
 				Dim proc As Process = Process.Start(pHelp)
 			End If
 			ClearTextBox(TxtMsg)
-			ElseIf My.Settings.Muted = False Then
-				If BtnSend.Enabled = True Then
-					BtnSend.Enabled = False
-					TimerPubBlock.Enabled = True
-					If VaporChat.IsOnline() = True Then
-						If BannedText.Contains(TxtMsg.Text.ToLower().Replace(" ", "")) Then
-							LblLog.Text = VaporChat.FUNNYBOI
-							ClearTextBox(TxtMsg)
-						ElseIf TxtMsg.Text = VaporChat.VAPOCHESS Then
-							ClearTextBox(TxtMsg)
-							Chess.Show()
-						Else
-							If VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, TxtMsg.Text) Then
-								LblLog.Text = VaporChat.SENDISOK(VaporChat.CurrentTheme)
-								ClearTextBox(TxtMsg)
-							Else
-								LblLog.Text = VaporChat.SENDISKO(VaporChat.CurrentTheme)
-							End If
-						End If
+		ElseIf My.Settings.Muted = False Then
+			If BtnSend.Enabled = True Then
+				BtnSend.Enabled = False
+				TimerPubBlock.Enabled = True
+				If VaporChat.IsOnline() = True Then
+					If BannedText.Contains(TxtMsg.Text.ToLower().Replace(" ", "")) Then
+						LblLog.Text = VaporChat.FUNNYBOI
+						ClearTextBox(TxtMsg)
+					ElseIf TxtMsg.Text = VaporChat.VAPOCHESS Then
+						ClearTextBox(TxtMsg)
+						Chess.Show()
 					Else
-						VaporChat.Connect(My.Settings.LastUser, My.Settings.Lobby)
+						If VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, TxtMsg.Text) Then
+							LblLog.Text = VaporChat.SENDISOK(VaporChat.CurrentTheme)
+							ClearTextBox(TxtMsg)
+						Else
+							LblLog.Text = VaporChat.SENDISKO(VaporChat.CurrentTheme)
+						End If
 					End If
+				Else
+					VaporChat.Connect(My.Settings.LastUser, My.Settings.Lobby)
 				End If
-			Else
-				LblLog.Text = VaporChat.BLOCKEDU
+			End If
+		Else
+			LblLog.Text = VaporChat.BLOCKEDU
 		End If
 		RefreshTimCloserFunc()
 	End Sub

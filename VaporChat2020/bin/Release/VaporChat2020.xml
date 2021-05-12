@@ -22,6 +22,11 @@ VaporChat2020
   ricerche di risorse eseguite utilizzando questa classe di risorse fortemente tipizzata.
 </summary>
 </member>
+<member name="P:VaporChat2020Application.My.Resources.Resources.MQTTnet">
+<summary>
+  Cerca una risorsa localizzata di tipo System.Byte[].
+</summary>
+</member>
 <member name="P:VaporChat2020Application.My.Resources.Resources.start_main">
 <summary>
   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
