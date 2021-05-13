@@ -7,7 +7,7 @@
 
 	'--- V A P O R F U N C | Declarations ----------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
-#Const VAPORFUNC_SWVER = "2.0.1.0"
+#Const VAPORFUNC_SWVER = "2.0.1.1"
 #Const SHOW_ITSME_MESSAGE = False
 
 
@@ -403,7 +403,7 @@
 			Dim pPath As String = IO.Path.GetFullPath(VaporChat.TOKIPATH)
 			If IO.File.Exists(pPath) = True Then
 				pHelp.FileName = pPath
-				pHelp.Arguments = My.Settings.LastUser
+				pHelp.Arguments = ControlChars.Quote & My.Settings.LastUser & ControlChars.Quote
 				pHelp.UseShellExecute = False
 				pHelp.WindowStyle = ProcessWindowStyle.Normal
 				Dim proc As Process = Process.Start(pHelp)

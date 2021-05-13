@@ -164,3 +164,4 @@ F:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Release\VaporCha
 F:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Release\VaporChat2020.exe
 F:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Release\VaporChat2020.xml
 F:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Release\VaporChat2020.pdb
+F:\.TRASH\.local\.repo\11052020\VAPORCHAT2020\VaporChat2020\obj\Release\VaporChat2020.vbprojAssemblyReference.cache
