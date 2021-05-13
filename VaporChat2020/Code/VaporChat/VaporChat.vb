@@ -56,8 +56,10 @@ Public Class VaporChat
 	'--- V A P O R C H A T | Public ReadOnly -------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public ReadOnly NOFCLRS As UShort = 10
-	Public ReadOnly ColorPool = New Color() {Color.Crimson, Color.HotPink, Color.Gold, Color.DarkOrchid, Color.Violet,
-																		Color.DodgerBlue, Color.Teal, Color.Lime, Color.DarkOrange, Color.SpringGreen}
+	Public ReadOnly ColorPool = New Color() {
+		Color.Crimson, Color.HotPink, Color.Gold, Color.DarkOrchid, Color.Violet,
+		Color.DodgerBlue, Color.Teal, Color.Lime, Color.DarkOrange, Color.SpringGreen
+	}
 	' V A P O R C H A T 2 0 2 0 T H E M E S --------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public ReadOnly VAPOR_MAINWINTXT() As String = {
@@ -66,11 +68,16 @@ Public Class VaporChat
 		"IOT demo service",
 		"Λ░Ｄ░Ｍ░Ｉ░Ｎ░Ｐ░Λ░Ｎ░Ξ░Ｌ"
 	}
-	Public ReadOnly VAPOR_MAINBCKIMG() As Image = {Image.FromFile("Resources/Backgrounds/start_main.jpg"), Image.FromFile("Resources/Backgrounds/ondulvapor.jpg"), Nothing, Nothing}
+	Public ReadOnly VAPOR_MAINBCKIMG() As Image = {My.Resources.VaporCanal, My.Resources.VaporCity, Nothing, Nothing}
 	Public ReadOnly VAPOR_MAINBCKCLR() As Color = {Nothing, Color.FromArgb(40, 31, 51), SystemColors.Control, Nothing}
+	Public ReadOnly VAPOR_PASSWINTXT() As String = {"(っ◔◡◔)っ P A S S W O R D (っ◔◡◔)っ", "(っ◔◡◔)っ P A S S W O R D (っ◔◡◔)っ", "Password", "(っ◔◡◔)っ P A S S W O R D (っ◔◡◔)っ"}
+	Public ReadOnly VAPOR_PASSBCKIMG() As Image = {My.Resources.VaporPetali, My.Resources.VaporBridge, Nothing, Nothing, Nothing}
+	Public ReadOnly VAPOR_PASSBCKCLR() As Color = {Nothing, Color.Snow, SystemColors.Control, Nothing}
+	Public ReadOnly VAPOR_PASSFRTCLR() As Color = {Nothing, SystemColors.Highlight, SystemColors.WindowText, Nothing}
 	Public ReadOnly VAPOR_CHATBCKCLR() As Color = {Nothing, Color.FromArgb(40, 31, 51), SystemColors.ControlLightLight, Nothing}
 	Public ReadOnly VAPOR_CHATFRTCLR() As Color = {Nothing, Color.Gold, SystemColors.WindowText, Nothing}
-	Public ReadOnly VAPOR_USERBCKCLR() As Color = {Nothing, Color.FromArgb(40, 31, 51), SystemColors.Control, Nothing}
+	Public ReadOnly VAPOR_USERBCKIMG() As Image = {Nothing, My.Resources.VaporRoad, Nothing, Nothing}
+	Public ReadOnly VAPOR_USERBCKCLR() As Color = {Nothing, Color.DarkSlateGray, SystemColors.Control, Nothing}
 	Public ReadOnly VAPOR_USERFRTCLR() As Color = {Nothing, SystemColors.Highlight, SystemColors.WindowText, Nothing}
 	Public ReadOnly VAPOR_SENDBCKCLR() As Color = {Nothing, Color.FromArgb(40, 31, 51), SystemColors.Control, Nothing}
 	Public ReadOnly VAPOR_SENDFRTCLR() As Color = {Nothing, Color.DarkOrchid, SystemColors.WindowText, Nothing}
@@ -80,7 +87,7 @@ Public Class VaporChat
 	Public ReadOnly VAPOR_LBLUSRFTXT() As String = {Nothing, "Logged users 俺鉛プ", "Logged users", Nothing}
 	Public ReadOnly VAPOR_LBLUSRFCLR() As Color = {Nothing, Color.Chartreuse, SystemColors.WindowText, Nothing}
 	Public ReadOnly VAPOR_LBLUSRVCLR() As Color = {Nothing, Color.Lime, SystemColors.WindowText, Nothing}
-	Public ReadOnly VAPOR_BTNFLSTYLE() As FlatStyle = {Nothing, FlatStyle.Standard, FlatStyle.System, Nothing}
+	Public ReadOnly VAPOR_BTNFLSTYLE() As FlatStyle = {Nothing, FlatStyle.Flat, FlatStyle.System, Nothing}
 	Public ReadOnly VAPOR_BTNLOGBCLR() As Color = {Nothing, Color.Orchid, SystemColors.ControlLight, Nothing}
 	Public ReadOnly VAPOR_BTNLOGFCLR() As Color = {Nothing, Color.Aquamarine, SystemColors.ControlText, Nothing}
 	Public ReadOnly VAPOR_BTNSNDBCLR() As Color = {Nothing, Color.Crimson, SystemColors.ControlLight, Nothing}
@@ -127,8 +134,8 @@ Public Class VaporChat
 	Public Const STARTHEIGH As UShort = 400
 	Public Const CHATWIDTH As UShort = 510
 	Public Const CHATHEIGH As UShort = 560
-	Public Const PASSWIDTH As UShort = 510
-	Public Const PASSHEIGH As UShort = 100
+	Public Const PASSWIDTH As UShort = 400
+	Public Const PASSHEIGH As UShort = 180
 	Public Const ADMNWIDTH As UShort = 510
 	Public Const ADMNHEIGH As UShort = 130
 	'-----------------------------------------------------------------------------------------------------------------------'
@@ -148,6 +155,7 @@ Public Class VaporChat
 	Public Const VAPOCHESS As String = "/vaporchess"
 	'-----------------------------------------------------------------------------------------------------------------------' 
 	Public Const TOKIPATH As String = "..\T̵̞̜̲̻͛̓̏̇͑͐D̵̫̘̣̮̦̖͙͈̜͛͝\TokiDrift.exe"
+	Public Const VCHEPATH As String = "..\V̵̨̼͉͉̫͙̞̹̣̔̀̉̚̕C̵̨̨̨͙͈̪̔͘H̵̹̮́̀̾̒\VaporChess.exe"
 
 
 	'--- V A P O R C H A T | Struct ----------------------------------------------------------------------------------------'
@@ -283,7 +291,7 @@ Public Class VaporChat
 	End Function
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Private Function MQTTPublish(topic As String, payload As String, retainFlag As Boolean, qos As Protocol.MqttQualityOfServiceLevel) As Boolean
-		Dim result As New MqttClientPublishResult
+		Dim result As MqttClientPublishResult
 		Dim cancel As New Threading.CancellationTokenSource
 		Dim publish As New MqttApplicationMessageBuilder
 		publish.WithMessageExpiryInterval(TMESSAGE)

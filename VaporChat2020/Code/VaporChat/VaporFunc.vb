@@ -39,9 +39,14 @@
 	Private BtnHide As Button
 	Private BtnVapor As Button
 	Private TxtPassword As TextBox
-	Private CmbCloserTime As ComboBox
+	Private TxtCloserTime As TextBox
 	Private LblVaporChat2020Ver As Label
 	Private Lblkronelab As Label
+	Private ImgStartScreen As PictureBox
+	Private LblRoom As Label
+	Private LblUser As Label
+	Private LblPass As Label
+	Private LblTOut As Label
 	' VaporChat main panel -------------------------------------------------------------------------------------------------'
 	Private PnlVaporChat As Panel
 	Private LstChatVapo As ListView
@@ -52,12 +57,14 @@
 	Private LblUsers As Label
 	Private BtnSend As Button
 	Private BtnBackToStart As Button
+	Private ImgVaporChat As PictureBox
 	' VaporChat users list -------------------------------------------------------------------------------------------------'
 	Private PnlUsersList As Panel
 	Private LstUsersList As ListView
 	' VaporChat password panel ---------------------------------------------------------------------------------------------'
 	Private PnlInsertPass As Panel
 	Private TxtInsertPass As TextBox
+	Private ImgInsertPass As PictureBox
 	' VaporChat admin panel ------------------------------------------------------------------------------------------------'
 	Private PnlAdmin As Panel
 	Private TxtAdminCommand As TextBox
@@ -99,6 +106,7 @@
 			ShowFormGest()
 			If ForcePass Then
 				PnlInsertPass.BringToFront()
+				CallerForm.Text = VaporChat.VAPOR_PASSWINTXT(VaporChat.CurrentTheme)
 				Callback.ClbVaporFunc_RestoreWindowFunc(VaporChat.PASSWIDTH, VaporChat.PASSHEIGH)
 				TxtInsertPass.Focus()
 			End If
@@ -176,6 +184,26 @@
 			Return SystemColors.WindowText
 		End If
 	End Function
+	'-----------------------------------------------------------------------------------------------------------------------'
+	Private Sub TxtCloserTimeError(ByRef sender As TextBox)
+		MsgBox("Timeout must be between 20 and 120 seconds")
+		sender.Focus()
+		sender.SelectionStart = 0
+		sender.SelectionLength = sender.Text.Length
+	End Sub
+	'-----------------------------------------------------------------------------------------------------------------------'
+	Private Function ToutCheckErrors(ByRef sender As TextBox) As Boolean
+		If IsNumeric(sender.Text) Then
+			If sender.Text < 20 Or sender.Text > 120 Then
+				TxtCloserTimeError(sender)
+				Return True
+			End If
+			Return False
+		Else
+			TxtCloserTimeError(sender)
+			Return True
+		End If
+	End Function
 
 
 	'--- V A P O R F U N C | Public Functions ------------------------------------------------------------------------------'
@@ -185,19 +213,24 @@
 		ProgressOp = _progress
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Sub AssignStartScreenPanelGUIFunc(ByRef _pnlstartscreen As Panel, ByRef _btnhide As Button, ByRef _btnvapor As Button, ByRef _txtlobby As TextBox, ByRef _txtuser As TextBox, ByRef _txtpassword As TextBox, ByRef _cmbclosertime As ComboBox, ByRef _lblvaporchatver As Label, ByRef _lblkronelab As Label)
+	Public Sub AssignStartScreenPanelGUIFunc(ByRef _pnlstartscreen As Panel, ByRef _btnhide As Button, ByRef _btnvapor As Button, ByRef _txtlobby As TextBox, ByRef _txtuser As TextBox, ByRef _txtpassword As TextBox, ByRef _txtclosertime As TextBox, ByRef _lblvaporchatver As Label, ByRef _lblkronelab As Label, ByRef _imgstartscreen As PictureBox, ByRef _lblroom As Label, ByRef _lbluser As Label, ByRef _lblpass As Label, ByRef _lbltout As Label)
 		PnlStartScreen = _pnlstartscreen
 		BtnHide = _btnhide
 		BtnVapor = _btnvapor
 		TxtLobby = _txtlobby
 		TxtUser = _txtuser
 		TxtPassword = _txtpassword
-		CmbCloserTime = _cmbclosertime
+		TxtCloserTime = _txtclosertime
 		LblVaporChat2020Ver = _lblvaporchatver
 		Lblkronelab = _lblkronelab
+		ImgStartScreen = _imgstartscreen
+		LblRoom = _lblroom
+		LblUser = _lbluser
+		LblPass = _lblpass
+		LblTOut = _lbltout
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Sub AssignVaporChatPanelGUIFunc(ByRef _pnlchat As Panel, ByRef _lstchat As ListView, ByRef _txtmsg As TextBox, ByRef _lbllog As Label, ByRef _lbluser As Label, ByRef _btnsend As Button, ByRef _btnbacktostart As Button)
+	Public Sub AssignVaporChatPanelGUIFunc(ByRef _pnlchat As Panel, ByRef _lstchat As ListView, ByRef _txtmsg As TextBox, ByRef _lbllog As Label, ByRef _lbluser As Label, ByRef _btnsend As Button, ByRef _btnbacktostart As Button, ByRef _imgvaporchat As PictureBox)
 		PnlVaporChat = _pnlchat
 		LstChatVapo = _lstchat
 		TxtMsg = _txtmsg
@@ -205,6 +238,7 @@
 		LblUsers = _lbluser
 		BtnSend = _btnsend
 		BtnBackToStart = _btnbacktostart
+		ImgVaporChat = _imgvaporchat
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub AssignUserListPanelGUIFunc(ByRef _pnluserslist As Panel, ByRef _lstuserslist As ListView, ByRef _stsuserslist As StatusStrip)
@@ -213,9 +247,10 @@
 		StsUsersList = _stsuserslist
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Sub AssignPasswordPanelGUIFunc(ByRef _pnlinsertpass As Panel, ByRef _txtinsertpass As TextBox)
+	Public Sub AssignPasswordPanelGUIFunc(ByRef _pnlinsertpass As Panel, ByRef _txtinsertpass As TextBox, ByRef _imginsertpass As PictureBox)
 		PnlInsertPass = _pnlinsertpass
 		TxtInsertPass = _txtinsertpass
+		ImgInsertPass = _imginsertpass
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub AssignAdminPanelGUIFunc(ByRef _pnladmin As Panel, ByRef _txtadminuser As TextBox, ByRef _txtadmincommand As TextBox)
@@ -399,14 +434,25 @@
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub SendMsgFunc()
 		If TxtMsg.Text = VaporChat.TOKIDRIFT Then
-			Dim pHelp As New ProcessStartInfo
+			Dim pInfo As New ProcessStartInfo
 			Dim pPath As String = IO.Path.GetFullPath(VaporChat.TOKIPATH)
 			If IO.File.Exists(pPath) = True Then
-				pHelp.FileName = pPath
-				pHelp.Arguments = ControlChars.Quote & My.Settings.LastUser & ControlChars.Quote
-				pHelp.UseShellExecute = False
-				pHelp.WindowStyle = ProcessWindowStyle.Normal
-				Dim proc As Process = Process.Start(pHelp)
+				pInfo.FileName = pPath
+				pInfo.Arguments = ControlChars.Quote & My.Settings.LastUser & ControlChars.Quote
+				pInfo.UseShellExecute = False
+				pInfo.WindowStyle = ProcessWindowStyle.Normal
+				Dim proc As Process = Process.Start(pInfo)
+			End If
+			ClearTextBox(TxtMsg)
+		ElseIf TxtMsg.Text = VaporChat.VAPOCHESS Then
+			Dim pInfo As New ProcessStartInfo
+			Dim pPath As String = IO.Path.GetFullPath(VaporChat.VCHEPATH)
+			If IO.File.Exists(pPath) = True Then
+				pInfo.FileName = pPath
+				pInfo.Arguments = ControlChars.Quote & My.Settings.LastUser & ControlChars.Quote
+				pInfo.UseShellExecute = False
+				pInfo.WindowStyle = ProcessWindowStyle.Normal
+				Dim proc As Process = Process.Start(pInfo)
 			End If
 			ClearTextBox(TxtMsg)
 		ElseIf My.Settings.Muted = False Then
@@ -417,9 +463,6 @@
 					If BannedText.Contains(TxtMsg.Text.ToLower().Replace(" ", "")) Then
 						LblLog.Text = VaporChat.FUNNYBOI
 						ClearTextBox(TxtMsg)
-					ElseIf TxtMsg.Text = VaporChat.VAPOCHESS Then
-						ClearTextBox(TxtMsg)
-						Chess.Show()
 					Else
 						If VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, TxtMsg.Text) Then
 							LblLog.Text = VaporChat.SENDISOK(VaporChat.CurrentTheme)
@@ -480,11 +523,11 @@
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub LogOutFunc()
 		ClosingFunc()
-		VaporChat.CurrentTheme = VaporChat.Themes.Start
 		PnlStartScreen.BringToFront()
 		TxtPassword.Focus()
 		Callback.ClbVaporFunc_LogoutFunc()
 		HideStatus = True
+		VaporChat.CurrentTheme = VaporChat.Themes.Start
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub FormKeyDownFunc(ByRef e As KeyEventArgs)
@@ -566,6 +609,54 @@
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub UpdateGUIFunc()
+		If VaporChat.CurrentTheme = VaporChat.Themes.Start Then
+			Dim Inc As New Random
+			TimerGUI.Interval = Inc.Next(400, 1200)
+			Select Case Inc.Next(0, 8)
+				Case 0
+					LblRoom.Text = "r   o m"
+					LblUser.Text = "  s e r"
+					LblPass.Text = "p a   s"
+					LblTOut.Text = "t   u t"
+				Case 1
+					LblRoom.Text = "r o o  "
+					LblUser.Text = "u   e r"
+					LblPass.Text = "  a s s"
+					LblTOut.Text = "t o u  "
+				Case 2
+					LblRoom.Text = "r o   m"
+					LblUser.Text = "u   e r"
+					LblPass.Text = "p   s s"
+					LblTOut.Text = "  o u t"
+				Case 3
+					LblRoom.Text = "  o o m"
+					LblUser.Text = "u   e r"
+					LblPass.Text = "p a s  "
+					LblTOut.Text = "t o   t"
+				Case 4
+					LblRoom.Text = "r   o m"
+					LblUser.Text = "  s e r"
+					LblPass.Text = "  a s s"
+					LblTOut.Text = "t o   t"
+				Case 5
+					LblRoom.Text = "r o   m"
+					LblUser.Text = "u   e r"
+					LblPass.Text = "  a s s"
+					LblTOut.Text = "t o u  "
+				Case 6
+					LblRoom.Text = "r   o m"
+					LblUser.Text = "u s e  "
+					LblPass.Text = "p   s s"
+					LblTOut.Text = "  o u t"
+				Case Else
+					LblRoom.Text = "r o o m"
+					LblUser.Text = "u s e r"
+					LblPass.Text = "p a s s"
+					LblTOut.Text = "t o u t"
+			End Select
+		Else
+			TimerGUI.Interval = 500
+		End If
 		LblUsers.Text = UserList.Count.ToString()
 		If Date.Now() > LastResuTime + TimeSpan.FromMilliseconds(ShowResuInterval) Then
 			If VaporChat.IsOnline() = False Then
@@ -682,6 +773,7 @@
 	Public Sub PasswordTextChangedFunc()
 		If TxtInsertPass.Text = VaporChat.PASSCHAT Then
 			TxtInsertPass.Text = ""
+			CallerForm.Text = VaporChat.VAPOR_MAINWINTXT(VaporChat.CurrentTheme)
 			Select Case VaporChat.CurrentTheme
 				Case VaporChat.Themes.Start
 					PnlStartScreen.BringToFront()
@@ -708,17 +800,22 @@
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub StartScreenLoadFunc()
 		VaporChat.CurrentTheme = VaporChat.Themes.Start
-		LblVaporChat2020Ver.Text = My.Settings.VaporChat2020Ver
-		TxtPassword.Focus()
-		CmbCloserTime.Text = My.Settings.Timeout / 1000
+		LblVaporChat2020Ver.Text = "v" & My.Application.Info.Version.ToString()
+		TxtCloserTime.Text = My.Settings.Timeout / 1000
 		TxtUser.Text = My.Settings.LastUser
 		TxtLobby.Text = My.Settings.Lobby
+		ImgInsertPass.BackgroundImage = VaporChat.VAPOR_PASSBCKIMG(VaporChat.CurrentTheme)
+		TxtPassword.Focus()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub ShowHideChatFunc()
 		If TxtPassword.Text = "" Then
 			TxtPassword.Focus()
 		ElseIf TxtPassword.Text = VaporChat.PASSCHAT Then
+			If ToutCheckErrors(TxtCloserTime) = True Then
+				Return
+			End If
+			My.Settings.Timeout = TxtCloserTime.Text * 1000
 			My.Settings.LastTheme = VaporChat.Themes.Hide
 			My.Settings.Save()
 			VaporChat.CurrentTheme = VaporChat.Themes.Hide
@@ -734,6 +831,10 @@
 		If TxtPassword.Text = "" Then
 			TxtPassword.Focus()
 		ElseIf TxtPassword.Text = VaporChat.PASSCHAT Then
+			If ToutCheckErrors(TxtCloserTime) = True Then
+				Return
+			End If
+			My.Settings.Timeout = TxtCloserTime.Text * 1000
 			My.Settings.LastTheme = VaporChat.Themes.Vapor
 			My.Settings.Save()
 			VaporChat.CurrentTheme = VaporChat.Themes.Vapor
@@ -762,7 +863,6 @@
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub UpdateCloseTimeFunc()
-		My.Settings.Timeout = CmbCloserTime.Text * 1000
-		My.Settings.Save()
+
 	End Sub
 End Class

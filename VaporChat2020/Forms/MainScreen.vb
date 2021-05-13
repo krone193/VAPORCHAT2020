@@ -52,15 +52,17 @@ Public Class MainScreen
 	' V A P O R G U I | Functions ------------------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub AssignVaporTheme(ByVal theme As VaporChat.Themes)
-		If theme = VaporChat.Themes.Vapor Or theme = VaporChat.Themes.Hide Or theme = VaporChat.Themes.Admin Then
+		If theme = VaporChat.Themes.Vapor Or theme = VaporChat.Themes.Hide Or theme = VaporChat.Themes.Admin Or theme = VaporChat.Themes.Start Then
 			VaporChat.CurrentTheme = theme
 			Text = VaporChat.VAPOR_MAINWINTXT(VaporChat.CurrentTheme)
 			PnlVaporChat.BackgroundImage = VaporChat.VAPOR_MAINBCKIMG(VaporChat.CurrentTheme)
+			ImgVaporChat.Image = VaporChat.VAPOR_MAINBCKIMG(VaporChat.CurrentTheme)
 			PnlInsertPass.BackgroundImage = VaporChat.VAPOR_MAINBCKIMG(VaporChat.CurrentTheme)
+			ImgInsertPass.Image = VaporChat.VAPOR_PASSBCKIMG(VaporChat.CurrentTheme)
 			PnlVaporChat.BackColor = VaporChat.VAPOR_MAINBCKCLR(VaporChat.CurrentTheme)
 			PnlInsertPass.BackColor = VaporChat.VAPOR_MAINBCKCLR(VaporChat.CurrentTheme)
-			TxtInsertPass.BackColor = VaporChat.VAPOR_USERBCKCLR(VaporChat.CurrentTheme)
-			TxtInsertPass.ForeColor = VaporChat.VAPOR_USERFRTCLR(VaporChat.CurrentTheme)
+			TxtInsertPass.BackColor = VaporChat.VAPOR_PASSBCKCLR(VaporChat.CurrentTheme)
+			TxtInsertPass.ForeColor = VaporChat.VAPOR_PASSFRTCLR(VaporChat.CurrentTheme)
 			LstChatVapo.BackColor = VaporChat.VAPOR_CHATBCKCLR(VaporChat.CurrentTheme)
 			LstChatVapo.ForeColor = VaporChat.VAPOR_CHATFRTCLR(VaporChat.CurrentTheme)
 			TxtMsg.BackColor = VaporChat.VAPOR_SENDBCKCLR(VaporChat.CurrentTheme)
@@ -78,6 +80,7 @@ Public Class MainScreen
 			BtnBackToStart.BackColor = VaporChat.VAPOR_BTNBCKBCLR(VaporChat.CurrentTheme)
 			BtnBackToStart.ForeColor = VaporChat.VAPOR_BTNBCKFCLR(VaporChat.CurrentTheme)
 			LstUsersList.BackColor = VaporChat.VAPOR_USRLSTBCLR(VaporChat.CurrentTheme)
+			LstUsersList.BackgroundImage = VaporChat.VAPOR_USERBCKIMG(VaporChat.CurrentTheme)
 #If LIMVIEW Then
 				For i = 0 To VaporChat.MAXROWS
 					Dim LstItem As New ListViewItem With {
@@ -99,11 +102,12 @@ Public Class MainScreen
 		VaporChat.CurrentTheme = VaporChat.Themes.Start
 		Size = New Size(VaporChat.STARTWIDTH, VaporChat.STARTHEIGH)
 		Text = VaporChat.VAPOR_MAINWINTXT(VaporChat.CurrentTheme)
+		ImgStartScreen.Image = VaporChat.VAPOR_MAINBCKIMG(VaporChat.CurrentTheme)
 		VaporFunc.AssignMainFormGUIFunc(Me, ProgressOps)
-		VaporFunc.AssignStartScreenPanelGUIFunc(PnlStartScreen, BtnHide, BtnVapor, TxtLobby, TxtUser, TxtPassword, CmbCloserTime, LblVaporChat2020Ver, Lblkronelab)
-		VaporFunc.AssignVaporChatPanelGUIFunc(PnlVaporChat, LstChatVapo, TxtMsg, LblLog, LblUsers, BtnSend, BtnBackToStart)
+		VaporFunc.AssignStartScreenPanelGUIFunc(PnlStartScreen, BtnHide, BtnVapor, TxtLobby, TxtUser, TxtPassword, TxtCloserTime, LblVaporChat2020Ver, Lblkronelab, ImgStartScreen, LblRoom, LblUser, LblPass, LblTOut)
+		VaporFunc.AssignVaporChatPanelGUIFunc(PnlVaporChat, LstChatVapo, TxtMsg, LblLog, LblUsers, BtnSend, BtnBackToStart, ImgVaporChat)
 		VaporFunc.AssignUserListPanelGUIFunc(PnlUsersList, LstUsersList, StsUsersList)
-		VaporFunc.AssignPasswordPanelGUIFunc(PnlInsertPass, TxtInsertPass)
+		VaporFunc.AssignPasswordPanelGUIFunc(PnlInsertPass, TxtInsertPass, ImgInsertPass)
 		VaporFunc.AssignAdminPanelGUIFunc(PnlAdmin, TxtAdminUser, TxtAdminCommand)
 		VaporFunc.AssignVaporChatComponentsFunc(TimerCheckMsg, TimerGUI, TimerPubBlock, TimerAutoCloser)
 		VaporFunc.StartScreenLoadFunc()
@@ -213,7 +217,7 @@ Public Class MainScreen
 		VaporFunc.ShowVaporChatFunc()
 	End Sub
 
-	Private Sub CmbCloserTime_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CmbCloserTime.SelectedIndexChanged
+	Private Sub TxtCloserTime_TextChanged(sender As Object, e As EventArgs) Handles TxtCloserTime.TextChanged
 		VaporFunc.UpdateCloseTimeFunc()
 	End Sub
 
@@ -224,4 +228,5 @@ Public Class MainScreen
 	Private Sub ProgressOps_DoWork(sender As Object, e As DoWorkEventArgs) Handles ProgressOps.DoWork
 		VaporFunc.ShowOpProgressFunc()
 	End Sub
+
 End Class

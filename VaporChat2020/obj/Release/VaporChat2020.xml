@@ -27,7 +27,37 @@ VaporChat2020
   Cerca una risorsa localizzata di tipo System.Byte[].
 </summary>
 </member>
-<member name="P:VaporChat2020Application.My.Resources.Resources.start_main">
+<member name="P:VaporChat2020Application.My.Resources.Resources.VaporBridge">
+<summary>
+  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:VaporChat2020Application.My.Resources.Resources.VaporCanal">
+<summary>
+  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:VaporChat2020Application.My.Resources.Resources.VaporCity">
+<summary>
+  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:VaporChat2020Application.My.Resources.Resources.VaporGreatWave">
+<summary>
+  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:VaporChat2020Application.My.Resources.Resources.VaporPetali">
+<summary>
+  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:VaporChat2020Application.My.Resources.Resources.VaporRedCity">
+<summary>
+  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:VaporChat2020Application.My.Resources.Resources.VaporRoad">
 <summary>
   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
 </summary>

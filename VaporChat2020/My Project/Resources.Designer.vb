@@ -73,9 +73,69 @@ Namespace My.Resources
         '''<summary>
         '''  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         '''</summary>
-        Public ReadOnly Property start_main() As System.Drawing.Bitmap
+        Public ReadOnly Property VaporBridge() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("start_main", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("VaporBridge", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property VaporCanal() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("VaporCanal", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property VaporCity() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("VaporCity", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property VaporGreatWave() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("VaporGreatWave", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property VaporPetali() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("VaporPetali", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property VaporRedCity() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("VaporRedCity", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property VaporRoad() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("VaporRoad", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
