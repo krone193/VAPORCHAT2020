@@ -288,7 +288,7 @@
 		Dim copieditems As ListViewItem
 #End If
 		VaporChat.GetMessageUserAndText(name, message)
-		If message = VaporChat.LEAVEVAP(VaporChat.CurrentTheme) And name = My.Settings.LastUser Then
+		If message = VaporChat.LEAVEVAP(VaporChat.CurrentTheme) And name = VaporChat.Settings.User Then
 			Exit Sub
 		End If
 		Dim item As New ListViewItem(New String() {name, message, strdata})
@@ -301,7 +301,7 @@
 			If message <> VaporChat.JOINVAPO(VaporChat.CurrentTheme) Then
 				message = VaporChat.JOINVAPO(VaporChat.CurrentTheme)
 			End If
-		ElseIf VaporChat.LEAVEVAP.Contains(message) And name = My.Settings.LastUser Then
+		ElseIf VaporChat.LEAVEVAP.Contains(message) And name = VaporChat.Settings.User Then
 			show = False
 		ElseIf message = VaporChat.ITSMEMSG Then
 			show = False
@@ -333,7 +333,7 @@
 			End If
 		End If
 		' Check message type for Users management
-		If name <> My.Settings.LastUser Then
+		If name <> VaporChat.Settings.User Then
 			If VaporChat.JOINVAPO.Contains(message) Then
 				LastReicTime = Date.Now()
 				SendItsMeMsg = True
@@ -350,19 +350,19 @@
 		VaporChat.GetConfigUserAndText(struser, strtext)
 		Dim strdata() As String = strtext.Split(VaporChat.ADMINSPLIT)
 		Dim confcommand As String = strdata(0)
-		If struser = My.Settings.LastUser Then
+		If struser = VaporChat.Settings.User Then
 			Select Case confcommand
 				Case VaporChat.ADMINMUTEU
-					My.Settings.Muted = True
-					My.Settings.Save()
+					VaporChat.Settings.Muted = True
+					VaporChat.SaveSettings()
 				Case VaporChat.ADMINUMUTE
-					My.Settings.Muted = False
-					My.Settings.Save()
+					VaporChat.Settings.Muted = False
+					VaporChat.SaveSettings()
 				Case VaporChat.ADMINLOBBY
-					My.Settings.Lobby = strdata(1)
-					My.Settings.Save()
+					VaporChat.Settings.Lobby = strdata(1)
+					VaporChat.SaveSettings()
 					VaporChat.Disconnect()
-					VaporChat.Connect(My.Settings.LastUser, My.Settings.Lobby)
+					VaporChat.Connect(VaporChat.Settings.User, VaporChat.Settings.Lobby)
 			End Select
 		End If
 	End Sub
@@ -371,10 +371,10 @@
 		Static modder As Boolean = True
 		If modder = True Then
 			modder = False
-			TimerAutoCloser.Interval = My.Settings.Timeout - 1
+			TimerAutoCloser.Interval = VaporChat.Settings.Timeout - 1
 		Else
 			modder = True
-			TimerAutoCloser.Interval = My.Settings.Timeout
+			TimerAutoCloser.Interval = VaporChat.Settings.Timeout
 		End If
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
@@ -384,7 +384,7 @@
 		TimerCheckMsg.Interval = VaporChat.TCHKMSGR
 		TimerPubBlock.Interval = VaporChat.TSTOPPUB
 		TimerGUI.Interval = VaporChat.TUPDTGUI
-		TimerAutoCloser.Interval = My.Settings.Timeout
+		TimerAutoCloser.Interval = VaporChat.Settings.Timeout
 		' Init
 		UserList.Clear()
 		TaskBarHid = False
@@ -404,18 +404,18 @@
 		Next
 		BannedText.Add(VaporChat.ITSMEMSG.ToLower().Replace(" ", ""))
 		TxtUser.MaxLength = VaporChat.MaxUserLen()
-		TxtUser.Text = My.Settings.LastUser
+		TxtUser.Text = VaporChat.Settings.User
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub LogInFunc()
-		My.Settings.Lobby = TxtLobby.Text
-		My.Settings.LastUser = TxtUser.Text
-		My.Settings.Save()
+		VaporChat.Settings.Lobby = TxtLobby.Text
+		VaporChat.Settings.User = TxtUser.Text
+		VaporChat.SaveSettings()
 		TxtMsg.MaxLength = VaporChat.MaxMessageLen()
-		If VaporChat.Connect(My.Settings.LastUser, My.Settings.Lobby) Then
-			VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, VaporChat.JOINVAPO(VaporChat.CurrentTheme))
-			If SearchNameInList(My.Settings.LastUser) < 0 Then
-				AddUserToList(My.Settings.LastUser)
+		If VaporChat.Connect(VaporChat.Settings.User, VaporChat.Settings.Lobby) Then
+			VaporChat.SendMessage(ProgressOp, VaporChat.Settings.User, VaporChat.JOINVAPO(VaporChat.CurrentTheme))
+			If SearchNameInList(VaporChat.Settings.User) < 0 Then
+				AddUserToList(VaporChat.Settings.User)
 			End If
 			LblLog.Text = VaporChat.LOGNOERR
 			TimerCheckMsg.Enabled = True
@@ -438,7 +438,7 @@
 			Dim pPath As String = IO.Path.GetFullPath(VaporChat.TOKIPATH)
 			If IO.File.Exists(pPath) = True Then
 				pInfo.FileName = pPath
-				pInfo.Arguments = ControlChars.Quote & My.Settings.LastUser & ControlChars.Quote
+				pInfo.Arguments = ControlChars.Quote & VaporChat.Settings.User & ControlChars.Quote
 				pInfo.UseShellExecute = False
 				pInfo.WindowStyle = ProcessWindowStyle.Normal
 				Dim proc As Process = Process.Start(pInfo)
@@ -449,13 +449,13 @@
 			Dim pPath As String = IO.Path.GetFullPath(VaporChat.VCHEPATH)
 			If IO.File.Exists(pPath) = True Then
 				pInfo.FileName = pPath
-				pInfo.Arguments = ControlChars.Quote & My.Settings.LastUser & ControlChars.Quote
+				pInfo.Arguments = ControlChars.Quote & VaporChat.Settings.User & ControlChars.Quote
 				pInfo.UseShellExecute = False
 				pInfo.WindowStyle = ProcessWindowStyle.Normal
 				Dim proc As Process = Process.Start(pInfo)
 			End If
 			ClearTextBox(TxtMsg)
-		ElseIf My.Settings.Muted = False Then
+		ElseIf VaporChat.Settings.Muted = False Then
 			If BtnSend.Enabled = True Then
 				BtnSend.Enabled = False
 				TimerPubBlock.Enabled = True
@@ -464,7 +464,7 @@
 						LblLog.Text = VaporChat.FUNNYBOI
 						ClearTextBox(TxtMsg)
 					Else
-						If VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, TxtMsg.Text) Then
+						If VaporChat.SendMessage(ProgressOp, VaporChat.Settings.User, TxtMsg.Text) Then
 							LblLog.Text = VaporChat.SENDISOK(VaporChat.CurrentTheme)
 							ClearTextBox(TxtMsg)
 						Else
@@ -472,7 +472,7 @@
 						End If
 					End If
 				Else
-					VaporChat.Connect(My.Settings.LastUser, My.Settings.Lobby)
+					VaporChat.Connect(VaporChat.Settings.User, VaporChat.Settings.Lobby)
 				End If
 			End If
 		Else
@@ -484,7 +484,7 @@
 	Public Sub SendCmdFunc()
 		If TxtAdminCommand.Text <> "" Then
 			If TxtAdminUser.Text <> "" Then
-				If VaporChat.Connect(VaporChat.ADMINUNAME, My.Settings.Lobby) Then
+				If VaporChat.Connect(VaporChat.ADMINUNAME, VaporChat.Settings.Lobby) Then
 					VaporChat.SendConfig(TxtAdminUser.Text, TxtAdminCommand.Text)
 					TxtAdminCommand.Text = ""
 					TxtAdminUser.Text = ""
@@ -534,7 +534,7 @@
 		Select Case VaporChat.CurrentTheme
 			Case VaporChat.Themes.Start
 				If e.KeyValue = Keys.Enter Then
-					Select Case My.Settings.LastTheme
+					Select Case VaporChat.Settings.Theme
 						Case VaporChat.Themes.Vapor
 							BtnVapor.PerformClick()
 						Case VaporChat.Themes.Hide
@@ -567,7 +567,7 @@
 	Public Sub ClosingFunc()
 		If VaporChat.IsOnline() Then
 			If VaporChat.CurrentTheme <> VaporChat.Themes.Admin Or VaporChat.CurrentTheme <> VaporChat.Themes.Start Then
-				VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, VaporChat.LEAVEVAP(VaporChat.CurrentTheme))
+				VaporChat.SendMessage(ProgressOp, VaporChat.Settings.User, VaporChat.LEAVEVAP(VaporChat.CurrentTheme))
 			End If
 			VaporChat.Disconnect()
 		End If
@@ -668,7 +668,7 @@
 		If Date.Now() > LastReicTime + TimeSpan.FromMilliseconds(AutoPubInterval) Then
 			If SendItsMeMsg = True Then
 				SendItsMeMsg = False
-				VaporChat.SendMessage(ProgressOp, My.Settings.LastUser, VaporChat.ITSMEMSG)
+				VaporChat.SendMessage(ProgressOp, VaporChat.Settings.User, VaporChat.ITSMEMSG)
 			End If
 		End If
 	End Sub
@@ -801,11 +801,10 @@
 	Public Sub StartScreenLoadFunc()
 		VaporChat.CurrentTheme = VaporChat.Themes.Start
 		LblVaporChat2020Ver.Text = "v" & My.Application.Info.Version.ToString()
-		TxtCloserTime.Text = My.Settings.Timeout / 1000
-		TxtUser.Text = My.Settings.LastUser
-		TxtLobby.Text = My.Settings.Lobby
+		TxtCloserTime.Text = VaporChat.Settings.Timeout / 1000
+		TxtUser.Text = VaporChat.Settings.User
+		TxtLobby.Text = VaporChat.Settings.Lobby
 		ImgInsertPass.BackgroundImage = VaporChat.VAPOR_PASSBCKIMG(VaporChat.CurrentTheme)
-		TxtPassword.Focus()
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub ShowHideChatFunc()
@@ -815,9 +814,9 @@
 			If ToutCheckErrors(TxtCloserTime) = True Then
 				Return
 			End If
-			My.Settings.Timeout = TxtCloserTime.Text * 1000
-			My.Settings.LastTheme = VaporChat.Themes.Hide
-			My.Settings.Save()
+			VaporChat.Settings.Timeout = TxtCloserTime.Text * 1000
+			VaporChat.Settings.Theme = VaporChat.Themes.Hide
+			VaporChat.SaveSettings()
 			VaporChat.CurrentTheme = VaporChat.Themes.Hide
 			PnlVaporChat.BringToFront()
 			Callback.ClbVaporFunc_InitChatGUIFunc()
@@ -834,9 +833,9 @@
 			If ToutCheckErrors(TxtCloserTime) = True Then
 				Return
 			End If
-			My.Settings.Timeout = TxtCloserTime.Text * 1000
-			My.Settings.LastTheme = VaporChat.Themes.Vapor
-			My.Settings.Save()
+			VaporChat.Settings.Timeout = TxtCloserTime.Text * 1000
+			VaporChat.Settings.Theme = VaporChat.Themes.Vapor
+			VaporChat.SaveSettings()
 			VaporChat.CurrentTheme = VaporChat.Themes.Vapor
 			PnlVaporChat.BringToFront()
 			Callback.ClbVaporFunc_InitChatGUIFunc()
@@ -853,8 +852,8 @@
 			My.Computer.Keyboard.CapsLock Then
 			Dim password As String = InputBox("You shall insert a passcode:")
 			If password = VaporChat.ADMINPASSW Then
-				My.Settings.LastTheme = VaporChat.Themes.Admin
-				My.Settings.Save()
+				VaporChat.Settings.Theme = VaporChat.Themes.Admin
+				VaporChat.SaveSettings()
 				VaporChat.CurrentTheme = VaporChat.Themes.Admin
 				PnlAdmin.BringToFront()
 				Callback.ClbVaporFunc_InitAdminGUIFunc()

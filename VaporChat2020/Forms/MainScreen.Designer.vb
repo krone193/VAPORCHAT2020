@@ -480,7 +480,7 @@ Partial Class MainScreen
         Me.PnlStartScreen.Location = New System.Drawing.Point(0, 0)
         Me.PnlStartScreen.Name = "PnlStartScreen"
         Me.PnlStartScreen.Size = New System.Drawing.Size(496, 522)
-        Me.PnlStartScreen.TabIndex = 66
+        Me.PnlStartScreen.TabIndex = 0
         '
         'TxtCloserTime
         '
@@ -491,7 +491,7 @@ Partial Class MainScreen
         Me.TxtCloserTime.MaxLength = 3
         Me.TxtCloserTime.Name = "TxtCloserTime"
         Me.TxtCloserTime.Size = New System.Drawing.Size(133, 20)
-        Me.TxtCloserTime.TabIndex = 24
+        Me.TxtCloserTime.TabIndex = 3
         Me.TxtCloserTime.Text = "100"
         Me.TxtCloserTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
@@ -539,7 +539,7 @@ Partial Class MainScreen
         Me.TxtUser.Location = New System.Drawing.Point(348, 101)
         Me.TxtUser.Name = "TxtUser"
         Me.TxtUser.Size = New System.Drawing.Size(133, 20)
-        Me.TxtUser.TabIndex = 19
+        Me.TxtUser.TabIndex = 2
         Me.TxtUser.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'TxtLobby
@@ -550,7 +550,7 @@ Partial Class MainScreen
         Me.TxtLobby.Location = New System.Drawing.Point(348, 80)
         Me.TxtLobby.Name = "TxtLobby"
         Me.TxtLobby.Size = New System.Drawing.Size(133, 20)
-        Me.TxtLobby.TabIndex = 18
+        Me.TxtLobby.TabIndex = 1
         Me.TxtLobby.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'TxtPassword
@@ -563,7 +563,7 @@ Partial Class MainScreen
         Me.TxtPassword.Name = "TxtPassword"
         Me.TxtPassword.PasswordChar = Global.Microsoft.VisualBasic.ChrW(12543)
         Me.TxtPassword.Size = New System.Drawing.Size(133, 20)
-        Me.TxtPassword.TabIndex = 1
+        Me.TxtPassword.TabIndex = 0
         Me.TxtPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'LblPass
@@ -610,7 +610,7 @@ Partial Class MainScreen
         Me.BtnHide.Location = New System.Drawing.Point(291, 13)
         Me.BtnHide.Name = "BtnHide"
         Me.BtnHide.Size = New System.Drawing.Size(190, 23)
-        Me.BtnHide.TabIndex = 13
+        Me.BtnHide.TabIndex = 4
         Me.BtnHide.Text = "Ｈｉｄｅ　ｉｎ　ｐｌａｉｎ　ｓｉｇｈｔ　イネ苛ィ"
         Me.BtnHide.UseVisualStyleBackColor = False
         '
@@ -624,7 +624,7 @@ Partial Class MainScreen
         Me.BtnVapor.Location = New System.Drawing.Point(291, 39)
         Me.BtnVapor.Name = "BtnVapor"
         Me.BtnVapor.Size = New System.Drawing.Size(190, 23)
-        Me.BtnVapor.TabIndex = 12
+        Me.BtnVapor.TabIndex = 5
         Me.BtnVapor.Text = "Ｖ　Ａ　Ｐ　Ｏ　Ｒ　奥ケせふマ"
         Me.BtnVapor.UseVisualStyleBackColor = False
         '

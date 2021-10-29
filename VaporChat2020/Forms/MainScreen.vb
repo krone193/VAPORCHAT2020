@@ -99,6 +99,7 @@ Public Class MainScreen
 		Notify.Visible = False
 		PnlUsersList.SendToBack()
 		PnlStartScreen.BringToFront()
+		VaporChat.LoadSettings()
 		VaporChat.CurrentTheme = VaporChat.Themes.Start
 		Size = New Size(VaporChat.STARTWIDTH, VaporChat.STARTHEIGH)
 		Text = VaporChat.VAPOR_MAINWINTXT(VaporChat.CurrentTheme)

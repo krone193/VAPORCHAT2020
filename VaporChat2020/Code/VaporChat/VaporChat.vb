@@ -1,4 +1,5 @@
-﻿Imports MQTTnet
+﻿Imports System.IO
+Imports MQTTnet
 Imports MQTTnet.Client
 Imports MQTTnet.Client.Options
 Imports MQTTnet.Client.Disconnecting
@@ -22,6 +23,10 @@ Public Class VaporChat
 
 	'--- V A P O R C H A T | Private Constants -----------------------------------------------------------------------------'
 	' Chat -----------------------------------------------------------------------------------------------------------------'
+	Private Const PUBCOMPA As String = "kronelab"
+	Private Const SETGSPAT As String = "Resources/.data"
+	Private Const SETGSDIR As String = "Resources/.data/.dreams"
+	Private Const SETGSVER As Byte = 1
 	Private Const MAXMSGCH As UShort = 64
 	Private Const MAXUSRCH As UShort = 10
 	' MQTT -----------------------------------------------------------------------------------------------------------------'
@@ -119,7 +124,8 @@ Public Class VaporChat
 	Public Const PASSCHAT As String = "paint"
 	Public Const SEPTCHAR As String = "ヿーニ"
 	Public Const ITSMEMSG As String = "し゛ゐ"
-	Public Const BLOCKEDU As String = "ops, seems like you're a nasty boi"
+	Public Const BINRSEPT As String = "ⓥ"
+	Public Const BLOCKEDU As String = "ops, seems Like you're a nasty boi"
 	Public Const FUNNYBOI As String = "oh Rob, u funny boi"
 	Public Const COMERROR As String = "please log in"
 	Public Const LOGNOERR As String = "online"
@@ -188,6 +194,19 @@ Public Class VaporChat
 	End Enum
 
 
+	'--- V A P O R C H A T | Structures -----------------------------------------------------------------------------------'
+	'-----------------------------------------------------------------------------------------------------------------------'
+	Public Structure SettingsStruct
+		Dim Version As UInteger
+		Dim Publisher As String
+		Dim Theme As Themes
+		Dim Lobby As String
+		Dim User As String
+		Dim Timeout As UInteger
+		Dim Muted As Boolean
+	End Structure
+
+
 	'--- V A P O R C H A T | Variables -------------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
 	ReadOnly message As New Queue(Of MessageStruct)
@@ -196,6 +215,8 @@ Public Class VaporChat
 	Private configstopic As String = ""
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public CurrentTheme As Themes
+	'-----------------------------------------------------------------------------------------------------------------------'
+	Public Shared Settings As SettingsStruct
 
 
 	'--- V A P O R C H A T | MQTT Service Functions ------------------------------------------------------------------------'
@@ -315,7 +336,7 @@ Public Class VaporChat
 	'--- V A P O R C H A T | Private Functions -----------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Private Function Encrypt(ByVal encodedata As String, ByVal optopic As Boolean) As String
-		Dim wrapper As New Simple3Des(My.Settings.Publisher)
+		Dim wrapper As New Simple3Des(Settings.Publisher)
 		Dim cipherText As String = wrapper.EncryptData(encodedata)
 		If optopic Then
 			Return cipherText.Replace("+", "!").Replace("/", "?")
@@ -325,7 +346,7 @@ Public Class VaporChat
 	End Function
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Private Function Decrypt(ByVal decodedata As String, ByVal optopic As Boolean) As String
-		Dim wrapper As New Simple3Des(My.Settings.Publisher)
+		Dim wrapper As New Simple3Des(Settings.Publisher)
 		Try
 			If optopic Then
 				Return wrapper.DecryptData(decodedata.Replace("!", "+").Replace("?", "/"))
@@ -340,12 +361,94 @@ Public Class VaporChat
 
 	'--- V A P O R C H A T | Public Functions ------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
+	Public Sub SaveSettings()
+		Using bs As New BinaryWriter(File.Open(SETGSDIR, FileMode.Create))
+			bs.Write(CByte(Runtime.InteropServices.Marshal.SizeOf(Settings.Version)))
+			bs.Write(Settings.Version)
+
+			Dim EncodedPublisher As Byte() = Text.Encoding.UTF8.GetBytes(Settings.Publisher)
+			Dim LenEncodedPublisher As Byte = EncodedPublisher.Length
+			bs.Write(LenEncodedPublisher)
+			bs.Write(EncodedPublisher)
+
+			bs.Write(CByte(1))
+			bs.Write(CByte(Settings.Theme))
+
+			Dim EncodedLobby As Byte() = Text.Encoding.UTF8.GetBytes(Settings.Lobby)
+			Dim LenEncodedLobby As Byte = EncodedLobby.Length
+			bs.Write(LenEncodedLobby)
+			bs.Write(EncodedLobby)
+
+			Dim EncodedUser As Byte() = Text.Encoding.UTF8.GetBytes(Settings.User)
+			Dim LenEncodedUser As Byte = EncodedUser.Length
+			bs.Write(LenEncodedUser)
+			bs.Write(EncodedUser)
+
+			bs.Write(CByte(Runtime.InteropServices.Marshal.SizeOf(Settings.Timeout)))
+			bs.Write(Settings.Timeout)
+
+			bs.Write(CByte(Runtime.InteropServices.Marshal.SizeOf(Settings.Muted)))
+			bs.Write(Settings.Muted)
+			bs.Close()
+		End Using
+	End Sub
+	'-----------------------------------------------------------------------------------------------------------------------'
+	Public Sub LoadSettings()
+		If File.Exists(SETGSDIR) Then
+			Using br As New BinaryReader(File.Open(SETGSDIR, FileMode.Open))
+				Dim LenVersion, LenPublisher, LenTheme, LenLobby, LenUser, LenTimeout, LenMuted As Byte
+				LenVersion = br.ReadByte()
+				Settings.Version = br.ReadUInt32()
+				If Settings.Version <> SETGSVER Then
+					br.Close()
+					DefaultSettings()
+				Else
+					LenPublisher = br.ReadByte()
+					Dim EncodedPublisher As Byte() = br.ReadBytes(LenPublisher)
+					Settings.Publisher = Text.Encoding.UTF8.GetString(EncodedPublisher)
+
+					LenTheme = br.ReadByte()
+					Settings.Theme = br.ReadByte()
+
+					LenLobby = br.ReadByte()
+					Dim EncodedLobby As Byte() = br.ReadBytes(LenLobby)
+					Settings.Lobby = Text.Encoding.UTF8.GetString(EncodedLobby)
+
+					LenUser = br.ReadByte()
+					Dim EncodedUser As Byte() = br.ReadBytes(LenUser)
+					Settings.User = Text.Encoding.UTF8.GetString(EncodedUser)
+
+					LenTimeout = br.ReadByte()
+					Settings.Timeout = br.ReadUInt32()
+
+					LenMuted = br.ReadByte()
+					Settings.Muted = br.ReadBoolean()
+					br.Close()
+				End If
+			End Using
+		Else
+			Directory.CreateDirectory(SETGSPAT)
+			DefaultSettings()
+		End If
+	End Sub
+	'-----------------------------------------------------------------------------------------------------------------------'
+	Private Sub DefaultSettings()
+		Settings.Version = SETGSVER
+		Settings.Publisher = PUBCOMPA
+		Settings.Theme = 3
+		Settings.Lobby = "-"
+		Settings.User = "-"
+		Settings.Timeout = 60000
+		Settings.Muted = False
+		SaveSettings()
+	End Sub
+	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Function Connect(ByVal user As String, ByVal lobby As String) As Boolean
 		Dim cryptMessageTopic As String
 		Dim cryptConfigsTopic As String
 		message.Clear()
 		config.Clear()
-		messagetopic = MQTTROOT & My.Settings.Lobby
+		messagetopic = MQTTROOT & Settings.Lobby
 		configstopic = MQTTROOT & MQTTCONF & lobby
 		cryptMessageTopic = Encrypt(messagetopic, True)
 		cryptConfigsTopic = Encrypt(configstopic, True)
