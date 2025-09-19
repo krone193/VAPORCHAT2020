@@ -121,7 +121,7 @@ Public Class VaporChat
 	Public Const MAXROWS As UShort = 30
 #End If
 	'-----------------------------------------------------------------------------------------------------------------------'
-	Public Const PASSCHAT As String = "paint"
+	Public Const PASSCHAT As String = "06870eabc891934ef049e29c43286c4a0f02bdd26e1a7ff1fcfdd77817c8c6e448196e3433b4c29e682f0eb20205f84ac840e370d5949551df5234b6c7aa977e"
 	Public Const SEPTCHAR As String = "ヿーニ"
 	Public Const ITSMEMSG As String = "し゛ゐ"
 	Public Const BINRSEPT As String = "ⓥ"
@@ -252,7 +252,7 @@ Public Class VaporChat
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Private Function MQTTConnectToServer(id As String, uri As String, user As String, pwd As String, port As String) As Boolean
-		Dim result As MqttClientAuthenticateResult
+		Dim result As MqttClientConnectResult
 		Dim cancel As New Threading.CancellationTokenSource
 		Dim messageBuilder As New MqttClientOptionsBuilder
 		Dim lastwill As New MqttApplicationMessage

@@ -1,4 +1,6 @@
-﻿Public Class VaporFunc
+﻿Imports System.Security.Cryptography
+
+Public Class VaporFunc
 	'--- Class Imports -----------------------------------------------------------------------------------------------------'
 	'-----------------------------------------------------------------------------------------------------------------------'
 	ReadOnly VaporChat As New VaporChat
@@ -771,7 +773,7 @@
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub PasswordTextChangedFunc()
-		If TxtInsertPass.Text = VaporChat.PASSCHAT Then
+		If CheckPasswordHash(TxtInsertPass.Text) Then
 			TxtInsertPass.Text = ""
 			CallerForm.Text = VaporChat.VAPOR_MAINWINTXT(VaporChat.CurrentTheme)
 			Select Case VaporChat.CurrentTheme
@@ -807,10 +809,25 @@
 		ImgInsertPass.BackgroundImage = VaporChat.VAPOR_PASSBCKIMG(VaporChat.CurrentTheme)
 	End Sub
 	'-----------------------------------------------------------------------------------------------------------------------'
+	Public Function CheckPasswordHash(ByVal input As String) As Boolean
+		Dim sha As SHA512 = SHA512.Create()
+		Dim secret(63) As Byte
+		Dim hash() As Byte = sha.ComputeHash(Text.Encoding.ASCII.GetBytes(input))
+		Dim n As Byte = 0
+		For i As Byte = 0 To VaporChat.PASSCHAT.Length - 2 Step 2
+			secret(n) = (Convert.ToByte(VaporChat.PASSCHAT.Substring(i, 2), 16))
+			n += 1
+		Next
+		If hash.SequenceEqual(secret) Then
+			Return True
+		End If
+		Return False
+	End Function
+	'-----------------------------------------------------------------------------------------------------------------------'
 	Public Sub ShowHideChatFunc()
 		If TxtPassword.Text = "" Then
 			TxtPassword.Focus()
-		ElseIf TxtPassword.Text = VaporChat.PASSCHAT Then
+		ElseIf CheckPasswordHash(TxtPassword.Text) Then
 			If ToutCheckErrors(TxtCloserTime) = True Then
 				Return
 			End If
@@ -829,7 +846,7 @@
 	Public Sub ShowVaporChatFunc()
 		If TxtPassword.Text = "" Then
 			TxtPassword.Focus()
-		ElseIf TxtPassword.Text = VaporChat.PASSCHAT Then
+		ElseIf CheckPasswordHash(TxtPassword.Text) Then
 			If ToutCheckErrors(TxtCloserTime) = True Then
 				Return
 			End If

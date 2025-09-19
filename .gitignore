@@ -1,0 +1,7 @@
+VaporChat2020/bin
+VaporChat2020/obj
+*.user
+*.suo
+_ReSharper.*
+*.sln.cache
+.vs

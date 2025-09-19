@@ -113,9 +113,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MQTTnet, Version=3.0.15.0, Culture=neutral, PublicKeyToken=b69712f52770c0a7, processorArchitecture=MSIL">
-      <HintPath>..\packages\MQTTnet.3.0.15\lib\net461\MQTTnet.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="MQTTnet">
+      <HintPath>..\packages\MQTTnet.3.1.2\lib\net461\MQTTnet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -196,7 +195,6 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
@@ -224,6 +222,7 @@
     <Content Include="Resources\Ico\logonewmsg.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="packages.config" />
     <None Include="Resources\MQTTnet.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
